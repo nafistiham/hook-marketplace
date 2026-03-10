@@ -6,9 +6,17 @@ import type { HookIndexEntry } from '@hookpm/schema'
 
 type ClerkUser = { id: string; username: string }
 
+type KVNamespace = {
+  get(key: string): Promise<string | null>
+  put(key: string, value: string, opts?: { expirationTtl?: number }): Promise<void>
+  delete(key: string): Promise<void>
+}
+
 type Env = {
   HOOKPM_BUCKET: R2Bucket
+  AUTH_KV?: KVNamespace
   CLERK_PUBLIC_KEY?: string
+  CLERK_OAUTH_URL?: string
   SUPABASE_URL?: string
   SUPABASE_SERVICE_KEY?: string
   // Test-only: injected by test env to bypass JWT verification
@@ -43,6 +51,67 @@ async function resolveUser(req: Request, env: Env): Promise<ClerkUser | null> {
   // Replace with: const payload = await verifyClerkJWT(token, env.CLERK_PUBLIC_KEY)
   return null
 }
+
+// ─── Auth (login / token polling) ────────────────────────────────────────────
+
+const AUTH_KV_TTL_SECONDS = 600 // 10 minutes
+
+app.get('/auth/login', (c) => {
+  const state = c.req.query('state')
+  if (!state) return errorResponse(400, 'BAD_REQUEST', 'state parameter required')
+
+  const clerkOauthUrl = c.env.CLERK_OAUTH_URL ?? 'https://clerk.hookpm.dev/oauth/authorize'
+  const redirectUrl = `${clerkOauthUrl}?state=${encodeURIComponent(state)}&redirect_uri=${encodeURIComponent('https://hookpm.dev/auth/callback')}`
+
+  return Response.redirect(redirectUrl, 302)
+})
+
+app.get('/auth/token', async (c) => {
+  const state = c.req.query('state')
+  if (!state) return errorResponse(400, 'BAD_REQUEST', 'state parameter required')
+
+  const kv = c.env.AUTH_KV
+  if (!kv) return new Response(null, { status: 202 })
+
+  const value = await kv.get(`auth:${state}`)
+  if (!value) return new Response(null, { status: 202 })
+
+  // Token ready — delete KV entry and return token
+  await kv.delete(`auth:${state}`)
+  return new Response(value, {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  })
+})
+
+// ─── Auth callback (called by Clerk after OAuth) ──────────────────────────────
+
+app.get('/auth/callback', async (c) => {
+  const state = c.req.query('state')
+  const token = c.req.query('token')     // Clerk passes the JWT here
+  const username = c.req.query('username')
+  const expiresAt = c.req.query('expires_at')
+
+  if (!state || !token || !username) {
+    return errorResponse(400, 'BAD_REQUEST', 'Missing required callback parameters')
+  }
+
+  const kv = c.env.AUTH_KV
+  if (!kv) return errorResponse(500, 'INTERNAL_ERROR', 'Auth storage not configured')
+
+  const tokenData = JSON.stringify({
+    token,
+    expires_at: expiresAt ?? new Date(Date.now() + 3600_000).toISOString(),
+    username,
+  })
+
+  await kv.put(`auth:${state}`, tokenData, { expirationTtl: AUTH_KV_TTL_SECONDS })
+
+  // Return a simple success page
+  return new Response('<html><body><h2>Logged in! You can close this tab.</h2></body></html>', {
+    headers: { 'Content-Type': 'text/html' },
+  })
+})
 
 // ─── Health ───────────────────────────────────────────────────────────────────
 
