@@ -7,7 +7,7 @@ import { runList } from './commands/list.js'
 import { runSearch } from './commands/search.js'
 import { runInfo } from './commands/info.js'
 import { runVerify } from './commands/verify.js'
-import { runPublish } from './commands/publish.js'
+import { runPublishApi } from './commands/publish-api.js'
 import { runLogin } from './commands/login.js'
 import { runLogout } from './commands/logout.js'
 
@@ -55,9 +55,10 @@ cli
   })
 
 cli
-  .command('publish', 'Submit a hook to the registry')
-  .action(async () => {
-    await runPublish()
+  .command('publish', 'Publish a hook to the registry')
+  .option('--dry-run', 'Validate and build archive without uploading')
+  .action(async (options: { dryRun?: boolean }) => {
+    await runPublishApi(options.dryRun ? { dryRun: true } : {})
   })
 
 cli
