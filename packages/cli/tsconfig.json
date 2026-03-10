@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@hookpm/schema": ["../schema/src/index.ts"]
+    },
+    "noEmit": true
+  },
+  "include": ["src", "../schema/src"]
+}

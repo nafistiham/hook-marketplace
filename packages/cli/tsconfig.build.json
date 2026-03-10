@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "paths": {
+      "@hookpm/schema": ["../schema/src/index.ts"]
+    }
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../schema" }
+  ]
+}
