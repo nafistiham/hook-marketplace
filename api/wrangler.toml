@@ -8,6 +8,11 @@ binding = "HOOKPM_BUCKET"
 bucket_name = "hookpm-registry"
 preview_bucket_name = "hookpm-registry-preview"
 
+# Secrets (set via `wrangler secret put`):
+#   CLERK_PUBLIC_KEY      — Clerk JWKS public key for JWT verification
+#   SUPABASE_URL          — Supabase project URL (https://<project>.supabase.co)
+#   SUPABASE_SERVICE_KEY  — Supabase service role key (read/write access)
+
 [env.production]
 name = "hookpm-api"
 
