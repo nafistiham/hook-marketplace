@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    name: Test & Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck (schema)
+        run: pnpm --filter @hookpm/schema typecheck
+
+      - name: Typecheck (cli)
+        run: pnpm --filter hookpm typecheck
+
+      - name: Test (schema)
+        run: pnpm --filter @hookpm/schema test
+
+      - name: Test (cli)
+        run: pnpm --filter hookpm test
