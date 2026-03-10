@@ -172,4 +172,56 @@ describe('POST /registry/hooks (publish)', () => {
       expect.objectContaining({ httpMetadata: { contentType: 'application/gzip' } }),
     )
   })
+
+  it('regenerates and uploads index.json after successful publish', async () => {
+    const existingIndex = JSON.stringify({
+      schema_version: '1',
+      generated_at: '2026-03-10T00:00:00Z',
+      hooks: [],
+    })
+
+    const r2Store = new Map<string, string>([['index.json', existingIndex]])
+
+    const env = {
+      HOOKPM_BUCKET: {
+        get: vi.fn(async (key: string) => {
+          const val = r2Store.get(key)
+          if (!val) return null
+          return { text: async () => val, arrayBuffer: async () => new ArrayBuffer(0), httpMetadata: {} }
+        }),
+        put: vi.fn(async (key: string, value: unknown) => {
+          r2Store.set(key, value as string)
+        }),
+      },
+      CLERK_PUBLIC_KEY: 'test-public-key',
+      __TEST_CLERK_USER: { id: 'user_123', username: 'testuser' },
+    }
+
+    const form = makeMultipart(VALID_HOOK_JSON)
+    const res = await app.fetch(
+      new Request('http://localhost/registry/hooks', {
+        method: 'POST',
+        body: form,
+        headers: { Authorization: 'Bearer valid-token' },
+      }),
+      env,
+    )
+
+    expect(res.status).toBe(201)
+
+    // index.json should have been updated with the new hook
+    expect(env.HOOKPM_BUCKET.put).toHaveBeenCalledWith(
+      'index.json',
+      expect.any(String),
+      expect.objectContaining({ httpMetadata: { contentType: 'application/json' } }),
+    )
+
+    // Verify the stored index contains the published hook
+    const updatedIndex = JSON.parse(r2Store.get('index.json') ?? '{}') as {
+      hooks: { name: string; author: string }[]
+    }
+    expect(updatedIndex.hooks).toHaveLength(1)
+    expect(updatedIndex.hooks[0]?.name).toBe('my-hook')
+    expect(updatedIndex.hooks[0]?.author).toBe('testuser')
+  })
 })

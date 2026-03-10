@@ -188,6 +188,57 @@ app.post('/registry/hooks', async (c) => {
     httpMetadata: { contentType: 'application/gzip' },
   })
 
+  // 7. Regenerate index.json
+  let priorHooks: HookIndexEntry[] = []
+  const indexObj = await c.env.HOOKPM_BUCKET.get('index.json')
+  if (indexObj) {
+    try {
+      const raw = JSON.parse(await indexObj.text()) as unknown
+      const p = HookIndexSchema.safeParse(raw)
+      priorHooks = p.success ? p.data.hooks : []
+    } catch {
+      priorHooks = []
+    }
+  }
+
+  const newEntry: HookIndexEntry = {
+    name: hook.name,
+    description: hook.description,
+    author: hook.author,
+    event: hook.event,
+    tags: hook.tags,
+    capabilities: hook.capabilities,
+    security: hook.security ?? {
+      sandbox_level: 'none',
+      reviewed: false,
+      review_date: null,
+      signed: false,
+      signed_by: null,
+      signature: null,
+    },
+    latest: hook.version,
+    versions: [
+      ...priorHooks.find((h) => h.name === hook.name)?.versions ?? [],
+      hook.version,
+    ],
+    updated_at: new Date().toISOString(),
+  }
+
+  const updatedHooks = [
+    ...priorHooks.filter((h) => h.name !== hook.name),
+    newEntry,
+  ]
+
+  const updatedIndex = {
+    schema_version: '1' as const,
+    generated_at: new Date().toISOString(),
+    hooks: updatedHooks,
+  }
+
+  await c.env.HOOKPM_BUCKET.put('index.json', JSON.stringify(updatedIndex), {
+    httpMetadata: { contentType: 'application/json' },
+  })
+
   return c.json({ name: hook.name, version: hook.version }, 201)
 })
 
