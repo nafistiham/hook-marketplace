@@ -1,6 +1,6 @@
 # hookpm API Routes Design
 
-**Status:** Draft
+**Status:** Approved with Warnings (all warnings resolved)
 **Date:** 2026-03-10
 **Scope:** `api/` — Hono application deployed on Cloudflare Workers
 **Phase:** Phase 1B (read routes + publish pipeline)
@@ -110,6 +110,7 @@ flowchart TD
     VerifyJWT["Verify Clerk JWT"]
     JWTFail{"valid?"}
     JWTErr["401 Unauthorized"]
+    JWTVerifyErr["500 InternalError\n(JWKS unreachable)"]
     ParseBody["Parse multipart: hook.json + archive"]
     ValidateSchema["HookJsonSchema.safeParse(hook.json)"]
     SchemaFail{"valid?"}
@@ -120,8 +121,11 @@ flowchart TD
     DupFail{"exists?"}
     DupErr["409 Conflict"]
     UploadR2["R2.put(hooks/:name/hook.json)\nR2.put(hooks/:name/:name-:version.tar.gz)"]
+    R2Err["500 InternalError — R2 write failed\n(no rollback needed — DB not yet written)"]
     WriteDB["INSERT INTO hook_versions ..."]
+    DBErr["500 InternalError — DB insert failed\n(R2 objects left — orphaned but harmless;\nconflict check prevents re-publish)"]
     UpdateIndex["Regenerate index.json → R2.put(index.json)"]
+    IndexErr["500 InternalError — index stale\n(archive and manifest already committed;\nindex will be corrected on next publish)"]
     Done["201 Created"]
 
     Start --> Auth
@@ -129,6 +133,7 @@ flowchart TD
     VerifyJWT --> JWTFail
     JWTFail -->|no| JWTErr
     JWTFail -->|yes| ParseBody
+    JWTFail -->|verify-throws| JWTVerifyErr
     ParseBody --> ValidateSchema
     ValidateSchema --> SchemaFail
     SchemaFail -->|no| SchemaErr
@@ -138,12 +143,17 @@ flowchart TD
     CheckDuplicate --> DupFail
     DupFail -->|yes| DupErr
     DupFail -->|no| UploadR2
-    UploadR2 --> WriteDB
-    WriteDB --> UpdateIndex
-    UpdateIndex --> Done
+    UploadR2 -->|error| R2Err
+    UploadR2 -->|ok| WriteDB
+    WriteDB -->|error| DBErr
+    WriteDB -->|ok| UpdateIndex
+    UpdateIndex -->|error| IndexErr
+    UpdateIndex -->|ok| Done
 ```
 
 **Idempotency:** Publish is not idempotent — publishing the same `name@version` twice returns `409 Conflict`. Authors must bump the version.
+
+**Failure strategy:** R2 and DB writes are NOT wrapped in a transaction. If R2 succeeds but DB fails, the archive is orphaned in R2 (no name+version row in DB). This is harmless: the conflict check (`GET` by archive key) prevents re-publish; the orphan is cleaned up manually. If index regeneration fails, the archive is committed and accessible by direct URL, but will not appear in `hookpm search` until the next successful publish triggers an index rebuild.
 
 ---
 
@@ -157,6 +167,8 @@ flowchart TD
     JWT["Clerk JWT (short-lived)"]
     Publish["hookpm publish → POST /registry/hooks\nAuthorization: Bearer <jwt>"]
     Worker["CF Worker: verifyToken(jwt, clerkPublicKey)"]
+    VerifyFail{"verify ok?"}
+    VerifyErr["401 Unauthorized or 500 InternalError\n(expired/invalid JWT or JWKS unreachable)"]
     Identity["userId + username extracted"]
 
     Author --> Login
@@ -164,7 +176,9 @@ flowchart TD
     Clerk --> JWT
     JWT --> Publish
     Publish --> Worker
-    Worker --> Identity
+    Worker --> VerifyFail
+    VerifyFail -->|no| VerifyErr
+    VerifyFail -->|yes| Identity
 ```
 
 **Token storage:** JWT stored in `~/.hookpm/auth.json` (mode 600). Refreshed automatically on expiry. `hookpm login` opens browser to Clerk OAuth; `hookpm logout` deletes the file.
@@ -179,13 +193,15 @@ flowchart TD
 index.json                              ← full hook index (regenerated on publish)
 hooks/
   bash-danger-guard/
-    hook.json                           ← latest manifest
-    bash-danger-guard-1.0.0.tar.gz     ← versioned archive
+    hook.json                           ← latest manifest (overwritten on each publish)
+    bash-danger-guard-1.0.0.tar.gz     ← versioned archive (immutable once written)
     bash-danger-guard-1.0.1.tar.gz
   format-on-write/
     hook.json
     format-on-write-1.0.0.tar.gz
 ```
+
+**Manifest versioning:** `hook.json` always reflects the latest published version. Versioned manifests (e.g. `hook-1.0.0.json`) are out of scope for Phase 1B — versioned archives provide the immutable artifact; the manifest is metadata for `hookpm info` and schema display only. If per-version manifests become necessary (e.g. for `hookpm install name@1.0.0`), they can be added in Phase 2 without changing the archive layout.
 
 ### Supabase — `hookpm` project
 
@@ -257,27 +273,53 @@ All error responses use a consistent JSON envelope:
 ## 9. Interface Contracts
 
 ```typescript
-// GET /registry/index.json → 200
-// Body: HookIndex (from @hookpm/schema)
+// Shared error body — all error responses use this shape
+type ErrorCode =
+  | 'BAD_REQUEST'
+  | 'UNAUTHORIZED'
+  | 'FORBIDDEN'
+  | 'NOT_FOUND'
+  | 'CONFLICT'
+  | 'VALIDATION_ERROR'
+  | 'INTERNAL_ERROR'
+
+type ErrorBody = { error: { code: ErrorCode; message: string } }
+
+// Multipart fields for POST /registry/hooks
+type PublishFormFields = {
+  manifest: File   // hook.json, Content-Type: application/json
+  archive: File    // <name>-<version>.tar.gz, Content-Type: application/gzip
+}
+
+// POST /registry/hooks → 201 | 400 | 401 | 403 | 409 | 422
+type PublishResponse = {
+  name: string         // e.g. "bash-danger-guard"
+  version: string      // e.g. "1.0.0"
+  manifestUrl: string  // https://api.hookpm.dev/registry/hooks/<name>/hook.json
+  archiveUrl: string   // https://api.hookpm.dev/registry/hooks/<name>/<name>-<version>.tar.gz
+}
+
+// GET /registry/index.json → 200 | 404
+// Body: HookIndex (from @hookpm/schema) | ErrorBody
 
 // GET /registry/hooks/:name/hook.json → 200 | 404
 // Body: HookJsonRegistry (from @hookpm/schema) | ErrorBody
 
 // GET /registry/hooks/:name/:filename → 200 | 404
-// Body: binary (.tar.gz) | ErrorBody
-
-// POST /registry/hooks → 201 | 400 | 401 | 403 | 409 | 422
-// Request: multipart/form-data { manifest: File (hook.json), archive: File (.tar.gz) }
-// Response 201: { name: string; version: string; url: string }
-// Response error: ErrorBody
-
-type ErrorBody = { error: { code: string; message: string } }
+// Body: binary (.tar.gz stream) | ErrorBody
 
 // GET /authors/me → 200 | 401
-// Body: { id: string; username: string; hooks: string[] }
+type AuthorMeResponse = {
+  id: string           // Clerk user ID
+  username: string     // GitHub username
+  hookNames: string[]  // list of hook names this author has published
+}
 
 // GET /authors/:username/hooks → 200 | 404
-// Body: { username: string; hooks: HookIndexEntry[] }
+type AuthorHooksResponse = {
+  username: string
+  hooks: import('@hookpm/schema').HookIndexEntry[]
+}
 ```
 
 ---
@@ -298,3 +340,4 @@ type ErrorBody = { error: { code: string; message: string } }
 | Date | Change | Reason |
 |------|--------|--------|
 | 2026-03-10 | Initial design | Phase 1B requires defined API contract before implementation |
+| 2026-03-10 | Fix 3 warnings from Opus review | W-1: publish flowchart error exits added for R2/DB/index failures with failure-strategy note; W-2: ErrorCode union type, PublishFormFields, PublishResponse, AuthorMeResponse typed explicitly; W-3: manifest versioning strategy documented as intentional Phase 1B scope; auth flow diagram gets VerifyFail diamond |
