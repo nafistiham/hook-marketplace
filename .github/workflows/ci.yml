@@ -31,8 +31,14 @@ jobs:
       - name: Typecheck (cli)
         run: pnpm --filter hookpm typecheck
 
+      - name: Typecheck (api)
+        run: pnpm --filter @hookpm/api typecheck
+
       - name: Test (schema)
         run: pnpm --filter @hookpm/schema test
 
       - name: Test (cli)
         run: pnpm --filter hookpm test
+
+      - name: Test (api)
+        run: pnpm --filter @hookpm/api test
