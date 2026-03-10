@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-03-10T21:33:14.799Z",
+  "generated_at": "2026-03-10T22:39:39.102Z",
   "hooks": [
     {
       "name": "bash-danger-guard",
@@ -27,7 +27,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-10T21:33:14.798Z"
+      "updated_at": "2026-03-10T22:39:39.100Z"
     },
     {
       "name": "format-on-write",
@@ -57,7 +57,34 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-10T21:33:14.799Z"
+      "updated_at": "2026-03-10T22:39:39.102Z"
+    },
+    {
+      "name": "session-summary",
+      "description": "Appends a concise session summary to a daily log file when a Claude Code session ends. Captures the session transcript path, duration, and any incomplete todos.",
+      "author": "hookpm",
+      "event": "Stop",
+      "tags": [
+        "productivity",
+        "logging",
+        "session"
+      ],
+      "capabilities": [
+        "side-effects-only"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-10T22:39:39.102Z"
     }
   ]
 }

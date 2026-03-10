@@ -1,0 +1,36 @@
+{
+  "name": "session-summary",
+  "version": "1.0.0",
+  "description": "Appends a concise session summary to a daily log file when a Claude Code session ends. Captures the session transcript path, duration, and any incomplete todos.",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "Stop",
+  "handler": {
+    "type": "command",
+    "command": "python3 summarize.py",
+    "async": true
+  },
+  "capabilities": ["side-effects-only"],
+  "tags": ["productivity", "logging", "session"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": {
+      "read": ["~/.claude/"],
+      "write": ["~/.hookpm/logs/"]
+    },
+    "env_vars": ["HOME"],
+    "spawns_processes": false
+  },
+  "requires": {
+    "os": ["darwin", "linux"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}
