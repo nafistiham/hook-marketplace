@@ -1,0 +1,16 @@
+{
+  "version": "1",
+  "generated": "2026-03-10T00:00:00Z",
+  "registry": "https://raw.githubusercontent.com/nafistiham/hook-marketplace/main/registry",
+  "hooks": {
+    "bash-danger-guard": {
+      "version": "1.0.0",
+      "resolved": "https://raw.githubusercontent.com/nafistiham/hook-marketplace/main/registry/hooks/bash-danger-guard/bash-danger-guard-1.0.0.tar.gz",
+      "integrity": "sha256-abc123",
+      "event": "PreToolUse",
+      "settings_index": 0,
+      "installed": "2026-03-10T00:00:00Z",
+      "range": "^1.0.0"
+    }
+  }
+}

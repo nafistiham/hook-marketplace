@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [{ "type": "command", "command": "/usr/local/bin/pre-hook.sh" }]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [{ "type": "command", "command": "/usr/local/bin/post-hook.sh" }]
+      }
+    ]
+  }
+}
