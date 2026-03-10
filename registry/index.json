@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-03-10T21:31:32.677Z",
+  "generated_at": "2026-03-10T21:33:14.799Z",
   "hooks": [
     {
       "name": "bash-danger-guard",
@@ -27,7 +27,37 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-10T21:31:32.675Z"
+      "updated_at": "2026-03-10T21:33:14.798Z"
+    },
+    {
+      "name": "format-on-write",
+      "description": "Automatically formats files after Claude Code writes them. Detects the formatter based on file extension (prettier for JS/TS/JSON, black for Python, gofmt for Go).",
+      "author": "hookpm",
+      "event": "PostToolUse",
+      "tags": [
+        "formatting",
+        "developer-experience",
+        "python",
+        "javascript",
+        "typescript",
+        "go"
+      ],
+      "capabilities": [
+        "side-effects-only"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-10T21:33:14.799Z"
     }
   ]
 }
