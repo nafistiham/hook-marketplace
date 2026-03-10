@@ -29,13 +29,16 @@ jobs:
       - name: Validate all hook.json files
         run: pnpm run validate-all
 
+      - name: Rebuild archives
+        run: pnpm run build-archives
+
       - name: Rebuild index.json
         run: pnpm run build-index
 
-      - name: Check index.json is up to date
+      - name: Check generated files are up to date
         run: |
-          if ! git diff --quiet registry/index.json; then
-            echo "registry/index.json is out of date — run 'pnpm run build-index' and commit the result"
-            git diff registry/index.json
+          if ! git diff --quiet registry/; then
+            echo "registry/ has uncommitted changes — run 'pnpm run build-archives && pnpm run build-index' and commit the results"
+            git diff --stat registry/
             exit 1
           fi
