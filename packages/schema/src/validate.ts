@@ -1,17 +1,31 @@
-// Full implementation in schema TDD step
-// See docs/design/2026-03-10-schema.md
+import type { ZodError } from 'zod'
 import { HookJsonSchema } from './schema.js'
 import type { HookJson } from './schema.js'
 
-export type ValidateResult =
-  | { ok: true; data: HookJson }
-  | { ok: false; errors: string[] }
+export type ValidationSuccess = {
+  success: true
+  data: HookJson
+}
 
-export function validateHook(input: unknown): ValidateResult {
-  const result = HookJsonSchema.safeParse(input)
-  if (result.success) return { ok: true, data: result.data }
+export type ValidationFailure = {
+  success: false
+  errors: ZodError
+  summary: string
+}
+
+export type ValidationResult = ValidationSuccess | ValidationFailure
+
+export function validateHook(json: unknown): ValidationResult {
+  const result = HookJsonSchema.safeParse(json)
+  if (result.success) {
+    return { success: true, data: result.data }
+  }
   return {
-    ok: false,
-    errors: result.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`),
+    success: false,
+    errors: result.error,
+    summary: result.error.errors
+      .slice(0, 5)
+      .map((e) => `${e.path.join('.')}: ${e.message}`)
+      .join('\n'),
   }
 }
