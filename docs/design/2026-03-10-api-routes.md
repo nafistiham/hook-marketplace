@@ -1,6 +1,6 @@
 # hookpm API Routes Design
 
-**Status:** Approved with Warnings (all warnings resolved)
+**Status:** Approved
 **Date:** 2026-03-10
 **Scope:** `api/` — Hono application deployed on Cloudflare Workers
 **Phase:** Phase 1B (read routes + publish pipeline)
@@ -168,7 +168,8 @@ flowchart TD
     Publish["hookpm publish → POST /registry/hooks\nAuthorization: Bearer <jwt>"]
     Worker["CF Worker: verifyToken(jwt, clerkPublicKey)"]
     VerifyFail{"verify ok?"}
-    VerifyErr["401 Unauthorized or 500 InternalError\n(expired/invalid JWT or JWKS unreachable)"]
+    VerifyErr["401 Unauthorized\n(expired or invalid JWT)"]
+    VerifyThrows["500 InternalError\n(JWKS fetch failed / network partition)"]
     Identity["userId + username extracted"]
 
     Author --> Login
@@ -178,6 +179,7 @@ flowchart TD
     Publish --> Worker
     Worker --> VerifyFail
     VerifyFail -->|no| VerifyErr
+    VerifyFail -->|throws| VerifyThrows
     VerifyFail -->|yes| Identity
 ```
 
@@ -201,7 +203,9 @@ hooks/
     format-on-write-1.0.0.tar.gz
 ```
 
-**Manifest versioning:** `hook.json` always reflects the latest published version. Versioned manifests (e.g. `hook-1.0.0.json`) are out of scope for Phase 1B — versioned archives provide the immutable artifact; the manifest is metadata for `hookpm info` and schema display only. If per-version manifests become necessary (e.g. for `hookpm install name@1.0.0`), they can be added in Phase 2 without changing the archive layout.
+**Manifest versioning:** `hook.json` always reflects the latest published version. Versioned manifests (e.g. `hook-1.0.0.json`) are **intentionally out of scope for Phase 1B** — versioned archives provide the immutable artifact; the manifest is metadata for `hookpm info` and schema display only. If per-version manifests become necessary (e.g. for `hookpm install name@1.0.0`), they can be added in Phase 2 without changing the archive layout.
+
+**Idempotency sentinel:** Unlike the registry-client design (which uses `.hookpm-complete` in the local cache), R2 does **not** use a sentinel file. The conflict check in the publish pipeline (`R2.get(archiveKey) → 409`) serves this role — the presence of the archive itself is the idempotency guard.
 
 ### Supabase — `hookpm` project
 
@@ -341,3 +345,4 @@ type AuthorHooksResponse = {
 |------|--------|--------|
 | 2026-03-10 | Initial design | Phase 1B requires defined API contract before implementation |
 | 2026-03-10 | Fix 3 warnings from Opus review | W-1: publish flowchart error exits added for R2/DB/index failures with failure-strategy note; W-2: ErrorCode union type, PublishFormFields, PublishResponse, AuthorMeResponse typed explicitly; W-3: manifest versioning strategy documented as intentional Phase 1B scope; auth flow diagram gets VerifyFail diamond |
+| 2026-03-11 | Fix 2 warnings from second review | Auth flow: split VerifyFail `|no|` (401) and `|throws|` (500) into separate terminal nodes to model JWKS network partition; Storage: add explicit note that R2 uses archive presence as idempotency guard (no `.hookpm-complete` sentinel, unlike registry-client design) |
