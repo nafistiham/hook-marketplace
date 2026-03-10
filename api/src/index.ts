@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
-import { HookJsonSchema } from '@hookpm/schema'
+import { HookJsonSchema, HookIndexSchema } from '@hookpm/schema'
+import type { HookIndexEntry } from '@hookpm/schema'
 
 // ─── Env bindings ─────────────────────────────────────────────────────────────
 
@@ -156,6 +157,36 @@ app.post('/registry/hooks', async (c) => {
   })
 
   return c.json({ name: hook.name, version: hook.version }, 201)
+})
+
+// ─── Authors ──────────────────────────────────────────────────────────────────
+
+async function getIndex(c: { env: Env }): Promise<HookIndexEntry[] | null> {
+  const obj = await c.env.HOOKPM_BUCKET.get('index.json')
+  if (!obj) return null
+  const raw = JSON.parse(await obj.text()) as unknown
+  const parsed = HookIndexSchema.safeParse(raw)
+  return parsed.success ? parsed.data.hooks : []
+}
+
+app.get('/authors/me', async (c) => {
+  const user = await resolveUser(c.req.raw, c.env)
+  if (!user) return errorResponse(401, 'UNAUTHORIZED', 'Authorization header required')
+
+  const hooks = await getIndex(c)
+  if (hooks === null) return errorResponse(404, 'NOT_FOUND', 'Registry index not found')
+
+  const hookNames = hooks.filter((h) => h.author === user.username).map((h) => h.name)
+  return c.json({ id: user.id, username: user.username, hookNames })
+})
+
+app.get('/authors/:username/hooks', async (c) => {
+  const username = c.req.param('username')
+  const hooks = await getIndex(c)
+  if (hooks === null) return errorResponse(404, 'NOT_FOUND', 'Registry index not found')
+
+  const authorHooks = hooks.filter((h) => h.author === username)
+  return c.json({ username, hooks: authorHooks })
 })
 
 export default app
