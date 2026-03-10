@@ -60,4 +60,11 @@ cli
 
 cli.help()
 cli.version(pkg.version)
+
+process.on('unhandledRejection', (reason) => {
+  const msg = reason instanceof Error ? reason.message : String(reason)
+  process.stderr.write(`hookpm: internal error: ${msg}\n`)
+  process.exitCode = 1
+})
+
 cli.parse()
