@@ -1,5 +1,33 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-03-10T00:00:00.000Z",
-  "hooks": []
+  "generated_at": "2026-03-10T21:31:32.677Z",
+  "hooks": [
+    {
+      "name": "bash-danger-guard",
+      "description": "Guards against dangerous bash commands by intercepting Bash tool calls and checking for rm -rf, chmod 777, curl | sh, and other high-risk patterns.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "bash",
+        "shell"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-10T21:31:32.675Z"
+    }
+  ]
 }
