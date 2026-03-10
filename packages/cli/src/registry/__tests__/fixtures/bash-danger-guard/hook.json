@@ -1,0 +1,32 @@
+{
+  "name": "bash-danger-guard",
+  "version": "1.0.0",
+  "description": "Guards against dangerous bash commands",
+  "author": "test-author",
+  "license": "MIT",
+  "event": "PreToolUse",
+  "handler": {
+    "type": "command",
+    "command": "python3 guard.py"
+  },
+  "capabilities": ["block"],
+  "tags": ["security", "bash"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": [], "write": [] },
+    "env_vars": [],
+    "spawns_processes": false
+  },
+  "requires": {
+    "os": ["darwin", "linux", "windows"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "none",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}
