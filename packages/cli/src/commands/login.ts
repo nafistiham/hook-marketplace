@@ -1,17 +1,11 @@
 import { randomBytes } from 'node:crypto'
 import { spawn } from 'node:child_process'
-import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { config } from '../config.js'
 import { info, success, error } from './output.js'
+import { saveAuth } from '../auth/index.js'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-
-export type AuthFile = {
-  clerk_token: string
-  expires_at: string
-  username: string
-}
 
 type TokenPollResponse = {
   token: string
@@ -85,16 +79,11 @@ export async function runLogin(opts: LoginOptions = {}): Promise<void> {
     return
   }
 
-  const authDir = path.dirname(authPath)
-  fs.mkdirSync(authDir, { recursive: true, mode: 0o700 })
-
-  const authFile: AuthFile = {
+  saveAuth(authPath, {
     clerk_token: tokenData.token,
     expires_at: tokenData.expires_at,
     username: tokenData.username,
-  }
-
-  fs.writeFileSync(authPath, JSON.stringify(authFile, null, 2), { mode: 0o600 })
+  })
 
   success(`Logged in as ${tokenData.username}`)
 }

@@ -5,7 +5,7 @@ import { execFileSync } from 'node:child_process'
 import { HookJsonSchema } from '@hookpm/schema'
 import { config } from '../config.js'
 import { success, error, info, startSpinner } from './output.js'
-import type { AuthFile } from './login.js'
+import { readAuth, isExpired } from '../auth/index.js'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -13,21 +13,6 @@ export interface PublishApiOptions {
   authPath?: string
   hookDir?: string
   dryRun?: boolean
-}
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-function readAuth(authPath: string): AuthFile | null {
-  if (!fs.existsSync(authPath)) return null
-  try {
-    return JSON.parse(fs.readFileSync(authPath, 'utf8')) as AuthFile
-  } catch {
-    return null
-  }
-}
-
-function isExpired(auth: AuthFile): boolean {
-  return Date.now() >= new Date(auth.expires_at).getTime()
 }
 
 function buildArchive(hookDir: string, name: string, version: string): string {
