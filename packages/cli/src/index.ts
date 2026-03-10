@@ -8,6 +8,8 @@ import { runSearch } from './commands/search.js'
 import { runInfo } from './commands/info.js'
 import { runVerify } from './commands/verify.js'
 import { runPublish } from './commands/publish.js'
+import { runLogin } from './commands/login.js'
+import { runLogout } from './commands/logout.js'
 
 const require = createRequire(import.meta.url)
 const pkg = require('../package.json') as { version: string }
@@ -56,6 +58,18 @@ cli
   .command('publish', 'Submit a hook to the registry')
   .action(async () => {
     await runPublish()
+  })
+
+cli
+  .command('login', 'Log in with your GitHub account')
+  .action(async () => {
+    await runLogin()
+  })
+
+cli
+  .command('logout', 'Log out and remove stored credentials')
+  .action(async () => {
+    await runLogout()
   })
 
 cli.help()

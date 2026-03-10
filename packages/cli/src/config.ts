@@ -14,6 +14,14 @@ const ConfigSchema = z.object({
       'https://raw.githubusercontent.com/nafistiham/hook-marketplace/main/registry',
     ),
 
+  apiUrl: z
+    .string()
+    .url()
+    .refine((v) => v.startsWith('https://'), {
+      message: 'HOOKPM_API_URL must use https',
+    })
+    .default('https://api.hookpm.dev'),
+
   registryTimeout: z.coerce.number().int().positive().default(10_000),
 
   downloadTimeout: z.coerce.number().int().positive().default(30_000),
@@ -46,6 +54,7 @@ export type Config = z.infer<typeof ConfigSchema>
 function parseConfig(): Config {
   const result = ConfigSchema.safeParse({
     registryUrl:     process.env['HOOKPM_REGISTRY_URL'],
+    apiUrl:          process.env['HOOKPM_API_URL'],
     registryTimeout: process.env['HOOKPM_REGISTRY_TIMEOUT_MS'],
     downloadTimeout: process.env['HOOKPM_DOWNLOAD_TIMEOUT_MS'],
     hookpmDir:       process.env['HOOKPM_DIR'],
