@@ -9,6 +9,8 @@ type ClerkUser = { id: string; username: string }
 type Env = {
   HOOKPM_BUCKET: R2Bucket
   CLERK_PUBLIC_KEY?: string
+  SUPABASE_URL?: string
+  SUPABASE_SERVICE_KEY?: string
   // Test-only: injected by test env to bypass JWT verification
   __TEST_CLERK_USER?: ClerkUser | null
 }
@@ -69,6 +71,27 @@ app.get('/registry/hooks/:name/hook.json', async (c) => {
   return new Response(body, { headers: { 'Content-Type': 'application/json' } })
 })
 
+// ─── Download tracking (fire-and-forget) ─────────────────────────────────────
+
+function trackDownload(env: Env, hookName: string, version: string): void {
+  if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY) return
+  const url = `${env.SUPABASE_URL}/rest/v1/downloads`
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: env.SUPABASE_SERVICE_KEY,
+      Authorization: `Bearer ${env.SUPABASE_SERVICE_KEY}`,
+      Prefer: 'return=minimal',
+    },
+    body: JSON.stringify([{ hook_name: hookName, version }]),
+  }).catch(() => {
+    // Silently ignore — download tracking must not affect response latency or status
+  })
+}
+
+// ─── Archive download ─────────────────────────────────────────────────────────
+
 app.get('/registry/hooks/:name/:filename', async (c) => {
   const name = c.req.param('name')
   const filename = c.req.param('filename')
@@ -77,6 +100,15 @@ app.get('/registry/hooks/:name/:filename', async (c) => {
 
   const contentType = obj.httpMetadata?.contentType ?? 'application/octet-stream'
   const body = await obj.arrayBuffer()
+
+  // Track archive downloads (not manifest requests)
+  if (filename.endsWith('.tar.gz')) {
+    // Parse version from <name>-<version>.tar.gz
+    const stem = filename.slice(0, -'.tar.gz'.length) // e.g. "bash-danger-guard-1.0.0"
+    const version = stem.slice(name.length + 1) // skip "<name>-"
+    if (version) trackDownload(c.env, name, version)
+  }
+
   return new Response(body, { headers: { 'Content-Type': contentType } })
 })
 
