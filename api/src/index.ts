@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { HookJsonSchema, HookIndexSchema } from '@hookpm/schema'
 import type { HookIndexEntry } from '@hookpm/schema'
+import { createRemoteJWKSet, jwtVerify, errors as joseErrors } from 'jose'
 
 // ─── Env bindings ─────────────────────────────────────────────────────────────
 
@@ -15,7 +16,8 @@ type KVNamespace = {
 type Env = {
   HOOKPM_BUCKET: R2Bucket
   AUTH_KV?: KVNamespace
-  CLERK_PUBLIC_KEY?: string
+  CLERK_JWKS_URL?: string
+  CLERK_ISSUER?: string
   CLERK_OAUTH_URL?: string
   SUPABASE_URL?: string
   SUPABASE_SERVICE_KEY?: string
@@ -35,21 +37,60 @@ function errorResponse(status: number, code: string, message: string) {
   return Response.json({ error: { code, message } }, { status })
 }
 
+// ─── JWKS cache (module scope — keyed by URL; survives across requests in one Worker instance) ─
+
+const jwksCache = new Map<string, ReturnType<typeof createRemoteJWKSet>>()
+
+function getJWKS(url: string): ReturnType<typeof createRemoteJWKSet> {
+  if (!jwksCache.has(url)) {
+    jwksCache.set(url, createRemoteJWKSet(new URL(url)))
+  }
+  return jwksCache.get(url)!
+}
+
 // ─── Auth middleware ──────────────────────────────────────────────────────────
 
-async function resolveUser(req: Request, env: Env): Promise<ClerkUser | null> {
+type ClerkJWTPayload = {
+  sub?: string
+  username?: string
+}
+
+async function resolveUser(req: Request, env: Env): Promise<ClerkUser | Response> {
   // Test bypass: env.__TEST_CLERK_USER is injected by test suite
   if (env.__TEST_CLERK_USER !== undefined) {
-    return env.__TEST_CLERK_USER ?? null
+    return env.__TEST_CLERK_USER ?? errorResponse(401, 'UNAUTHORIZED', 'Authorization header required')
   }
 
   const auth = req.headers.get('Authorization')
-  if (!auth?.startsWith('Bearer ')) return null
+  if (!auth?.startsWith('Bearer ')) {
+    return errorResponse(401, 'UNAUTHORIZED', 'Authorization header required')
+  }
 
-  // Phase 1B: verify Clerk JWT here using env.CLERK_PUBLIC_KEY
-  // Stub: treat any non-empty token as valid in non-test mode
-  // Replace with: const payload = await verifyClerkJWT(token, env.CLERK_PUBLIC_KEY)
-  return null
+  const token = auth.slice('Bearer '.length)
+  const jwksUrl = env.CLERK_JWKS_URL ?? 'https://clerk.hookpm.dev/.well-known/jwks.json'
+  const issuer = env.CLERK_ISSUER ?? 'https://clerk.hookpm.dev'
+
+  try {
+    const { payload } = await jwtVerify(token, getJWKS(jwksUrl), { issuer }) as { payload: ClerkJWTPayload }
+
+    const id = payload.sub
+    const username = payload.username
+    if (!id || !username) {
+      return errorResponse(401, 'UNAUTHORIZED', 'Token missing required claims')
+    }
+
+    return { id, username }
+  } catch (err) {
+    if (
+      err instanceof joseErrors.JWTExpired ||
+      err instanceof joseErrors.JWSSignatureVerificationFailed ||
+      err instanceof joseErrors.JWTClaimValidationFailed ||
+      err instanceof joseErrors.JWTInvalid
+    ) {
+      return errorResponse(401, 'UNAUTHORIZED', 'Invalid or expired token')
+    }
+    return errorResponse(500, 'INTERNAL_ERROR', 'JWT verification failed')
+  }
 }
 
 // ─── Auth (login / token polling) ────────────────────────────────────────────
@@ -185,12 +226,9 @@ app.get('/registry/hooks/:name/:filename', async (c) => {
 
 app.post('/registry/hooks', async (c) => {
   // 1. Auth
-  const user = await resolveUser(c.req.raw, c.env)
-  if (!user) {
-    const hasHeader = c.req.header('Authorization')
-    if (!hasHeader) return errorResponse(401, 'UNAUTHORIZED', 'Authorization header required')
-    return errorResponse(401, 'UNAUTHORIZED', 'Invalid or expired token')
-  }
+  const userOrErr = await resolveUser(c.req.raw, c.env)
+  if (userOrErr instanceof Response) return userOrErr
+  const user = userOrErr
 
   // 2. Parse multipart
   let form: FormData
@@ -322,8 +360,9 @@ async function getIndex(c: { env: Env }): Promise<HookIndexEntry[] | null> {
 }
 
 app.get('/authors/me', async (c) => {
-  const user = await resolveUser(c.req.raw, c.env)
-  if (!user) return errorResponse(401, 'UNAUTHORIZED', 'Authorization header required')
+  const userOrErr = await resolveUser(c.req.raw, c.env)
+  if (userOrErr instanceof Response) return userOrErr
+  const user = userOrErr
 
   const hooks = await getIndex(c)
   if (hooks === null) return errorResponse(404, 'NOT_FOUND', 'Registry index not found')
