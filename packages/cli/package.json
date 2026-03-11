@@ -1,10 +1,24 @@
 {
   "name": "hookpm",
   "version": "0.1.0",
+  "description": "CLI package manager for Claude Code hooks — install, remove, search, and publish hooks from the hookpm registry",
+  "keywords": ["claude", "claude-code", "hooks", "mcp", "cli", "package-manager", "hookpm"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nafistiham/hook-marketplace"
+  },
+  "homepage": "https://hookpm.dev",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "bin": {
     "hookpm": "./dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsc --build tsconfig.build.json",
