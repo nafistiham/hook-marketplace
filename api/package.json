@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@hookpm/schema": "workspace:*",
-    "hono": "^4.2.0"
+    "hono": "^4.2.0",
+    "jose": "^6.2.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240405.0",
