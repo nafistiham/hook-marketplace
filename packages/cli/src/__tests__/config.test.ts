@@ -33,6 +33,13 @@ const buildConfigSchema = () =>
       .default(
         'https://raw.githubusercontent.com/nafistiham/hook-marketplace/main/registry',
       ),
+    apiUrl: z
+      .string()
+      .url()
+      .refine((v) => v.startsWith('https://'), {
+        message: 'HOOKPM_API_URL must use https',
+      })
+      .default('https://api.hookpm.dev'),
     registryTimeout: z.coerce.number().int().positive().default(10_000),
     downloadTimeout: z.coerce.number().int().positive().default(30_000),
     hookpmDir: z.string().default(path.join(os.homedir(), '.hookpm')),
@@ -55,6 +62,7 @@ function parseEnv(env: Record<string, string | undefined>) {
   const ConfigSchema = buildConfigSchema()
   return ConfigSchema.safeParse({
     registryUrl:     env['HOOKPM_REGISTRY_URL'],
+    apiUrl:          env['HOOKPM_API_URL'],
     registryTimeout: env['HOOKPM_REGISTRY_TIMEOUT_MS'],
     downloadTimeout: env['HOOKPM_DOWNLOAD_TIMEOUT_MS'],
     hookpmDir:       env['HOOKPM_DIR'],
@@ -114,6 +122,28 @@ describe('ConfigSchema — HOOKPM_REGISTRY_URL', () => {
   it('rejects a non-URL string for registryUrl', () => {
     const result = parseEnv({ HOOKPM_REGISTRY_URL: 'not-a-url' })
     expect(result.success).toBe(false)
+  })
+})
+
+describe('ConfigSchema — HOOKPM_API_URL', () => {
+  it('defaults to https://api.hookpm.dev', () => {
+    const result = parseEnv({})
+    expect(result.success).toBe(true)
+    if (!result.success) return
+    expect(result.data.apiUrl).toBe('https://api.hookpm.dev')
+  })
+
+  it('accepts a valid https API URL override', () => {
+    const result = parseEnv({ HOOKPM_API_URL: 'https://staging.api.hookpm.dev' })
+    expect(result.success).toBe(true)
+  })
+
+  it('rejects an http (non-https) API URL', () => {
+    const result = parseEnv({ HOOKPM_API_URL: 'http://api.hookpm.dev' })
+    expect(result.success).toBe(false)
+    if (result.success) return
+    const msg = result.error.issues[0]?.message ?? ''
+    expect(msg).toMatch(/https/)
   })
 })
 
