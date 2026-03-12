@@ -27,5 +27,11 @@ Thumbs.db
 # Test coverage
 coverage/
 
-# Private / not for sync
+# Private / not for public repo
 internals/
+docs/deep/
+docs/02-market-opportunity.md
+docs/03-business-model.md
+docs/04-roadmap.md
+docs/05-competition.md
+pitch-site/
