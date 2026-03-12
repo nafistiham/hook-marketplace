@@ -1,0 +1,38 @@
+{
+  "name": "create-checkpoint",
+  "version": "1.0.0",
+  "description": "Auto-saves uncommitted changes as a named git stash checkpoint at the end of each Claude session. Keeps the last 10 checkpoints. Never lose work after a Claude session.",
+  "author": "nafistiham",
+  "license": "MIT",
+  "homepage": "https://github.com/carlrannaberg/claudekit",
+  "event": "Stop",
+  "handler": {
+    "type": "command",
+    "command": "bash checkpoint.sh",
+    "async": true
+  },
+  "capabilities": ["side-effects-only"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": [], "write": [] },
+    "env_vars": [],
+    "spawns_processes": true
+  },
+  "tags": ["git", "safety", "backup", "checkpoint", "session"],
+  "requires": {
+    "os": ["darwin", "linux"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "none",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  },
+  "provenance": {
+    "source": "https://github.com/carlrannaberg/claudekit",
+    "submitted_by": "nafistiham"
+  }
+}

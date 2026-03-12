@@ -1,7 +1,10 @@
 {
   "name": "@hookpm/schema",
   "version": "0.1.0",
+  "description": "Zod schema and validation for hookpm hook.json manifests",
+  "license": "MIT",
   "type": "module",
+  "files": ["dist"],
   "exports": {
     ".": {
       "import": "./dist/index.js",
