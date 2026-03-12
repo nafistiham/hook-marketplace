@@ -1,6 +1,6 @@
 {
   "name": "hookpm",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CLI package manager for Claude Code hooks — install, remove, search, and publish hooks from the hookpm registry",
   "keywords": [
     "claude",
@@ -29,13 +29,12 @@
   ],
   "scripts": {
     "dev": "tsx src/index.ts",
-    "build": "tsc --build tsconfig.build.json",
+    "build": "tsup",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "lint": "eslint src"
   },
   "dependencies": {
-    "@hookpm/schema": "workspace:*",
     "cac": "^6.7.14",
     "tar": "^7.5.11",
     "zod": "^3.22.0"
@@ -43,6 +42,7 @@
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/tar": "^7.0.87",
+    "tsup": "^8.5.1",
     "tsx": "^4.7.0",
     "typescript": "^5.4.0",
     "vitest": "^2.0.0"
