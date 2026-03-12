@@ -46,6 +46,12 @@
 | 35 | anthropics/claude-code (examples) | Proprietary (Commercial ToS) | ❌ no |
 | 36 | hesreallyhim/awesome-claude-code | CC BY-NC-ND 4.0 | ❌ no — no derivatives, no commercial |
 | 37 | Dicklesworthstone/misc_coding_agent_tips_and_scripts | MIT + Anthropic/OpenAI exclusion rider | ❌ no — explicitly excludes Anthropic and affiliates |
+| 38 | ldayton/Dippy | MIT | ✅ yes |
+| 39 | nizos/tdd-guard | MIT | ✅ yes |
+| 40 | bartolli/claude-code-typescript-hooks | MIT | ✅ yes |
+| 41 | backnotprop/plannotator | Apache-2.0 AND MIT (dual) | ✅ yes |
+| 42 | ctoth/claudio | **No license** | ⚠️ check — needs author permission |
+| 43 | aannoo/claude-hook-comms | MIT | ✅ yes |
 
 ---
 
