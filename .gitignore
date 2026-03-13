@@ -27,6 +27,9 @@ Thumbs.db
 # Test coverage
 coverage/
 
+# Supabase CLI temp files
+supabase/.temp/
+
 # Private / not for public repo
 internals/
 docs/deep/
