@@ -60,8 +60,27 @@ export function table(
 }
 
 export function hookDetail(hook: HookJsonRegistry): void {
-  process.stdout.write(`name:    ${hook.name}\n`)
-  process.stdout.write(`version: ${hook.version}\n`)
+  const line = (label: string, value: string) =>
+    process.stdout.write(`  ${label.padEnd(14)}${value}\n`)
+
+  process.stdout.write(`\n${hook.name}@${hook.version}\n`)
+  process.stdout.write(`${'─'.repeat(hook.name.length + hook.version.length + 1)}\n`)
+  line('description', hook.description)
+  line('author', hook.author)
+  line('license', hook.license)
+  line('event', hook.event)
+  if (hook.matcher) {
+    const m = Object.entries(hook.matcher)
+      .map(([k, v]) => `${k}: ${v}`)
+      .join(', ')
+    line('matcher', m)
+  }
+  line('capabilities', hook.capabilities.join(', '))
+  if (hook.tags.length) line('tags', hook.tags.join(', '))
+  if (hook.requires?.os?.length) line('os', hook.requires.os.join(', '))
+  if (hook.provenance?.source) line('source', hook.provenance.source)
+  line('security', hook.security.sandbox_level + (hook.security.reviewed ? ' (reviewed)' : ''))
+  process.stdout.write('\n')
 }
 
 export async function confirm(msg: string): Promise<boolean> {
