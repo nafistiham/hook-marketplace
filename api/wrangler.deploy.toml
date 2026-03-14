@@ -7,11 +7,6 @@ routes = [
   { pattern = "api.nafistiham.com", custom_domain = true }
 ]
 
-# Cap each request at 50ms CPU — legitimate requests use 1-5ms.
-# Prevents runaway compute billing from malicious or looping requests.
-[limits]
-cpu_ms = 50
-
 [[r2_buckets]]
 binding = "HOOKPM_BUCKET"
 bucket_name = "hookpm-registry"
