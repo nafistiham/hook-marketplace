@@ -18,6 +18,8 @@ function makeEnv(opts: {
       delete: async () => {},
     },
     CLERK_OAUTH_URL: opts.clerkOauthUrl ?? 'https://clerk.hookpm.dev/oauth/authorize',
+    CLERK_CLIENT_ID: 'test-client-id',
+    CLERK_CLIENT_SECRET: 'test-client-secret',
   }
 }
 

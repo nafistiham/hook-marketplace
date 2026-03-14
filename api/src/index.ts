@@ -24,6 +24,8 @@ type Env = {
   CLERK_JWKS_URL?: string
   CLERK_ISSUER?: string
   CLERK_OAUTH_URL?: string
+  CLERK_CLIENT_ID?: string
+  CLERK_CLIENT_SECRET?: string
   SUPABASE_URL?: string
   SUPABASE_SERVICE_KEY?: string
   // Test-only: injected by test env to bypass JWT verification
@@ -122,9 +124,18 @@ app.get('/auth/login', async (c) => {
   if (!state) return errorResponse(400, 'BAD_REQUEST', 'state parameter required')
 
   const clerkOauthUrl = c.env.CLERK_OAUTH_URL ?? 'https://clerk.hookpm.dev/oauth/authorize'
-  const redirectUrl = `${clerkOauthUrl}?state=${encodeURIComponent(state)}&redirect_uri=${encodeURIComponent('https://api.nafistiham.com/auth/callback')}`
+  const clientId = c.env.CLERK_CLIENT_ID
+  if (!clientId) return errorResponse(500, 'INTERNAL_ERROR', 'Auth not configured')
 
-  return Response.redirect(redirectUrl, 302)
+  const params = new URLSearchParams({
+    response_type: 'code',
+    client_id: clientId,
+    redirect_uri: 'https://api.nafistiham.com/auth/callback',
+    scope: 'profile email',
+    state,
+  })
+
+  return Response.redirect(`${clerkOauthUrl}?${params.toString()}`, 302)
 })
 
 app.get('/auth/token', async (c) => {
@@ -148,27 +159,61 @@ app.get('/auth/token', async (c) => {
 // ─── Auth callback (called by Clerk after OAuth) ──────────────────────────────
 
 app.get('/auth/callback', async (c) => {
+  const code = c.req.query('code')
   const state = c.req.query('state')
-  const token = c.req.query('token')     // Clerk passes the JWT here
-  const username = c.req.query('username')
-  const expiresAt = c.req.query('expires_at')
 
-  if (!state || !token || !username) {
-    return errorResponse(400, 'BAD_REQUEST', 'Missing required callback parameters')
+  if (!code || !state) {
+    return errorResponse(400, 'BAD_REQUEST', 'Missing code or state parameter')
   }
+
+  const clientId = c.env.CLERK_CLIENT_ID
+  const clientSecret = c.env.CLERK_CLIENT_SECRET
+  const issuer = c.env.CLERK_ISSUER ?? 'https://clerk.hookpm.dev'
+  if (!clientId || !clientSecret) {
+    return errorResponse(500, 'INTERNAL_ERROR', 'Auth not configured')
+  }
+
+  // Exchange code for tokens at Clerk's token endpoint
+  const tokenRes = await fetch(`${issuer}/oauth/token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'authorization_code',
+      code,
+      client_id: clientId,
+      client_secret: clientSecret,
+      redirect_uri: 'https://api.nafistiham.com/auth/callback',
+    }),
+  })
+
+  if (!tokenRes.ok) {
+    return errorResponse(502, 'TOKEN_EXCHANGE_FAILED', 'Failed to exchange code for token')
+  }
+
+  const tokenData = await tokenRes.json() as {
+    access_token: string
+    id_token?: string
+    expires_in?: number
+  }
+
+  // Fetch user info to get username
+  const userRes = await fetch(`${issuer}/oauth/userinfo`, {
+    headers: { Authorization: `Bearer ${tokenData.access_token}` },
+  })
+  const userInfo = await userRes.json() as { preferred_username?: string; name?: string }
+  const username = userInfo.preferred_username ?? userInfo.name ?? 'unknown'
 
   const kv = c.env.AUTH_KV
   if (!kv) return errorResponse(500, 'INTERNAL_ERROR', 'Auth storage not configured')
 
-  const tokenData = JSON.stringify({
-    token,
-    expires_at: expiresAt ?? new Date(Date.now() + 3600_000).toISOString(),
+  const stored = JSON.stringify({
+    token: tokenData.access_token,
+    expires_at: new Date(Date.now() + (tokenData.expires_in ?? 3600) * 1000).toISOString(),
     username,
   })
 
-  await kv.put(`auth:${state}`, tokenData, { expirationTtl: AUTH_KV_TTL_SECONDS })
+  await kv.put(`auth:${state}`, stored, { expirationTtl: AUTH_KV_TTL_SECONDS })
 
-  // Return a simple success page
   return new Response('<html><body><h2>Logged in! You can close this tab.</h2></body></html>', {
     headers: { 'Content-Type': 'text/html' },
   })
