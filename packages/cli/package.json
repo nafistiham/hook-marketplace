@@ -1,6 +1,6 @@
 {
   "name": "hookpm",
-  "version": "0.1.2",
+  "version": "0.1.6",
   "description": "CLI package manager for Claude Code hooks — install, remove, search, and publish hooks from the hookpm registry",
   "keywords": [
     "claude",
@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/nafistiham/hook-marketplace.git"
   },
-  "homepage": "https://hookpm.dev",
+  "homepage": "https://nafistiham.com",
   "type": "module",
   "engines": {
     "node": ">=20"
