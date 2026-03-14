@@ -34,11 +34,13 @@ Requires Node.js 20+.
 ```sh
 hookpm install <name>    # install a hook into Claude Code settings
 hookpm remove <name>     # remove an installed hook
+hookpm update <name>     # update a hook to the latest version
+hookpm update --all      # update all installed hooks
 hookpm list              # show installed hooks
 hookpm search <query>    # search the registry
 hookpm info <name>       # show hook details, capabilities, and security info
 hookpm verify <name>     # verify hook signature and integrity
-hookpm publish           # publish a hook to the registry
+hookpm publish           # publish a hook to the registry (requires login)
 hookpm login             # authenticate with GitHub
 hookpm logout            # remove local credentials
 ```
@@ -51,20 +53,53 @@ hookpm logout            # remove local credentials
 # Install a hook that blocks dangerous bash commands
 hookpm install bash-danger-guard
 
+# Install a Python security linter
+hookpm install python-security-guard
+
 # See what's installed
 hookpm list
 
-# Remove it
+# Update everything
+hookpm update --all
+
+# Remove a hook
 hookpm remove bash-danger-guard
 ```
+
+---
+
+## Registry — 22 hooks
+
+| Hook | What it does |
+|------|-------------|
+| `bash-danger-guard` | Blocks dangerous bash commands (rm -rf, dd, mkfs, etc.) |
+| `create-checkpoint` | Git checkpoint before risky operations |
+| `dependency-audit` | Runs npm/pip audit after package file changes |
+| `dockerfile-lint` | Lints Dockerfiles for common anti-patterns (no hadolint needed) |
+| `env-leak-guard` | Blocks writes to .env files containing real secrets |
+| `eslint-on-edit` | Runs ESLint on JS/TS files after every write |
+| `file-size-guard` | Blocks writes over 500 KB |
+| `format-on-write` | Auto-formats code with Prettier or Black after write |
+| `git-commit-lint` | Enforces conventional commit message format |
+| `large-file-upload-guard` | Warns before uploading large files |
+| `no-direct-push-guard` | Blocks git push directly to main/master |
+| `port-scan-guard` | Warns when Dockerfile exposes sensitive ports |
+| `python-security-guard` | Runs Bandit on Python files, blocks HIGH severity findings |
+| `secret-scan-guard` | Detects API keys, tokens, and credentials before writing |
+| `semgrep-guard` | Runs Semgrep (auto config) and blocks on ERROR findings |
+| `sensitive-file-guard` | Blocks writes to sensitive paths (keys, certs, credentials) |
+| `session-summary` | Writes a session summary when Claude Code ends |
+| `shellcheck-guard` | Runs ShellCheck on shell scripts, blocks on errors |
+| `sql-injection-guard` | Detects SQL injection patterns before writing |
+| `test-on-edit` | Runs tests automatically after source file changes |
+| `todo-tracker` | Logs TODOs added to code to a tracking file |
+| `token-usage-logger` | Tracks token usage per session to a log file |
 
 ---
 
 ## The Registry
 
 Hooks live in [`registry/hooks/`](./registry/hooks/). Each hook has a `hook.json` manifest and an implementation file (shell script, TypeScript, Python, etc.).
-
-Browse available hooks or submit your own via pull request.
 
 ### Submitting a hook
 
@@ -85,7 +120,7 @@ hook-marketplace/
 ├── registry/
 │   ├── hooks/      # one directory per hook
 │   └── index.json  # generated registry index (do not edit manually)
-├── api/            # Cloudflare Workers API (Phase 1B — publish endpoint)
+├── api/            # Cloudflare Workers API (publish, auth, rankings)
 └── docs/           # design docs and strategy
 ```
 
