@@ -102,9 +102,24 @@ export function readLockfile(lockfilePath: string): Lockfile {
 // ─── writeLockfile ────────────────────────────────────────────────────────────
 
 export function writeLockfile(lockfilePath: string, data: Lockfile): void {
+  const dir = path.dirname(lockfilePath)
+  const randomHex = crypto.randomBytes(4).toString('hex')
+  const tmpPath = path.join(dir, `.hookpm-lock-tmp-${randomHex}`)
+  const serialized = JSON.stringify(data, null, 2)
+
   try {
-    fs.writeFileSync(lockfilePath, JSON.stringify(data, null, 2), 'utf8')
+    fs.writeFileSync(tmpPath, serialized, 'utf8')
   } catch (cause) {
+    try { fs.unlinkSync(tmpPath) } catch { /* best-effort cleanup */ }
     throw new WriteError(`Failed to write lockfile at ${lockfilePath}`, cause)
+  }
+
+  try {
+    fs.renameSync(tmpPath, lockfilePath)
+  } catch (cause) {
+    throw new WriteError(
+      `Failed to rename tmp file to lockfile — lockfile unchanged`,
+      cause,
+    )
   }
 }

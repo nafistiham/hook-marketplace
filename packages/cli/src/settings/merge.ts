@@ -2,13 +2,14 @@ import * as path from 'node:path'
 import type { HookJsonRegistry } from '@hookpm/schema'
 import { readSettings, writeSettingsAtomic, readLockfile, writeLockfile } from './index.js'
 import type { SettingsPaths } from './index.js'
-import type { ClaudeSettings, HookConfig, HookEntry, Lockfile } from './types.js'
+import type { HookConfig, HookEntry, Lockfile } from './types.js'
 import { NotInstalledError, MergeError } from './types.js'
 
 export type MergeOptions = {
   prepend?: boolean
   dryRun?: boolean
   installedPath: string
+  integrity?: string
 }
 
 export type MergeResult = {
@@ -119,9 +120,15 @@ export async function mergeHookIntoSettings(
   let added: boolean
 
   if (existingLockEntry !== undefined) {
-    // Upgrade — replace existing entry at same index
-    eventArray[existingLockEntry.settings_index] = newEntry
-    settingsIndex = existingLockEntry.settings_index
+    // Upgrade — replace existing entry at same index (guard against index drift)
+    if (existingLockEntry.settings_index < eventArray.length) {
+      eventArray[existingLockEntry.settings_index] = newEntry
+    } else {
+      eventArray.push(newEntry)
+    }
+    settingsIndex = existingLockEntry.settings_index < eventArray.length - 1
+      ? existingLockEntry.settings_index
+      : eventArray.length - 1
     added = false
   } else if (options.prepend) {
     // Prepend — insert at front, increment indices for all other hookpm entries in same event

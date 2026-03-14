@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import * as os from 'node:os'
@@ -6,12 +6,6 @@ import { readLockfile, writeLockfile } from '../index.js'
 import type { Lockfile } from '../types.js'
 
 const FIXTURES = path.join(import.meta.dirname, 'fixtures')
-const EMPTY_LOCKFILE: Lockfile = {
-  version: '1',
-  generated: expect.any(String) as unknown as string,
-  registry: '',
-  hooks: {},
-}
 
 // ─── readLockfile ─────────────────────────────────────────────────────────────
 

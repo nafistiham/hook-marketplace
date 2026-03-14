@@ -2,9 +2,8 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import * as os from 'node:os'
-import { readSettings, readLockfile, writeSettingsAtomic, writeLockfile } from '../index.js'
+import { readSettings, writeSettingsAtomic } from '../index.js'
 import { ParseError, WriteError } from '../types.js'
-import type { Lockfile } from '../types.js'
 
 const FIXTURES = path.join(import.meta.dirname, 'fixtures')
 

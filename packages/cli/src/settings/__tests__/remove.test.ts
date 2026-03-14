@@ -7,7 +7,6 @@ import { readSettings, readLockfile } from '../index.js'
 import { NotInstalledError } from '../types.js'
 import type { HookJsonRegistry } from '@hookpm/schema'
 
-const FIXTURES = path.join(import.meta.dirname, 'fixtures')
 
 function makePaths(dir: string) {
   return {
