@@ -25,7 +25,7 @@ preview_id = "99e10cb08ea64b2ab32996d7c68cba92"
 # Rate limiting: 10 write requests per IP per 60 seconds
 # Applied to: POST /registry/hooks, POST /registry/hooks/:name/report, GET /auth/login
 [[ratelimits]]
-binding = "RATE_LIMITER"
+name = "RATE_LIMITER"
 namespace_id = "1001"
 
 [ratelimits.simple]
