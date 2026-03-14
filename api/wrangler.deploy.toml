@@ -1,0 +1,18 @@
+name = "hookpm-api"
+main = "src/index.ts"
+compatibility_date = "2024-04-05"
+compatibility_flags = ["nodejs_compat"]
+
+routes = [
+  { pattern = "api.nafistiham.com", custom_domain = true }
+]
+
+[[r2_buckets]]
+binding = "HOOKPM_BUCKET"
+bucket_name = "hookpm-registry"
+preview_bucket_name = "hookpm-registry-preview"
+
+[[kv_namespaces]]
+binding = "AUTH_KV"
+id = "82fe208ec28d4ae29ba6fcbd8e40f3bb"
+preview_id = "99e10cb08ea64b2ab32996d7c68cba92"
