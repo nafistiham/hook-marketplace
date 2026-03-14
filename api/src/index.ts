@@ -168,7 +168,10 @@ app.get('/registry/index.json', async (c) => {
 
   const body = await obj.text()
   return new Response(body, {
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'public, max-age=60, s-maxage=300',
+    },
   })
 })
 
@@ -178,7 +181,12 @@ app.get('/registry/hooks/:name/hook.json', async (c) => {
   if (!obj) return errorResponse(404, 'NOT_FOUND', `Hook '${name}' not found`)
 
   const body = await obj.text()
-  return new Response(body, { headers: { 'Content-Type': 'application/json' } })
+  return new Response(body, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'public, max-age=300, s-maxage=3600',
+    },
+  })
 })
 
 // ─── Download tracking (fire-and-forget) ─────────────────────────────────────
@@ -219,7 +227,11 @@ app.get('/registry/hooks/:name/:filename', async (c) => {
     if (version) trackDownload(c.env, name, version)
   }
 
-  return new Response(body, { headers: { 'Content-Type': contentType } })
+  const cacheControl = filename.endsWith('.tar.gz')
+    ? 'public, max-age=31536000, immutable'
+    : 'public, max-age=300, s-maxage=3600'
+
+  return new Response(body, { headers: { 'Content-Type': contentType, 'Cache-Control': cacheControl } })
 })
 
 // ─── Publish (POST /registry/hooks) ──────────────────────────────────────────
@@ -253,7 +265,7 @@ app.post('/registry/hooks', async (c) => {
   let hookJson: unknown
   try {
     hookJson = JSON.parse(await manifestFile.text())
-  } catch (_e) {
+  } catch {
     return errorResponse(400, 'BAD_REQUEST', 'manifest is not valid JSON')
   }
 
@@ -349,12 +361,120 @@ app.post('/registry/hooks', async (c) => {
   return c.json({ name: hook.name, version: hook.version }, 201)
 })
 
+// ─── Report a hook ────────────────────────────────────────────────────────────
+
+const REPORT_REASONS = new Set(['malicious', 'broken', 'spam', 'other'])
+
+app.post('/registry/hooks/:name/report', async (c) => {
+  const name = c.req.param('name')
+
+  let body: unknown
+  try {
+    body = await c.req.json()
+  } catch {
+    return errorResponse(400, 'BAD_REQUEST', 'Request body must be valid JSON')
+  }
+
+  const { reason, details } = body as { reason?: string; details?: string }
+  if (!reason || !REPORT_REASONS.has(reason)) {
+    return errorResponse(400, 'BAD_REQUEST', `reason must be one of: ${[...REPORT_REASONS].join(', ')}`)
+  }
+
+  // Hash IP to avoid storing raw PII
+  const ip = c.req.header('CF-Connecting-IP') ?? c.req.header('X-Forwarded-For') ?? 'unknown'
+  let reporterHash = 'unknown'
+  try {
+    const encoder = new TextEncoder()
+    const hashBuf = await crypto.subtle.digest('SHA-256', encoder.encode(ip))
+    reporterHash = Array.from(new Uint8Array(hashBuf)).map((b) => b.toString(16).padStart(2, '0')).join('')
+  } catch { /* non-critical */ }
+
+  if (!c.env.SUPABASE_URL || !c.env.SUPABASE_SERVICE_KEY) {
+    // Registry not backed by Supabase yet — accept and discard gracefully
+    return c.json({ reported: true }, 202)
+  }
+
+  const res = await fetch(`${c.env.SUPABASE_URL}/rest/v1/hook_reports`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: c.env.SUPABASE_SERVICE_KEY,
+      Authorization: `Bearer ${c.env.SUPABASE_SERVICE_KEY}`,
+      Prefer: 'return=minimal',
+    },
+    body: JSON.stringify([{ hook_name: name, reason, details: details ?? null, reporter_hash: reporterHash }]),
+  })
+
+  if (!res.ok) {
+    return errorResponse(502, 'UPSTREAM_ERROR', 'Failed to record report')
+  }
+
+  return c.json({ reported: true }, 202)
+})
+
+// ─── Rankings ─────────────────────────────────────────────────────────────────
+
+app.get('/registry/rankings', async (c) => {
+  const hooks = await getIndex(c)
+  if (hooks === null) return errorResponse(404, 'NOT_FOUND', 'Registry index not found')
+
+  if (!c.env.SUPABASE_URL || !c.env.SUPABASE_SERVICE_KEY) {
+    // No Supabase — return hooks ordered by name with zero downloads
+    const ranked = hooks.map((h) => ({ name: h.name, downloads: 0 }))
+    return c.json({ rankings: ranked })
+  }
+
+  const res = await fetch(`${c.env.SUPABASE_URL}/rest/v1/download_counts?select=hook_name,total&order=total.desc&limit=50`, {
+    headers: {
+      apikey: c.env.SUPABASE_SERVICE_KEY,
+      Authorization: `Bearer ${c.env.SUPABASE_SERVICE_KEY}`,
+    },
+  })
+
+  if (!res.ok) return errorResponse(502, 'UPSTREAM_ERROR', 'Failed to fetch download counts')
+
+  const counts = await res.json() as Array<{ hook_name: string; total: number }>
+  const countMap = new Map(counts.map((r) => [r.hook_name, r.total]))
+
+  const ranked = hooks
+    .map((h) => ({ name: h.name, downloads: countMap.get(h.name) ?? 0 }))
+    .sort((a, b) => b.downloads - a.downloads)
+
+  return c.json({ rankings: ranked })
+})
+
+app.get('/authors/rankings', async (c) => {
+  if (!c.env.SUPABASE_URL || !c.env.SUPABASE_SERVICE_KEY) {
+    return c.json({ rankings: [] })
+  }
+
+  const res = await fetch(
+    `${c.env.SUPABASE_URL}/rest/v1/author_download_totals?select=username,total_downloads,hook_count&order=total_downloads.desc&limit=50`,
+    {
+      headers: {
+        apikey: c.env.SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${c.env.SUPABASE_SERVICE_KEY}`,
+      },
+    },
+  )
+
+  if (!res.ok) return errorResponse(502, 'UPSTREAM_ERROR', 'Failed to fetch author rankings')
+
+  const rankings = await res.json() as Array<{ username: string; total_downloads: number; hook_count: number }>
+  return c.json({ rankings })
+})
+
 // ─── Authors ──────────────────────────────────────────────────────────────────
 
 async function getIndex(c: { env: Env }): Promise<HookIndexEntry[] | null> {
   const obj = await c.env.HOOKPM_BUCKET.get('index.json')
   if (!obj) return null
-  const raw = JSON.parse(await obj.text()) as unknown
+  let raw: unknown
+  try {
+    raw = JSON.parse(await obj.text())
+  } catch {
+    return []
+  }
   const parsed = HookIndexSchema.safeParse(raw)
   return parsed.success ? parsed.data.hooks : []
 }
