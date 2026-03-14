@@ -153,7 +153,7 @@ export async function runPublishApi(opts: PublishApiOptions = {}): Promise<void>
         error(`Server rejected hook.json: ${message}`)
         break
       default:
-        error(`Server error (${res.status} ${code}): ${message}. Try again or check status.hookpm.dev`)
+        error(`Server error (${res.status} ${code}): ${message}. Try again or check status.nafistiham.com`)
     }
     process.exitCode = 1
   } finally {

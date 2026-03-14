@@ -20,7 +20,7 @@ const ConfigSchema = z.object({
     .refine((v) => v.startsWith('https://'), {
       message: 'HOOKPM_API_URL must use https',
     })
-    .default('https://api.hookpm.dev'),
+    .default('https://api.nafistiham.com'),
 
   registryTimeout: z.coerce.number().int().positive().default(10_000),
 
@@ -46,7 +46,7 @@ const ConfigSchema = z.object({
     .refine((v) => v.startsWith('https://'), {
       message: 'HOOKPM_SUBMIT_URL must use https',
     })
-    .default('https://hookpm.dev/submit'),
+    .default('https://nafistiham.com/submit'),
 })
 
 export type Config = z.infer<typeof ConfigSchema>
