@@ -1,0 +1,36 @@
+{
+  "name": "token-usage-logger",
+  "version": "1.0.0",
+  "description": "Logs token usage statistics at the end of every Claude session to ~/.hookpm/token-log.jsonl. Helps you track cumulative usage and spot expensive sessions.",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "Stop",
+  "handler": {
+    "type": "command",
+    "command": "python3 logger.py",
+    "async": true
+  },
+  "capabilities": ["side-effects-only"],
+  "tags": ["observability", "tokens", "cost", "logging"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": {
+      "read": [],
+      "write": ["~/.hookpm/token-log.jsonl"]
+    },
+    "env_vars": [],
+    "spawns_processes": false
+  },
+  "requires": {
+    "os": ["darwin", "linux", "windows"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}

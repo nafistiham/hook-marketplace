@@ -1,0 +1,36 @@
+{
+  "name": "file-size-guard",
+  "version": "1.0.0",
+  "description": "Warns when a written file exceeds the project's 800-line limit. Runs after Write and Edit tool calls, printing a warning with the line count so the agent can refactor proactively.",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PostToolUse",
+  "matcher": {
+    "tool_name": "^(Write|Edit)$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "python3 guard.py",
+    "async": true
+  },
+  "capabilities": ["side-effects-only"],
+  "tags": ["code-quality", "file-size", "lint"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": ["**/*"], "write": [] },
+    "env_vars": [],
+    "spawns_processes": false
+  },
+  "requires": {
+    "os": ["darwin", "linux", "windows"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}
