@@ -122,7 +122,7 @@ app.get('/auth/login', async (c) => {
   if (!state) return errorResponse(400, 'BAD_REQUEST', 'state parameter required')
 
   const clerkOauthUrl = c.env.CLERK_OAUTH_URL ?? 'https://clerk.hookpm.dev/oauth/authorize'
-  const redirectUrl = `${clerkOauthUrl}?state=${encodeURIComponent(state)}&redirect_uri=${encodeURIComponent('https://hookpm.dev/auth/callback')}`
+  const redirectUrl = `${clerkOauthUrl}?state=${encodeURIComponent(state)}&redirect_uri=${encodeURIComponent('https://api.nafistiham.com/auth/callback')}`
 
   return Response.redirect(redirectUrl, 302)
 })
