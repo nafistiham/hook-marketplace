@@ -13,9 +13,14 @@ type KVNamespace = {
   delete(key: string): Promise<void>
 }
 
+type RateLimiter = {
+  limit(opts: { key: string }): Promise<{ success: boolean }>
+}
+
 type Env = {
   HOOKPM_BUCKET: R2Bucket
   AUTH_KV?: KVNamespace
+  RATE_LIMITER?: RateLimiter
   CLERK_JWKS_URL?: string
   CLERK_ISSUER?: string
   CLERK_OAUTH_URL?: string
@@ -35,6 +40,18 @@ const app = new Hono<{ Bindings: Env; Variables: Variables }>()
 
 function errorResponse(status: number, code: string, message: string) {
   return Response.json({ error: { code, message } }, { status })
+}
+
+// ─── Rate limiting ────────────────────────────────────────────────────────────
+
+async function checkRateLimit(env: Env, req: Request): Promise<Response | null> {
+  if (!env.RATE_LIMITER) return null  // Not configured — allow (dev/test)
+  const ip = req.headers.get('CF-Connecting-IP') ?? req.headers.get('X-Forwarded-For') ?? 'unknown'
+  const { success } = await env.RATE_LIMITER.limit({ key: ip })
+  if (!success) {
+    return errorResponse(429, 'RATE_LIMITED', 'Too many requests — please slow down')
+  }
+  return null
 }
 
 // ─── JWKS cache (module scope — keyed by URL; survives across requests in one Worker instance) ─
@@ -97,7 +114,10 @@ async function resolveUser(req: Request, env: Env): Promise<ClerkUser | Response
 
 const AUTH_KV_TTL_SECONDS = 600 // 10 minutes
 
-app.get('/auth/login', (c) => {
+app.get('/auth/login', async (c) => {
+  const rateLimited = await checkRateLimit(c.env, c.req.raw)
+  if (rateLimited) return rateLimited
+
   const state = c.req.query('state')
   if (!state) return errorResponse(400, 'BAD_REQUEST', 'state parameter required')
 
@@ -237,6 +257,9 @@ app.get('/registry/hooks/:name/:filename', async (c) => {
 // ─── Publish (POST /registry/hooks) ──────────────────────────────────────────
 
 app.post('/registry/hooks', async (c) => {
+  const rateLimited = await checkRateLimit(c.env, c.req.raw)
+  if (rateLimited) return rateLimited
+
   // 1. Auth
   const userOrErr = await resolveUser(c.req.raw, c.env)
   if (userOrErr instanceof Response) return userOrErr
@@ -363,9 +386,13 @@ app.post('/registry/hooks', async (c) => {
 
 // ─── Report a hook ────────────────────────────────────────────────────────────
 
-const REPORT_REASONS = new Set(['malicious', 'broken', 'spam', 'other'])
+// Must match CHECK constraint in migration 0002
+const REPORT_REASONS = new Set(['malware', 'broken', 'misleading', 'spam', 'other'])
 
 app.post('/registry/hooks/:name/report', async (c) => {
+  const rateLimited = await checkRateLimit(c.env, c.req.raw)
+  if (rateLimited) return rateLimited
+
   const name = c.req.param('name')
 
   let body: unknown
@@ -394,7 +421,7 @@ app.post('/registry/hooks/:name/report', async (c) => {
     return c.json({ reported: true }, 202)
   }
 
-  const res = await fetch(`${c.env.SUPABASE_URL}/rest/v1/hook_reports`, {
+  const res = await fetch(`${c.env.SUPABASE_URL}/rest/v1/reports`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -402,7 +429,7 @@ app.post('/registry/hooks/:name/report', async (c) => {
       Authorization: `Bearer ${c.env.SUPABASE_SERVICE_KEY}`,
       Prefer: 'return=minimal',
     },
-    body: JSON.stringify([{ hook_name: name, reason, details: details ?? null, reporter_hash: reporterHash }]),
+    body: JSON.stringify([{ hook_name: name, reason, details: details ?? null, reporter_ip: reporterHash }]),
   })
 
   if (!res.ok) {
