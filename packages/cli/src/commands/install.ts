@@ -50,6 +50,7 @@ export async function runInstall(name: string, options: InstallOptions): Promise
   await mergeHookIntoSettings(hook, paths, {
     installedPath: dlResult.installedPath,
     prepend: options.prepend ?? false,
+    integrity: dlResult.integrity,
   })
 
   success(`Installed ${name}@${hook.version}`)

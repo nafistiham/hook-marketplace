@@ -21,12 +21,13 @@ function buildArchive(hookDir: string, name: string, version: string): string {
   const stagingDir = path.join(tmpBase, `hookpm-publish-${Date.now()}`, stagingName)
   fs.mkdirSync(stagingDir, { recursive: true })
 
-  const entries = fs.readdirSync(hookDir).filter(
-    (f) => f !== 'node_modules' && f !== '.git',
-  )
-  for (const entry of entries) {
-    fs.copyFileSync(path.join(hookDir, entry), path.join(stagingDir, entry))
-  }
+  fs.cpSync(hookDir, stagingDir, {
+    recursive: true,
+    filter: (src) => {
+      const base = path.basename(src)
+      return base !== 'node_modules' && base !== '.git'
+    },
+  })
 
   const archivePath = path.join(path.dirname(stagingDir), `${stagingName}.tar.gz`)
   execFileSync('tar', ['-czf', archivePath, '-C', path.dirname(stagingDir), stagingName])

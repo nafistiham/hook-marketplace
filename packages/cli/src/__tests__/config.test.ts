@@ -1,18 +1,6 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import * as path from 'node:path'
 import * as os from 'node:os'
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-function clearEnv() {
-  delete process.env['HOOKPM_REGISTRY_URL']
-  delete process.env['HOOKPM_REGISTRY_TIMEOUT_MS']
-  delete process.env['HOOKPM_DOWNLOAD_TIMEOUT_MS']
-  delete process.env['HOOKPM_DIR']
-  delete process.env['HOOKPM_SETTINGS_PATH']
-  delete process.env['HOOKPM_LOCKFILE_PATH']
-  delete process.env['HOOKPM_SUBMIT_URL']
-}
 
 // config.ts calls parseConfig() at module load time, so we test the schema
 // directly rather than re-importing the module (which would already be cached).

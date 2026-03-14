@@ -211,7 +211,14 @@ export async function downloadArchive(
   try {
     await pipeline(
       Readable.from(buffer),
-      tar.x({ cwd: installDir, strip: 1 }),
+      tar.x({
+        cwd: installDir,
+        strip: 1,
+        filter: (entryPath: string) => {
+          const normalized = path.normalize(entryPath)
+          return !path.isAbsolute(normalized) && !normalized.startsWith('..')
+        },
+      }),
     )
   } catch (cause) {
     fs.rmSync(installDir, { recursive: true, force: true })

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import type { HookJsonRegistry, HookIndex, HookIndexEntry } from '@hookpm/schema'
+import type { HookJsonRegistry } from '@hookpm/schema'
 import type { Lockfile } from '../../settings/types.js'
 import { RegistryError } from '../../registry/types.js'
 
