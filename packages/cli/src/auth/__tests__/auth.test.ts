@@ -36,10 +36,10 @@ describe('readAuth()', () => {
     expect(result?.username).toBe('testuser')
   })
 
-  it('throws on corrupt JSON', () => {
+  it('returns null on corrupt JSON', () => {
     const authPath = path.join(tmpDir, 'auth.json')
     fs.writeFileSync(authPath, 'NOT VALID JSON {{{')
-    expect(() => readAuth(authPath)).toThrow()
+    expect(readAuth(authPath)).toBeNull()
   })
 })
 
