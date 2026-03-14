@@ -1,0 +1,36 @@
+{
+  "name": "eslint-on-edit",
+  "version": "1.0.0",
+  "description": "Runs ESLint on JavaScript and TypeScript files after each write or edit. Reports lint errors to stderr so the agent can fix them immediately, without blocking the write.",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PostToolUse",
+  "matcher": {
+    "tool_name": "^(Write|Edit)$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "python3 linter.py",
+    "async": true
+  },
+  "capabilities": ["side-effects-only"],
+  "tags": ["linting", "eslint", "typescript", "javascript", "code-quality"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": ["**/*"], "write": [] },
+    "env_vars": [],
+    "spawns_processes": true
+  },
+  "requires": {
+    "os": ["darwin", "linux", "windows"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}

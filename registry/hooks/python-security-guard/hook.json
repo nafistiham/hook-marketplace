@@ -1,0 +1,36 @@
+{
+  "name": "python-security-guard",
+  "version": "1.0.0",
+  "description": "Runs Bandit (Python security linter) on Python files before writing. Detects common Python security issues: hardcoded passwords, use of eval/exec, insecure random, SQL injection, weak crypto, and subprocess injection. Requires bandit to be installed (pip install bandit).",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PreToolUse",
+  "matcher": {
+    "tool_name": "^(Write|Edit)$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "python3 guard.py",
+    "async": false
+  },
+  "capabilities": ["block"],
+  "tags": ["security", "python", "bandit", "sast", "owasp"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": [], "write": [] },
+    "env_vars": [],
+    "spawns_processes": true
+  },
+  "requires": {
+    "os": ["darwin", "linux"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}

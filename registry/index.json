@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-03-14T07:49:14.780Z",
+  "generated_at": "2026-03-14T08:18:44.265Z",
   "hooks": [
     {
       "name": "bash-danger-guard",
@@ -27,7 +27,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.773Z"
+      "updated_at": "2026-03-14T08:18:44.260Z"
     },
     {
       "name": "create-checkpoint",
@@ -58,7 +58,7 @@
       ],
       "source": "https://github.com/carlrannaberg/claudekit",
       "submitted_by": "nafistiham",
-      "updated_at": "2026-03-14T07:49:14.777Z"
+      "updated_at": "2026-03-14T08:18:44.262Z"
     },
     {
       "name": "dependency-audit",
@@ -86,7 +86,36 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.777Z"
+      "updated_at": "2026-03-14T08:18:44.262Z"
+    },
+    {
+      "name": "dockerfile-lint",
+      "description": "Lints Dockerfile content before writing. Checks for common Dockerfile anti-patterns: running as root, using latest tag, no HEALTHCHECK, ADD instead of COPY, multiple RUN commands that should be chained, and exposed dangerous ports.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "docker",
+        "containers",
+        "linting",
+        "devops",
+        "security"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-14T08:18:44.262Z"
     },
     {
       "name": "env-leak-guard",
@@ -114,7 +143,36 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.777Z"
+      "updated_at": "2026-03-14T08:18:44.262Z"
+    },
+    {
+      "name": "eslint-on-edit",
+      "description": "Runs ESLint on JavaScript and TypeScript files after each write or edit. Reports lint errors to stderr so the agent can fix them immediately, without blocking the write.",
+      "author": "hookpm",
+      "event": "PostToolUse",
+      "tags": [
+        "linting",
+        "eslint",
+        "typescript",
+        "javascript",
+        "code-quality"
+      ],
+      "capabilities": [
+        "side-effects-only"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-14T08:18:44.262Z"
     },
     {
       "name": "file-size-guard",
@@ -141,7 +199,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.777Z"
+      "updated_at": "2026-03-14T08:18:44.263Z"
     },
     {
       "name": "format-on-write",
@@ -171,7 +229,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.777Z"
+      "updated_at": "2026-03-14T08:18:44.263Z"
     },
     {
       "name": "git-commit-lint",
@@ -199,7 +257,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.778Z"
+      "updated_at": "2026-03-14T08:18:44.263Z"
     },
     {
       "name": "large-file-upload-guard",
@@ -227,7 +285,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.778Z"
+      "updated_at": "2026-03-14T08:18:44.263Z"
     },
     {
       "name": "no-direct-push-guard",
@@ -255,7 +313,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.778Z"
+      "updated_at": "2026-03-14T08:18:44.263Z"
     },
     {
       "name": "port-scan-guard",
@@ -283,7 +341,94 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.778Z"
+      "updated_at": "2026-03-14T08:18:44.263Z"
+    },
+    {
+      "name": "python-security-guard",
+      "description": "Runs Bandit (Python security linter) on Python files before writing. Detects common Python security issues: hardcoded passwords, use of eval/exec, insecure random, SQL injection, weak crypto, and subprocess injection. Requires bandit to be installed (pip install bandit).",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "python",
+        "bandit",
+        "sast",
+        "owasp"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-14T08:18:44.263Z"
+    },
+    {
+      "name": "secret-scan-guard",
+      "description": "Scans files for hardcoded secrets before writing — AWS keys, GitHub tokens, Stripe keys, private keys, generic high-entropy strings. Blocks the write if a credential pattern is found. Uses gitleaks if installed, falls back to built-in regex patterns.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "secrets",
+        "credentials",
+        "scanning",
+        "owasp"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-14T08:18:44.264Z"
+    },
+    {
+      "name": "semgrep-guard",
+      "description": "Runs Semgrep security analysis on code before it is written. Uses the auto ruleset which detects OWASP Top 10 vulnerabilities, injection flaws, and language-specific anti-patterns. Requires semgrep to be installed.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "semgrep",
+        "sast",
+        "owasp",
+        "static-analysis"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-14T08:18:44.264Z"
     },
     {
       "name": "sensitive-file-guard",
@@ -311,7 +456,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.779Z"
+      "updated_at": "2026-03-14T08:18:44.264Z"
     },
     {
       "name": "session-summary",
@@ -338,7 +483,36 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.779Z"
+      "updated_at": "2026-03-14T08:18:44.264Z"
+    },
+    {
+      "name": "shellcheck-guard",
+      "description": "Runs ShellCheck on shell scripts before writing. Catches common shell scripting errors, unquoted variables, unsafe patterns, and portability issues. Requires shellcheck to be installed (brew install shellcheck).",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "shell",
+        "bash",
+        "shellcheck",
+        "linting",
+        "safety"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-14T08:18:44.264Z"
     },
     {
       "name": "sql-injection-guard",
@@ -366,7 +540,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.779Z"
+      "updated_at": "2026-03-14T08:18:44.265Z"
     },
     {
       "name": "test-on-edit",
@@ -394,7 +568,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.779Z"
+      "updated_at": "2026-03-14T08:18:44.265Z"
     },
     {
       "name": "todo-tracker",
@@ -421,7 +595,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.779Z"
+      "updated_at": "2026-03-14T08:18:44.265Z"
     },
     {
       "name": "token-usage-logger",
@@ -449,7 +623,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T07:49:14.780Z"
+      "updated_at": "2026-03-14T08:18:44.265Z"
     }
   ]
 }
