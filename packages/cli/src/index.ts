@@ -7,6 +7,7 @@ import { runList } from './commands/list.js'
 import { runSearch } from './commands/search.js'
 import { runInfo } from './commands/info.js'
 import { runVerify } from './commands/verify.js'
+import { runUpdate } from './commands/update.js'
 import { runPublishApi } from './commands/publish-api.js'
 import { runLogin } from './commands/login.js'
 import { runLogout } from './commands/logout.js'
@@ -46,6 +47,13 @@ cli
   .command('info <name>', 'Show hook details')
   .action(async (name: string) => {
     await runInfo(name)
+  })
+
+cli
+  .command('update [name]', 'Update an installed hook to its latest version')
+  .option('--all', 'Update all installed hooks')
+  .action(async (name: string | undefined, options: { all?: boolean }) => {
+    await runUpdate(name, options)
   })
 
 cli
