@@ -1,0 +1,36 @@
+{
+  "name": "port-scan-guard",
+  "version": "1.0.0",
+  "description": "Blocks network scanning and reconnaissance tools (nmap, masscan, zmap, netcat in scan mode) from being run via Bash. Prevents Claude from being used as a pivot for unauthorized network reconnaissance.",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PreToolUse",
+  "matcher": {
+    "tool_name": "^Bash$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "python3 guard.py",
+    "async": false
+  },
+  "capabilities": ["block"],
+  "tags": ["security", "network", "scanning", "recon"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": [], "write": [] },
+    "env_vars": [],
+    "spawns_processes": false
+  },
+  "requires": {
+    "os": ["darwin", "linux"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}

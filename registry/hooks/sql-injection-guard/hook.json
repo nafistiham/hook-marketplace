@@ -1,0 +1,36 @@
+{
+  "name": "sql-injection-guard",
+  "version": "1.0.0",
+  "description": "Detects SQL injection patterns in code being written — string concatenation into SQL queries, unparameterized queries with user input, and raw f-string/format SQL. Warns before the code is saved.",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PreToolUse",
+  "matcher": {
+    "tool_name": "^(Write|Edit)$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "python3 guard.py",
+    "async": false
+  },
+  "capabilities": ["block"],
+  "tags": ["security", "sql", "injection", "owasp"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": [], "write": [] },
+    "env_vars": [],
+    "spawns_processes": false
+  },
+  "requires": {
+    "os": ["darwin", "linux", "windows"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}

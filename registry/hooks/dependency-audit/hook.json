@@ -1,0 +1,36 @@
+{
+  "name": "dependency-audit",
+  "version": "1.0.0",
+  "description": "Runs a security audit after package install commands (npm install, pip install, pnpm add). Reports known vulnerabilities in newly added dependencies.",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PostToolUse",
+  "matcher": {
+    "tool_name": "^Bash$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "python3 auditor.py",
+    "async": true
+  },
+  "capabilities": ["side-effects-only"],
+  "tags": ["security", "dependencies", "audit", "supply-chain"],
+  "permissions": {
+    "network": { "allowed": true, "domains": ["registry.npmjs.org", "pypi.org", "osv.dev"] },
+    "filesystem": { "read": ["package.json", "package-lock.json", "requirements.txt"], "write": [] },
+    "env_vars": [],
+    "spawns_processes": true
+  },
+  "requires": {
+    "os": ["darwin", "linux"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}

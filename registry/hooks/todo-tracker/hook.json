@@ -1,0 +1,36 @@
+{
+  "name": "todo-tracker",
+  "version": "1.0.0",
+  "description": "Counts TODO and FIXME comments in files after each write or edit. Warns if the count increases, helping keep technical debt visible without blocking progress.",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PostToolUse",
+  "matcher": {
+    "tool_name": "^(Write|Edit)$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "python3 tracker.py",
+    "async": true
+  },
+  "capabilities": ["side-effects-only"],
+  "tags": ["code-quality", "technical-debt", "todos"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": ["**/*"], "write": [] },
+    "env_vars": [],
+    "spawns_processes": false
+  },
+  "requires": {
+    "os": ["darwin", "linux", "windows"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}

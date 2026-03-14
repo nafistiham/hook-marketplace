@@ -1,0 +1,36 @@
+{
+  "name": "test-on-edit",
+  "version": "1.0.0",
+  "description": "Automatically runs the project test suite after source files are written or edited. Detects the test runner (vitest, jest, pytest, go test) from the project and runs it in the background, printing results to stderr.",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PostToolUse",
+  "matcher": {
+    "tool_name": "^(Write|Edit)$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "python3 runner.py",
+    "async": true
+  },
+  "capabilities": ["side-effects-only"],
+  "tags": ["testing", "tdd", "automation", "quality"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": ["**/*"], "write": [] },
+    "env_vars": [],
+    "spawns_processes": true
+  },
+  "requires": {
+    "os": ["darwin", "linux"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}

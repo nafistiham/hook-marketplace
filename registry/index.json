@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-03-14T06:42:51.888Z",
+  "generated_at": "2026-03-14T07:49:14.780Z",
   "hooks": [
     {
       "name": "bash-danger-guard",
@@ -27,7 +27,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T06:42:51.884Z"
+      "updated_at": "2026-03-14T07:49:14.773Z"
     },
     {
       "name": "create-checkpoint",
@@ -58,7 +58,35 @@
       ],
       "source": "https://github.com/carlrannaberg/claudekit",
       "submitted_by": "nafistiham",
-      "updated_at": "2026-03-14T06:42:51.887Z"
+      "updated_at": "2026-03-14T07:49:14.777Z"
+    },
+    {
+      "name": "dependency-audit",
+      "description": "Runs a security audit after package install commands (npm install, pip install, pnpm add). Reports known vulnerabilities in newly added dependencies.",
+      "author": "hookpm",
+      "event": "PostToolUse",
+      "tags": [
+        "security",
+        "dependencies",
+        "audit",
+        "supply-chain"
+      ],
+      "capabilities": [
+        "side-effects-only"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-14T07:49:14.777Z"
     },
     {
       "name": "env-leak-guard",
@@ -86,7 +114,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T06:42:51.888Z"
+      "updated_at": "2026-03-14T07:49:14.777Z"
     },
     {
       "name": "file-size-guard",
@@ -113,7 +141,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T06:42:51.888Z"
+      "updated_at": "2026-03-14T07:49:14.777Z"
     },
     {
       "name": "format-on-write",
@@ -143,7 +171,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T06:42:51.888Z"
+      "updated_at": "2026-03-14T07:49:14.777Z"
     },
     {
       "name": "git-commit-lint",
@@ -171,7 +199,119 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T06:42:51.888Z"
+      "updated_at": "2026-03-14T07:49:14.778Z"
+    },
+    {
+      "name": "large-file-upload-guard",
+      "description": "Blocks writing files larger than 5MB to prevent accidentally committing binaries, compiled artifacts, or data dumps into the repository.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "safety",
+        "files",
+        "repository",
+        "size"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-14T07:49:14.778Z"
+    },
+    {
+      "name": "no-direct-push-guard",
+      "description": "Blocks direct git push to main or master branches. Enforces a PR-based workflow by intercepting push commands and requiring a feature branch instead.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "git",
+        "workflow",
+        "safety",
+        "branching"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-14T07:49:14.778Z"
+    },
+    {
+      "name": "port-scan-guard",
+      "description": "Blocks network scanning and reconnaissance tools (nmap, masscan, zmap, netcat in scan mode) from being run via Bash. Prevents Claude from being used as a pivot for unauthorized network reconnaissance.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "network",
+        "scanning",
+        "recon"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-14T07:49:14.778Z"
+    },
+    {
+      "name": "sensitive-file-guard",
+      "description": "Blocks writing or editing sensitive files — .env, private keys (.pem, id_rsa), credential files, and secrets configs. Prevents Claude from accidentally overwriting or leaking credentials.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "secrets",
+        "credentials",
+        "safety"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-14T07:49:14.779Z"
     },
     {
       "name": "session-summary",
@@ -198,7 +338,90 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T06:42:51.888Z"
+      "updated_at": "2026-03-14T07:49:14.779Z"
+    },
+    {
+      "name": "sql-injection-guard",
+      "description": "Detects SQL injection patterns in code being written — string concatenation into SQL queries, unparameterized queries with user input, and raw f-string/format SQL. Warns before the code is saved.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "sql",
+        "injection",
+        "owasp"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-14T07:49:14.779Z"
+    },
+    {
+      "name": "test-on-edit",
+      "description": "Automatically runs the project test suite after source files are written or edited. Detects the test runner (vitest, jest, pytest, go test) from the project and runs it in the background, printing results to stderr.",
+      "author": "hookpm",
+      "event": "PostToolUse",
+      "tags": [
+        "testing",
+        "tdd",
+        "automation",
+        "quality"
+      ],
+      "capabilities": [
+        "side-effects-only"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-14T07:49:14.779Z"
+    },
+    {
+      "name": "todo-tracker",
+      "description": "Counts TODO and FIXME comments in files after each write or edit. Warns if the count increases, helping keep technical debt visible without blocking progress.",
+      "author": "hookpm",
+      "event": "PostToolUse",
+      "tags": [
+        "code-quality",
+        "technical-debt",
+        "todos"
+      ],
+      "capabilities": [
+        "side-effects-only"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-14T07:49:14.779Z"
     },
     {
       "name": "token-usage-logger",
@@ -226,7 +449,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T06:42:51.888Z"
+      "updated_at": "2026-03-14T07:49:14.780Z"
     }
   ]
 }
