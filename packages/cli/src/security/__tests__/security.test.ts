@@ -9,49 +9,49 @@ describe('checkCapabilities()', () => {
   })
 
   it('returns dangerous:false for non-dangerous capabilities', () => {
-    expect(checkCapabilities(['block', 'read-stdin', 'write-stdout'])).toEqual({ dangerous: false })
+    expect(checkCapabilities(['block', 'read-stdin', 'write-stdout', 'side-effects-only'])).toEqual({ dangerous: false })
   })
 
-  it('returns dangerous:true when network_access is present', () => {
-    const result = checkCapabilities(['network_access'])
+  it('returns dangerous:true when modify-input is present', () => {
+    const result = checkCapabilities(['modify-input'])
     expect(result.dangerous).toBe(true)
     if (result.dangerous) {
-      expect(result.capabilities).toContain('network_access')
+      expect(result.capabilities).toContain('modify-input')
     }
   })
 
-  it('returns dangerous:true when file_write is present', () => {
-    const result = checkCapabilities(['file_write'])
+  it('returns dangerous:true when inject-context is present', () => {
+    const result = checkCapabilities(['inject-context'])
     expect(result.dangerous).toBe(true)
     if (result.dangerous) {
-      expect(result.capabilities).toContain('file_write')
+      expect(result.capabilities).toContain('inject-context')
     }
   })
 
-  it('returns dangerous:true when shell_exec is present', () => {
-    const result = checkCapabilities(['shell_exec'])
+  it('returns dangerous:true when approve is present', () => {
+    const result = checkCapabilities(['approve'])
     expect(result.dangerous).toBe(true)
     if (result.dangerous) {
-      expect(result.capabilities).toContain('shell_exec')
+      expect(result.capabilities).toContain('approve')
     }
   })
 
   it('returns all dangerous capabilities when multiple are present', () => {
-    const result = checkCapabilities(['network_access', 'file_write', 'shell_exec'])
+    const result = checkCapabilities(['modify-input', 'inject-context', 'approve'])
     expect(result.dangerous).toBe(true)
     if (result.dangerous) {
       expect(result.capabilities).toHaveLength(3)
-      expect(result.capabilities).toContain('network_access')
-      expect(result.capabilities).toContain('file_write')
-      expect(result.capabilities).toContain('shell_exec')
+      expect(result.capabilities).toContain('modify-input')
+      expect(result.capabilities).toContain('inject-context')
+      expect(result.capabilities).toContain('approve')
     }
   })
 
   it('filters out non-dangerous capabilities from the result', () => {
-    const result = checkCapabilities(['block', 'network_access', 'read-stdin'])
+    const result = checkCapabilities(['block', 'modify-input', 'read-stdin'])
     expect(result.dangerous).toBe(true)
     if (result.dangerous) {
-      expect(result.capabilities).toEqual(['network_access'])
+      expect(result.capabilities).toEqual(['modify-input'])
     }
   })
 })

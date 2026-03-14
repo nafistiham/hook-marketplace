@@ -7,9 +7,11 @@ export type CapabilityCheckResult =
 
 // Phase 1A: checks for dangerous capability flags
 // Phase 1B: will also verify Ed25519 signature
+// Dangerous capabilities: those that can modify agent inputs, inject context, or approve tool use
+const DANGEROUS_CAPABILITIES = new Set(['modify-input', 'inject-context', 'approve'])
+
 export function checkCapabilities(capabilities: string[]): CapabilityCheckResult {
-  const dangerous = ['network_access', 'file_write', 'shell_exec']
-  const found = capabilities.filter((c) => dangerous.includes(c))
+  const found = capabilities.filter((c) => DANGEROUS_CAPABILITIES.has(c))
   if (found.length === 0) return { dangerous: false }
   return { dangerous: true, capabilities: found }
 }
