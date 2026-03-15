@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-03-15T02:34:24.905Z",
+  "generated_at": "2026-03-15T03:03:38.767Z",
   "hooks": [
     {
       "name": "bash-danger-guard",
@@ -27,7 +27,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.899Z"
+      "updated_at": "2026-03-15T03:03:38.761Z"
     },
     {
       "name": "conflict-marker-guard",
@@ -54,7 +54,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.901Z"
+      "updated_at": "2026-03-15T03:03:38.762Z"
     },
     {
       "name": "console-log-guard",
@@ -82,7 +82,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.901Z"
+      "updated_at": "2026-03-15T03:03:38.762Z"
     },
     {
       "name": "create-checkpoint",
@@ -113,7 +113,7 @@
       ],
       "source": "https://github.com/carlrannaberg/claudekit",
       "submitted_by": "nafistiham",
-      "updated_at": "2026-03-15T02:34:24.902Z"
+      "updated_at": "2026-03-15T03:03:38.762Z"
     },
     {
       "name": "debug-artifact-guard",
@@ -140,7 +140,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.902Z"
+      "updated_at": "2026-03-15T03:03:38.763Z"
     },
     {
       "name": "dependency-audit",
@@ -168,7 +168,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.902Z"
+      "updated_at": "2026-03-15T03:03:38.763Z"
     },
     {
       "name": "dockerfile-lint",
@@ -197,7 +197,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.902Z"
+      "updated_at": "2026-03-15T03:03:38.763Z"
     },
     {
       "name": "env-leak-guard",
@@ -225,7 +225,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.902Z"
+      "updated_at": "2026-03-15T03:03:38.763Z"
     },
     {
       "name": "eslint-on-edit",
@@ -254,7 +254,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.902Z"
+      "updated_at": "2026-03-15T03:03:38.763Z"
     },
     {
       "name": "file-size-guard",
@@ -281,7 +281,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.903Z"
+      "updated_at": "2026-03-15T03:03:38.763Z"
     },
     {
       "name": "format-on-write",
@@ -311,7 +311,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.903Z"
+      "updated_at": "2026-03-15T03:03:38.764Z"
     },
     {
       "name": "git-commit-lint",
@@ -339,7 +339,34 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.903Z"
+      "updated_at": "2026-03-15T03:03:38.764Z"
+    },
+    {
+      "name": "hardcoded-url-guard",
+      "description": "Warns when source files contain hardcoded localhost or private-network URLs. Skips test files, .env files, and config files that legitimately set these values. Reports findings to stderr without blocking.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "code-quality",
+        "configuration",
+        "security"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:03:38.764Z"
     },
     {
       "name": "json-syntax-guard",
@@ -366,7 +393,34 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.903Z"
+      "updated_at": "2026-03-15T03:03:38.764Z"
+    },
+    {
+      "name": "kubernetes-resource-guard",
+      "description": "Validates Kubernetes manifests for security and resource hygiene. Blocks privileged containers immediately. Warns about missing resource limits and missing securityContext on Pod/Deployment kinds.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "kubernetes",
+        "security",
+        "infrastructure"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:03:38.764Z"
     },
     {
       "name": "large-file-upload-guard",
@@ -394,7 +448,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.903Z"
+      "updated_at": "2026-03-15T03:03:38.764Z"
     },
     {
       "name": "license-header-guard",
@@ -421,7 +475,34 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.903Z"
+      "updated_at": "2026-03-15T03:03:38.764Z"
+    },
+    {
+      "name": "long-line-guard",
+      "description": "Warns when code files contain lines over 120 characters. Shows the count of long lines and up to 3 worst offenders with line number and length. Skips minified, generated, and markdown files.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "code-quality",
+        "formatting",
+        "readability"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:03:38.765Z"
     },
     {
       "name": "no-direct-push-guard",
@@ -449,7 +530,89 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.903Z"
+      "updated_at": "2026-03-15T03:03:38.765Z"
+    },
+    {
+      "name": "no-eval-guard",
+      "description": "Blocks eval() and equivalent dynamic code execution in JS/TS/Python files. Detects eval(, new Function(, setTimeout/setInterval with string args in JS/TS, and eval(/exec(/compile( in Python. Reports exact line numbers.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "javascript",
+        "python",
+        "code-quality"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:03:38.765Z"
+    },
+    {
+      "name": "no-sleep-guard",
+      "description": "Warns about sleep/delay calls in production code across Python, JS/TS, Java, and Go. Blocks if the sleep value exceeds 60 seconds. Skips test files. Reports line numbers to stderr.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "code-quality",
+        "performance",
+        "async"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:03:38.765Z"
+    },
+    {
+      "name": "package-version-pin-guard",
+      "description": "Warns when package.json dependencies use unpinned version ranges (^ or ~). Reports up to 8 unpinned packages to stderr without blocking. Skips workspace root package.json files.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "npm",
+        "dependencies",
+        "reproducibility"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:03:38.765Z"
     },
     {
       "name": "port-scan-guard",
@@ -477,7 +640,34 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.904Z"
+      "updated_at": "2026-03-15T03:03:38.765Z"
+    },
+    {
+      "name": "print-statement-guard",
+      "description": "Warns when Python files contain bare print() calls that look like debug output. Reports line numbers to stderr without blocking. Skips test files and logging-related modules.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "python",
+        "debugging",
+        "code-quality"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:03:38.766Z"
     },
     {
       "name": "python-security-guard",
@@ -506,7 +696,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.904Z"
+      "updated_at": "2026-03-15T03:03:38.766Z"
     },
     {
       "name": "secret-scan-guard",
@@ -535,7 +725,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.904Z"
+      "updated_at": "2026-03-15T03:03:38.766Z"
     },
     {
       "name": "semgrep-guard",
@@ -564,7 +754,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.904Z"
+      "updated_at": "2026-03-15T03:03:38.766Z"
     },
     {
       "name": "sensitive-file-guard",
@@ -592,7 +782,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.904Z"
+      "updated_at": "2026-03-15T03:03:38.766Z"
     },
     {
       "name": "session-summary",
@@ -619,7 +809,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.904Z"
+      "updated_at": "2026-03-15T03:03:38.766Z"
     },
     {
       "name": "shellcheck-guard",
@@ -648,7 +838,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.904Z"
+      "updated_at": "2026-03-15T03:03:38.766Z"
     },
     {
       "name": "sql-injection-guard",
@@ -676,7 +866,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.905Z"
+      "updated_at": "2026-03-15T03:03:38.767Z"
     },
     {
       "name": "terraform-security-guard",
@@ -704,7 +894,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.905Z"
+      "updated_at": "2026-03-15T03:03:38.767Z"
     },
     {
       "name": "test-on-edit",
@@ -732,7 +922,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.905Z"
+      "updated_at": "2026-03-15T03:03:38.767Z"
     },
     {
       "name": "todo-tracker",
@@ -759,7 +949,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.905Z"
+      "updated_at": "2026-03-15T03:03:38.767Z"
     },
     {
       "name": "token-usage-logger",
@@ -787,7 +977,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.905Z"
+      "updated_at": "2026-03-15T03:03:38.767Z"
     },
     {
       "name": "typescript-noany-guard",
@@ -814,7 +1004,35 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.905Z"
+      "updated_at": "2026-03-15T03:03:38.767Z"
+    },
+    {
+      "name": "xml-syntax-guard",
+      "description": "Validates XML/SVG/XHTML syntax before writing. Uses Python's built-in xml.etree.ElementTree to parse content and blocks with the exact parse error if malformed. Pure stdlib, no external dependencies.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "xml",
+        "svg",
+        "syntax",
+        "validation"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:03:38.767Z"
     },
     {
       "name": "yaml-lint",
@@ -841,7 +1059,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T02:34:24.905Z"
+      "updated_at": "2026-03-15T03:03:38.767Z"
     }
   ]
 }

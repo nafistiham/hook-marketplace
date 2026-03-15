@@ -1,0 +1,36 @@
+{
+  "name": "no-eval-guard",
+  "version": "1.0.0",
+  "description": "Blocks eval() and equivalent dynamic code execution in JS/TS/Python files. Detects eval(, new Function(, setTimeout/setInterval with string args in JS/TS, and eval(/exec(/compile( in Python. Reports exact line numbers.",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PreToolUse",
+  "matcher": {
+    "tool_name": "^(Write|Edit)$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "python3 guard.py",
+    "async": false
+  },
+  "capabilities": ["block"],
+  "tags": ["security", "javascript", "python", "code-quality"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": [], "write": [] },
+    "env_vars": [],
+    "spawns_processes": false
+  },
+  "requires": {
+    "os": ["darwin", "linux"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}
