@@ -68,38 +68,86 @@ hookpm remove bash-danger-guard
 
 ---
 
-## Registry — 22 hooks
+## Registry — 46 hooks
+
+### Security
 
 | Hook | What it does |
 |------|-------------|
 | `bash-danger-guard` | Blocks dangerous bash commands (rm -rf, dd, mkfs, etc.) |
-| `create-checkpoint` | Git checkpoint before risky operations |
-| `dependency-audit` | Runs npm/pip audit after package file changes |
-| `dockerfile-lint` | Lints Dockerfiles for common anti-patterns (no hadolint needed) |
+| `cors-wildcard-guard` | Warns on CORS wildcard (`*`) patterns in source files |
+| `dockerfile-secrets-guard` | Blocks secrets baked into Dockerfile ENV/RUN instructions |
 | `env-leak-guard` | Blocks writes to .env files containing real secrets |
-| `eslint-on-edit` | Runs ESLint on JS/TS files after every write |
-| `file-size-guard` | Blocks writes over 500 KB |
-| `format-on-write` | Auto-formats code with Prettier or Black after write |
-| `git-commit-lint` | Enforces conventional commit message format |
-| `large-file-upload-guard` | Warns before uploading large files |
-| `no-direct-push-guard` | Blocks git push directly to main/master |
-| `port-scan-guard` | Warns when Dockerfile exposes sensitive ports |
+| `insecure-random-guard` | Warns when insecure RNG is used in security-sensitive contexts |
+| `no-eval-guard` | Blocks `eval()`, `exec()`, `new Function()` in JS/TS/Python |
+| `open-redirect-guard` | Warns on redirect-from-request-param patterns |
+| `prototype-pollution-guard` | Blocks `__proto__` access and warns on related patterns in JS/TS |
 | `python-security-guard` | Runs Bandit on Python files, blocks HIGH severity findings |
 | `secret-scan-guard` | Detects API keys, tokens, and credentials before writing |
 | `semgrep-guard` | Runs Semgrep (auto config) and blocks on ERROR findings |
 | `sensitive-file-guard` | Blocks writes to sensitive paths (keys, certs, credentials) |
-| `session-summary` | Writes a session summary when Claude Code ends |
-| `shellcheck-guard` | Runs ShellCheck on shell scripts, blocks on errors |
 | `sql-injection-guard` | Detects SQL injection patterns before writing |
+| `sql-query-builder-guard` | Blocks raw SQL string concatenation anti-patterns |
+| `weak-crypto-guard` | Blocks MD5, SHA-1, DES, RC4 usage in source files |
+
+### Code Quality
+
+| Hook | What it does |
+|------|-------------|
+| `conflict-marker-guard` | Blocks files containing git conflict markers |
+| `console-log-guard` | Warns on `console.log/debug` left in JS/TS files |
+| `debug-artifact-guard` | Blocks `debugger`, `pdb.set_trace()`, `binding.pry` artifacts |
+| `eslint-on-edit` | Runs ESLint on JS/TS files after every write |
+| `hardcoded-url-guard` | Warns on hardcoded localhost/private IP URLs in source files |
+| `license-header-guard` | Warns when source files are missing a license header |
+| `long-line-guard` | Warns on lines over 120 characters in code files |
+| `no-sleep-guard` | Warns on sleep/delay calls; blocks sleeps over 60 seconds |
+| `print-statement-guard` | Warns on bare `print()` calls in Python files |
+| `typescript-noany-guard` | Warns on explicit `any` usage in TypeScript files |
+| `unused-import-guard` | Warns on unused imports in Python files |
+
+### Linting & Validation
+
+| Hook | What it does |
+|------|-------------|
+| `dockerfile-lint` | Lints Dockerfiles for anti-patterns — no hadolint needed |
+| `git-commit-lint` | Enforces conventional commit message format |
+| `json-syntax-guard` | Validates JSON syntax before writing |
+| `kubernetes-resource-guard` | Blocks privileged containers; warns on missing resource limits |
+| `package-version-pin-guard` | Warns on unpinned `^`/`~` versions in package.json |
+| `shellcheck-guard` | Runs ShellCheck on shell scripts, blocks on errors |
+| `xml-syntax-guard` | Validates XML/SVG syntax before writing |
+| `yaml-lint` | Validates YAML syntax before writing |
+
+### Productivity & Automation
+
+| Hook | What it does |
+|------|-------------|
+| `create-checkpoint` | Git stash checkpoint before risky operations |
+| `dependency-audit` | Runs npm/pip audit after package file changes |
+| `file-size-guard` | Blocks writes over 500 KB |
+| `format-on-write` | Auto-formats code with Prettier or Black after write |
+| `large-file-upload-guard` | Warns before uploading large files |
+| `no-direct-push-guard` | Blocks git push directly to main/master |
+| `port-scan-guard` | Warns when Dockerfile exposes sensitive ports |
+| `session-summary` | Writes a session summary when Claude Code ends |
 | `test-on-edit` | Runs tests automatically after source file changes |
 | `todo-tracker` | Logs TODOs added to code to a tracking file |
 | `token-usage-logger` | Tracks token usage per session to a log file |
+
+### Infrastructure & DevOps
+
+| Hook | What it does |
+|------|-------------|
+| `terraform-security-guard` | Runs tfsec/checkov on Terraform files, blocks on HIGH findings |
 
 ---
 
 ## The Registry
 
 Hooks live in [`registry/hooks/`](./registry/hooks/). Each hook has a `hook.json` manifest and an implementation file (shell script, TypeScript, Python, etc.).
+
+The registry is backed by Cloudflare R2 and served via a Cloudflare Workers API at `api.nafistiham.com`. Downloads are tracked and rankings are available at `GET /registry/rankings`.
 
 ### Submitting a hook
 
@@ -115,12 +163,12 @@ Hooks live in [`registry/hooks/`](./registry/hooks/). Each hook has a `hook.json
 ```
 hook-marketplace/
 ├── packages/
-│   ├── cli/        # hookpm CLI — published to npm
+│   ├── cli/        # hookpm CLI — published to npm as hookpm
 │   └── schema/     # hook.json schema (Zod) — shared validation
 ├── registry/
-│   ├── hooks/      # one directory per hook
+│   ├── hooks/      # one directory per hook (46 and growing)
 │   └── index.json  # generated registry index (do not edit manually)
-├── api/            # Cloudflare Workers API (publish, auth, rankings)
+├── api/            # Cloudflare Workers API (publish, auth, rankings, reports)
 └── docs/           # design docs and strategy
 ```
 
