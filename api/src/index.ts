@@ -358,10 +358,26 @@ app.post('/registry/hooks', async (c) => {
     return errorResponse(422, 'VALIDATION_ERROR', `hook.json validation failed: ${summary}`)
   }
 
-  // 3b. Static analysis — detect network and subprocess usage
+  // 3b. Conflict check
+  const archiveKey = `hooks/${parsed.data.name}/${parsed.data.name}-${parsed.data.version}.tar.gz`
+  const existing = await c.env.HOOKPM_BUCKET.get(archiveKey)
+  if (existing) {
+    return errorResponse(409, 'CONFLICT', `${parsed.data.name}@${parsed.data.version} already exists`)
+  }
+
+  // 3c. Author check
+  if (!isAdmin && parsed.data.author !== user.username) {
+    return errorResponse(
+      403,
+      'FORBIDDEN',
+      `hook.json author '${parsed.data.author}' does not match authenticated user '${user.username}'`,
+    )
+  }
+
+  // 3d. Static analysis — detect network and subprocess usage
   const { calls_external_api, spawns_subprocess } = runStaticAnalysis(parsed.data)
 
-  // 3c. Attestation consistency check
+  // 3e. Attestation consistency check
   type AttestationConflict = { attestation: string; reason: string }
   const conflicts: AttestationConflict[] = []
   const attestations = parsed.data.attestations ?? []
@@ -403,22 +419,6 @@ app.post('/registry/hooks', async (c) => {
       calls_external_api,
       spawns_subprocess,
     },
-  }
-
-  // 4. Author check
-  if (!isAdmin && hook.author !== user.username) {
-    return errorResponse(
-      403,
-      'FORBIDDEN',
-      `hook.json author '${hook.author}' does not match authenticated user '${user.username}'`,
-    )
-  }
-
-  // 5. Conflict check
-  const archiveKey = `hooks/${hook.name}/${hook.name}-${hook.version}.tar.gz`
-  const existing = await c.env.HOOKPM_BUCKET.get(archiveKey)
-  if (existing) {
-    return errorResponse(409, 'CONFLICT', `${hook.name}@${hook.version} already exists`)
   }
 
   // 6. Upload to R2
