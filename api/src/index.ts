@@ -28,6 +28,7 @@ type Env = {
   CLERK_CLIENT_SECRET?: string
   SUPABASE_URL?: string
   SUPABASE_SERVICE_KEY?: string
+  ADMIN_TOKEN?: string
   // Test-only: injected by test env to bypass JWT verification
   __TEST_CLERK_USER?: ClerkUser | null
 }
@@ -348,8 +349,10 @@ app.post('/registry/hooks', async (c) => {
 
   const hook = parsed.data
 
-  // 4. Author check
-  if (hook.author !== user.username) {
+  // 4. Author check — admin token bypasses for bulk registry seeding
+  const isAdmin = c.env.ADMIN_TOKEN &&
+    c.req.raw.headers.get('X-Admin-Token') === c.env.ADMIN_TOKEN
+  if (!isAdmin && hook.author !== user.username) {
     return errorResponse(
       403,
       'FORBIDDEN',

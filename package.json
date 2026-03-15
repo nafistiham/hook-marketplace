@@ -10,7 +10,8 @@
     "build": "pnpm --recursive run build",
     "build-index": "tsx registry/scripts/build-index.ts",
     "validate-all": "tsx registry/scripts/validate-all.ts",
-    "build-archives": "tsx registry/scripts/build-archives.ts"
+    "build-archives": "tsx registry/scripts/build-archives.ts",
+    "sync-to-r2": "tsx registry/scripts/sync-to-r2.ts"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.0.0",
