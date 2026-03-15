@@ -599,6 +599,106 @@ app.post('/registry/hooks/:name/report', async (c) => {
   return c.json({ reported: true }, 202)
 })
 
+// ─── Rate a hook ─────────────────────────────────────────────────────────────
+
+app.post('/registry/hooks/:name/rate', async (c) => {
+  // 1. Resolve user (JWT)
+  const userOrErr = await resolveUser(c.req.raw, c.env)
+  if (userOrErr instanceof Response) return userOrErr
+  const user = userOrErr
+
+  // 2. Validate score 1-5 integer
+  let body: unknown
+  try {
+    body = await c.req.json()
+  } catch {
+    return errorResponse(422, 'INVALID_SCORE', 'score must be an integer between 1 and 5')
+  }
+
+  const { score } = body as { score?: unknown }
+  if (
+    typeof score !== 'number' ||
+    !Number.isInteger(score) ||
+    score < 1 ||
+    score > 5
+  ) {
+    return errorResponse(422, 'INVALID_SCORE', 'score must be an integer between 1 and 5')
+  }
+
+  // 3. KV rate limit check
+  if (c.env.AUTH_KV) {
+    const kvKey = `rate:${user.id}:ratings`
+    const current = await c.env.AUTH_KV.get(kvKey)
+    const count = current ? parseInt(current, 10) : 0
+    if (count >= 10) {
+      return errorResponse(429, 'RATE_LIMITED', 'Too many rating requests — try again later')
+    }
+    await c.env.AUTH_KV.put(kvKey, String(count + 1), { expirationTtl: 3600 })
+  }
+
+  // 4. Check hook exists in R2 index
+  const name = c.req.param('name')
+  const hooks = await getIndex(c)
+  const entry = hooks?.find((h) => h.name === name) ?? null
+  if (entry === null) {
+    return errorResponse(404, 'HOOK_NOT_FOUND', `Hook "${name}" not found`)
+  }
+
+  let rating_avg = entry.rating_avg
+  let rating_count = entry.rating_count
+
+  // 5. If Supabase configured: upsert rating, compute fresh aggregate
+  if (c.env.SUPABASE_URL && c.env.SUPABASE_SERVICE_KEY) {
+    const upsertRes = await fetch(`${c.env.SUPABASE_URL}/rest/v1/ratings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: c.env.SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${c.env.SUPABASE_SERVICE_KEY}`,
+        Prefer: 'resolution=merge-duplicates,return=minimal',
+      },
+      body: JSON.stringify([{ hook_name: name, user_id: user.id, score }]),
+    })
+
+    if (!upsertRes.ok) {
+      return errorResponse(502, 'SUPABASE_ERROR', 'Failed to store rating')
+    }
+
+    const aggRes = await fetch(
+      `${c.env.SUPABASE_URL}/rest/v1/ratings?hook_name=eq.${encodeURIComponent(name)}&select=score`,
+      {
+        headers: {
+          apikey: c.env.SUPABASE_SERVICE_KEY,
+          Authorization: `Bearer ${c.env.SUPABASE_SERVICE_KEY}`,
+        },
+      },
+    )
+
+    if (aggRes.ok) {
+      const rows = await aggRes.json() as Array<{ score: number }>
+      rating_count = rows.length
+      rating_avg = rating_count > 0 ? rows.reduce((s, r) => s + r.score, 0) / rating_count : 0
+    }
+
+    // Update R2 index entry (non-fatal on failure)
+    try {
+      const indexObj = await c.env.HOOKPM_BUCKET.get('index.json')
+      if (indexObj) {
+        const raw = JSON.parse(await indexObj.text()) as { schema_version: string; generated_at: string; hooks: HookIndexEntry[] }
+        const updatedHooks = raw.hooks.map((h) =>
+          h.name === name ? { ...h, rating_avg, rating_count } : h
+        )
+        await c.env.HOOKPM_BUCKET.put('index.json', JSON.stringify({ ...raw, hooks: updatedHooks }), {
+          httpMetadata: { contentType: 'application/json' },
+        })
+      }
+    } catch { /* non-fatal */ }
+  }
+
+  // 6. Return aggregate
+  return c.json({ ok: true, rating_avg, rating_count })
+})
+
 // ─── Rankings ─────────────────────────────────────────────────────────────────
 
 app.get('/registry/rankings', async (c) => {
