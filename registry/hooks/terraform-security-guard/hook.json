@@ -1,0 +1,36 @@
+{
+  "name": "terraform-security-guard",
+  "version": "1.0.0",
+  "description": "Runs tfsec or checkov (whichever is installed) on Terraform files before writing. Blocks on HIGH/CRITICAL findings from tfsec or FAILED checks from checkov. Falls back gracefully if neither tool is installed. Requires tfsec (brew install tfsec) or checkov (pip install checkov).",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PreToolUse",
+  "matcher": {
+    "tool_name": "^(Write|Edit)$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "python3 guard.py",
+    "async": false
+  },
+  "capabilities": ["block"],
+  "tags": ["terraform", "security", "infrastructure", "iac"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": [], "write": [] },
+    "env_vars": [],
+    "spawns_processes": true
+  },
+  "requires": {
+    "os": ["darwin", "linux"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}

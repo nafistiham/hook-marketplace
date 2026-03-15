@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-03-14T08:18:44.265Z",
+  "generated_at": "2026-03-15T02:34:24.905Z",
   "hooks": [
     {
       "name": "bash-danger-guard",
@@ -27,7 +27,62 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.260Z"
+      "updated_at": "2026-03-15T02:34:24.899Z"
+    },
+    {
+      "name": "conflict-marker-guard",
+      "description": "Blocks writes that contain git conflict markers (<<<<<<<, =======, >>>>>>>). Detects unresolved merge conflicts before they are saved to disk and reports the exact line numbers of each conflict marker found.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "git",
+        "conflicts",
+        "safety"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T02:34:24.901Z"
+    },
+    {
+      "name": "console-log-guard",
+      "description": "Warns when console.log/debug/warn/error calls are found in JS/TS files before writing. Shows line numbers. Does not block — emits warnings to stderr only. Skips test files.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "javascript",
+        "typescript",
+        "debugging",
+        "code-quality"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T02:34:24.901Z"
     },
     {
       "name": "create-checkpoint",
@@ -58,7 +113,34 @@
       ],
       "source": "https://github.com/carlrannaberg/claudekit",
       "submitted_by": "nafistiham",
-      "updated_at": "2026-03-14T08:18:44.262Z"
+      "updated_at": "2026-03-15T02:34:24.902Z"
+    },
+    {
+      "name": "debug-artifact-guard",
+      "description": "Blocks writes containing debug artifacts across multiple languages: debugger statements (JS/TS), pdb.set_trace/breakpoint (Python), binding.pry/byebug (Ruby), dd/dump/var_dump (PHP). Reports line numbers and what was found. Skips test files.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "debugging",
+        "code-quality",
+        "safety"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T02:34:24.902Z"
     },
     {
       "name": "dependency-audit",
@@ -86,7 +168,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.262Z"
+      "updated_at": "2026-03-15T02:34:24.902Z"
     },
     {
       "name": "dockerfile-lint",
@@ -115,7 +197,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.262Z"
+      "updated_at": "2026-03-15T02:34:24.902Z"
     },
     {
       "name": "env-leak-guard",
@@ -143,7 +225,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.262Z"
+      "updated_at": "2026-03-15T02:34:24.902Z"
     },
     {
       "name": "eslint-on-edit",
@@ -172,7 +254,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.262Z"
+      "updated_at": "2026-03-15T02:34:24.902Z"
     },
     {
       "name": "file-size-guard",
@@ -199,7 +281,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.263Z"
+      "updated_at": "2026-03-15T02:34:24.903Z"
     },
     {
       "name": "format-on-write",
@@ -229,7 +311,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.263Z"
+      "updated_at": "2026-03-15T02:34:24.903Z"
     },
     {
       "name": "git-commit-lint",
@@ -257,7 +339,34 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.263Z"
+      "updated_at": "2026-03-15T02:34:24.903Z"
+    },
+    {
+      "name": "json-syntax-guard",
+      "description": "Validates JSON syntax before writing .json files. Blocks with exact error message, line, and column if a syntax error is found. Skips package-lock.json and yarn.lock. Pure stdlib, no external dependencies.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "json",
+        "syntax",
+        "validation"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T02:34:24.903Z"
     },
     {
       "name": "large-file-upload-guard",
@@ -285,7 +394,34 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.263Z"
+      "updated_at": "2026-03-15T02:34:24.903Z"
+    },
+    {
+      "name": "license-header-guard",
+      "description": "Warns when source files (.py, .ts, .js, .go, .java, .rs) over 10 lines lack a license header in the first 5 lines. Checks for license, copyright, spdx, mit, apache, gpl, bsd keywords. Skips test and generated files.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "license",
+        "compliance",
+        "code-quality"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T02:34:24.903Z"
     },
     {
       "name": "no-direct-push-guard",
@@ -313,7 +449,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.263Z"
+      "updated_at": "2026-03-15T02:34:24.903Z"
     },
     {
       "name": "port-scan-guard",
@@ -341,7 +477,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.263Z"
+      "updated_at": "2026-03-15T02:34:24.904Z"
     },
     {
       "name": "python-security-guard",
@@ -370,7 +506,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.263Z"
+      "updated_at": "2026-03-15T02:34:24.904Z"
     },
     {
       "name": "secret-scan-guard",
@@ -399,7 +535,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.264Z"
+      "updated_at": "2026-03-15T02:34:24.904Z"
     },
     {
       "name": "semgrep-guard",
@@ -428,7 +564,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.264Z"
+      "updated_at": "2026-03-15T02:34:24.904Z"
     },
     {
       "name": "sensitive-file-guard",
@@ -456,7 +592,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.264Z"
+      "updated_at": "2026-03-15T02:34:24.904Z"
     },
     {
       "name": "session-summary",
@@ -483,7 +619,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.264Z"
+      "updated_at": "2026-03-15T02:34:24.904Z"
     },
     {
       "name": "shellcheck-guard",
@@ -512,7 +648,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.264Z"
+      "updated_at": "2026-03-15T02:34:24.904Z"
     },
     {
       "name": "sql-injection-guard",
@@ -540,7 +676,35 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.265Z"
+      "updated_at": "2026-03-15T02:34:24.905Z"
+    },
+    {
+      "name": "terraform-security-guard",
+      "description": "Runs tfsec or checkov (whichever is installed) on Terraform files before writing. Blocks on HIGH/CRITICAL findings from tfsec or FAILED checks from checkov. Falls back gracefully if neither tool is installed. Requires tfsec (brew install tfsec) or checkov (pip install checkov).",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "terraform",
+        "security",
+        "infrastructure",
+        "iac"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T02:34:24.905Z"
     },
     {
       "name": "test-on-edit",
@@ -568,7 +732,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.265Z"
+      "updated_at": "2026-03-15T02:34:24.905Z"
     },
     {
       "name": "todo-tracker",
@@ -595,7 +759,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.265Z"
+      "updated_at": "2026-03-15T02:34:24.905Z"
     },
     {
       "name": "token-usage-logger",
@@ -623,7 +787,61 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-14T08:18:44.265Z"
+      "updated_at": "2026-03-15T02:34:24.905Z"
+    },
+    {
+      "name": "typescript-noany-guard",
+      "description": "Warns when explicit `any` type usage is found in TypeScript files before writing. Detects `: any`, `as any`, `<any>`, and `Array<any>` patterns. Skips commented lines and test files. Emits up to 5 warnings to stderr with line numbers.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "typescript",
+        "type-safety",
+        "code-quality"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T02:34:24.905Z"
+    },
+    {
+      "name": "yaml-lint",
+      "description": "Validates YAML syntax before writing .yml/.yaml files. Uses Python's built-in yaml module (PyYAML) to parse the content and blocks with a descriptive error message and line number if a syntax error is found. No external dependencies beyond PyYAML.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "yaml",
+        "syntax",
+        "validation"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T02:34:24.905Z"
     }
   ]
 }

@@ -1,0 +1,36 @@
+{
+  "name": "typescript-noany-guard",
+  "version": "1.0.0",
+  "description": "Warns when explicit `any` type usage is found in TypeScript files before writing. Detects `: any`, `as any`, `<any>`, and `Array<any>` patterns. Skips commented lines and test files. Emits up to 5 warnings to stderr with line numbers.",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PreToolUse",
+  "matcher": {
+    "tool_name": "^(Write|Edit)$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "python3 guard.py",
+    "async": false
+  },
+  "capabilities": ["block"],
+  "tags": ["typescript", "type-safety", "code-quality"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": [], "write": [] },
+    "env_vars": [],
+    "spawns_processes": false
+  },
+  "requires": {
+    "os": ["darwin", "linux", "windows"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}
