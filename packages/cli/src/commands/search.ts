@@ -1,5 +1,6 @@
 import { fetchIndex } from '../registry/client.js'
 import { error, table } from './output.js'
+import { computeHealthTier, formatHealthTier, TRUST_THRESHOLDS } from '../trust.js'
 
 export async function runSearch(query?: string): Promise<void> {
   const result = await fetchIndex()
@@ -24,12 +25,20 @@ export async function runSearch(query?: string): Promise<void> {
     return
   }
 
-  const rows = hooks.map((h) => ({
-    name: h.name,
-    description: h.description,
-    event: h.event,
-    status: h.security?.reviewed ? '✓ reviewed' : '⚠ unreviewed',
-  }))
+  const rows = hooks.map((h) => {
+    const health = formatHealthTier(computeHealthTier(h))
+    const rating =
+      h.rating_count >= TRUST_THRESHOLDS.MIN_RATINGS_FOR_SCORE
+        ? `★ ${h.rating_avg.toFixed(1)} (${h.rating_count})`
+        : `(${h.rating_count})`
+    return {
+      name: h.name,
+      description: h.description,
+      event: h.event,
+      health,
+      rating,
+    }
+  })
 
-  table(rows, { columns: ['name', 'description', 'event', 'status'] })
+  table(rows, { columns: ['name', 'description', 'event', 'health', 'rating'] })
 }

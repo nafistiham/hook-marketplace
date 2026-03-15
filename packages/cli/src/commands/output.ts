@@ -84,6 +84,24 @@ export function hookDetail(hook: HookJsonRegistry): void {
     : '⚠ not yet reviewed by hookpm team'
   line('security', hook.security.sandbox_level)
   line('reviewed', reviewedLabel)
+
+  // API cost signal
+  if (hook.security.calls_external_api) {
+    line('api calls', '⚠ makes external API calls (may incur cost or latency)')
+  } else {
+    line('api calls', '· no external API calls')
+  }
+
+  // Subprocess signal (only show if true)
+  if (hook.security.spawns_subprocess) {
+    line('subprocesses', '⚠ spawns subprocesses')
+  }
+
+  // Author attestations (only show if present)
+  if (hook.attestations && hook.attestations.length > 0) {
+    line('attestations', `${hook.attestations.join(', ')} (author-declared)`)
+  }
+
   process.stdout.write('\n')
 }
 
