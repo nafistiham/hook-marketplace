@@ -358,9 +358,22 @@ app.post('/registry/hooks', async (c) => {
   }
 
   // Force reviewed=false on publish — only admin review endpoint can set this
+  const baseSecurityDefaults = {
+    sandbox_level: 'none' as const,
+    signed: false,
+    signed_by: null,
+    signature: null,
+    calls_external_api: false,
+    spawns_subprocess: false,
+  }
   const hook = {
     ...parsed.data,
-    security: { ...parsed.data.security, reviewed: false, review_date: null },
+    security: {
+      ...baseSecurityDefaults,
+      ...parsed.data.security,
+      reviewed: false,
+      review_date: null,
+    },
   }
 
   // 4. Author check
@@ -417,7 +430,12 @@ app.post('/registry/hooks', async (c) => {
       signed: false,
       signed_by: null,
       signature: null,
+      calls_external_api: false,
+      spawns_subprocess: false,
     },
+    attestations: hook.attestations ?? [],
+    rating_count: priorHooks.find((h) => h.name === hook.name)?.rating_count ?? 0,
+    rating_avg: priorHooks.find((h) => h.name === hook.name)?.rating_avg ?? 0,
     latest: hook.version,
     versions: [
       ...priorHooks.find((h) => h.name === hook.name)?.versions ?? [],

@@ -58,7 +58,10 @@ const HOOK: HookJsonRegistry = {
     signed: false,
     signed_by: null,
     signature: null,
+    calls_external_api: false,
+    spawns_subprocess: false,
   },
+  attestations: [],
 }
 
 // ─── Output capture ───────────────────────────────────────────────────────────

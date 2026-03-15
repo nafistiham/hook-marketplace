@@ -1,16 +1,51 @@
 import { describe, it, expect } from 'vitest'
+import { z } from 'zod'
 import {
   HookJsonSchema,
   HookJsonRegistrySchema,
   HookEventSchema,
   HandlerSchema,
   HookIndexSchema,
+  HookIndexEntrySchema,
+  SecuritySchema,
+  AttestationKey,
   HOOK_EVENTS,
   CAPABILITIES,
   validateHook,
 } from '../index.js'
 
 // ─── Minimal valid base object (author submission — no security) ───────────────
+
+const MINIMAL_HOOK = {
+  name: 'my-hook',
+  version: '1.0.0',
+  description: 'A test hook',
+  author: 'test-author',
+  license: 'MIT',
+  event: 'PreToolUse',
+  handler: { type: 'command', command: 'echo hello' },
+  capabilities: ['block'],
+}
+
+const MINIMAL_INDEX_ENTRY = {
+  name: 'my-hook',
+  description: 'A test hook',
+  author: 'test-author',
+  event: 'PreToolUse',
+  tags: [],
+  capabilities: ['block'],
+  security: {
+    sandbox_level: 'none',
+    reviewed: false,
+    review_date: null,
+    signed: false,
+    signed_by: null,
+    signature: null,
+  },
+  latest: '1.0.0',
+  versions: ['1.0.0'],
+  updated_at: '2026-03-10T00:00:00Z',
+}
 
 const VALID_COMMAND_HOOK = {
   name: 'my-hook',
@@ -566,5 +601,76 @@ describe('validateHook()', () => {
     if (!result.success) {
       expect(result.summary).toMatch(/name/)
     }
+  })
+})
+
+// ─── AttestationKey ───────────────────────────────────────────────────────────
+
+describe('AttestationKey', () => {
+  it('accepts valid attestation keys', () => {
+    const schema = z.array(AttestationKey)
+    expect(schema.parse(['no-network', 'read-only', 'local-only'])).toEqual(['no-network', 'read-only', 'local-only'])
+  })
+
+  it('rejects unknown attestation keys', () => {
+    expect(() => z.array(AttestationKey).parse(['unknown-key'])).toThrow()
+  })
+})
+
+// ─── HookJsonSchema — attestations field ─────────────────────────────────────
+
+describe('HookJsonSchema — attestations field', () => {
+  it('defaults attestations to empty array', () => {
+    const result = HookJsonSchema.parse(MINIMAL_HOOK)
+    expect(result.attestations).toEqual([])
+  })
+
+  it('accepts valid attestations array', () => {
+    const result = HookJsonSchema.parse({ ...MINIMAL_HOOK, attestations: ['no-network', 'read-only'] })
+    expect(result.attestations).toEqual(['no-network', 'read-only'])
+  })
+
+  it('rejects unknown attestation key', () => {
+    expect(() => HookJsonSchema.parse({ ...MINIMAL_HOOK, attestations: ['invalid-key'] })).toThrow()
+  })
+})
+
+// ─── SecuritySchema — new platform flags ─────────────────────────────────────
+
+describe('SecuritySchema — new platform flags', () => {
+  it('defaults calls_external_api to false', () => {
+    const result = SecuritySchema.parse({})
+    expect(result.calls_external_api).toBe(false)
+  })
+
+  it('defaults spawns_subprocess to false', () => {
+    const result = SecuritySchema.parse({})
+    expect(result.spawns_subprocess).toBe(false)
+  })
+
+  it('accepts calls_external_api: true', () => {
+    const result = SecuritySchema.parse({ calls_external_api: true })
+    expect(result.calls_external_api).toBe(true)
+  })
+})
+
+// ─── HookIndexEntrySchema — attestations and ratings ─────────────────────────
+
+describe('HookIndexEntrySchema — attestations and ratings', () => {
+  it('defaults attestations, rating_count, rating_avg', () => {
+    const result = HookIndexEntrySchema.parse(MINIMAL_INDEX_ENTRY)
+    expect(result.attestations).toEqual([])
+    expect(result.rating_count).toBe(0)
+    expect(result.rating_avg).toBe(0)
+  })
+
+  it('accepts rating_count and rating_avg', () => {
+    const result = HookIndexEntrySchema.parse({
+      ...MINIMAL_INDEX_ENTRY,
+      rating_count: 10,
+      rating_avg: 4.2,
+    })
+    expect(result.rating_count).toBe(10)
+    expect(result.rating_avg).toBe(4.2)
   })
 })

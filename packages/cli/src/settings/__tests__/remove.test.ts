@@ -28,7 +28,8 @@ function makeHook(overrides: Partial<HookJsonRegistry> = {}): HookJsonRegistry {
     tags: [],
     permissions: { network: { allowed: false, domains: [] }, filesystem: { read: [], write: [] }, env_vars: [], spawns_processes: false },
     requires: { os: ['darwin', 'linux', 'windows'], shell: ['bash', 'zsh', 'sh'] },
-    security: { sandbox_level: 'none', reviewed: false, review_date: null, signed: false, signed_by: null, signature: null },
+    security: { sandbox_level: 'none', reviewed: false, review_date: null, signed: false, signed_by: null, signature: null, calls_external_api: false, spawns_subprocess: false },
+    attestations: [],
     ...overrides,
   }
 }

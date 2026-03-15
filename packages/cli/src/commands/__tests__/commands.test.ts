@@ -60,7 +60,10 @@ const HOOK: HookJsonRegistry = {
     signed: false,
     signed_by: null,
     signature: null,
+    calls_external_api: false,
+    spawns_subprocess: false,
   },
+  attestations: [],
 }
 
 const INDEX_ENTRY: HookIndexEntry = {
@@ -77,10 +80,15 @@ const INDEX_ENTRY: HookIndexEntry = {
     signed: false,
     signed_by: null,
     signature: null,
+    calls_external_api: false,
+    spawns_subprocess: false,
   },
   latest: '1.0.0',
   versions: ['1.0.0'],
   updated_at: '2026-03-10T00:00:00Z',
+  attestations: [],
+  rating_count: 0,
+  rating_avg: 0,
 }
 
 const VALID_INDEX: HookIndex = {
