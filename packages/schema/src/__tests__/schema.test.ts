@@ -8,7 +8,7 @@ import {
   HookIndexSchema,
   HookIndexEntrySchema,
   SecuritySchema,
-  AttestationKey,
+  AttestationKeySchema,
   HOOK_EVENTS,
   CAPABILITIES,
   validateHook,
@@ -608,12 +608,12 @@ describe('validateHook()', () => {
 
 describe('AttestationKey', () => {
   it('accepts valid attestation keys', () => {
-    const schema = z.array(AttestationKey)
+    const schema = z.array(AttestationKeySchema)
     expect(schema.parse(['no-network', 'read-only', 'local-only'])).toEqual(['no-network', 'read-only', 'local-only'])
   })
 
   it('rejects unknown attestation keys', () => {
-    expect(() => z.array(AttestationKey).parse(['unknown-key'])).toThrow()
+    expect(() => z.array(AttestationKeySchema).parse(['unknown-key'])).toThrow()
   })
 })
 

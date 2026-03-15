@@ -52,8 +52,8 @@ export const ATTESTATION_KEYS = [
   'local-only',
 ] as const
 
-export const AttestationKey = z.enum(ATTESTATION_KEYS)
-export type AttestationKeyType = z.infer<typeof AttestationKey>
+export const AttestationKeySchema = z.enum(ATTESTATION_KEYS)
+export type AttestationKey = z.infer<typeof AttestationKeySchema>
 
 // ─── Handler — discriminated union ───────────────────────────────────────────
 
@@ -227,7 +227,7 @@ export const HookJsonSchema = z.object({
   requires: RequiresSchema,
   security: SecuritySchema.optional(),
   provenance: ProvenanceSchema,
-  attestations: z.array(AttestationKey).default([]),
+  attestations: z.array(AttestationKeySchema).default([]),
 })
 
 export type HookJson = z.infer<typeof HookJsonSchema>
@@ -253,7 +253,7 @@ export const HookIndexEntrySchema = z.object({
   source: z.string().url().optional(),
   submitted_by: z.string().optional(),
   updated_at: z.string(),
-  attestations: z.array(AttestationKey).default([]),
+  attestations: z.array(AttestationKeySchema).default([]),
   rating_count: z.number().int().nonnegative().default(0),
   rating_avg: z.number().min(0).max(5).default(0),
 })
