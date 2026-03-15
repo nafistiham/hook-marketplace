@@ -143,18 +143,31 @@ hookpm remove bash-danger-guard
 
 ---
 
-## The Registry
+## Publishing a Hook
 
-Hooks live in [`registry/hooks/`](./registry/hooks/). Each hook has a `hook.json` manifest and an implementation file (shell script, TypeScript, Python, etc.).
+Anyone can publish a hook directly — no PR required.
 
-The registry is backed by Cloudflare R2 and served via a Cloudflare Workers API at `api.nafistiham.com`. Downloads are tracked and rankings are available at `GET /registry/rankings`.
+```sh
+hookpm login          # authenticate with GitHub (once)
+hookpm publish        # run from your hook directory
+```
 
-### Submitting a hook
+Your hook directory needs a valid `hook.json` and an implementation file. See the [schema](./packages/schema/src/schema.ts) for the full spec.
+
+### Submitting via pull request
+
+Prefer to have your hook reviewed before publishing? Open a PR instead:
 
 1. Fork this repo
 2. Create `registry/hooks/<your-hook-name>/hook.json` following the [schema](./packages/schema/src/schema.ts)
 3. Add your implementation file
 4. Open a pull request — CI validates the schema automatically
+
+---
+
+## The Registry
+
+The registry is backed by Cloudflare R2 and served via a Cloudflare Workers API at `api.nafistiham.com`. All `hookpm install`, `search`, and `info` commands read from the live API. Downloads are tracked and hook rankings are available at `GET /registry/rankings`.
 
 ---
 
