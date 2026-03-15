@@ -41,6 +41,20 @@ export const CAPABILITIES = [
 export const CapabilitySchema = z.enum(CAPABILITIES)
 export type HookCapability = z.infer<typeof CapabilitySchema>
 
+// ─── Attestations ─────────────────────────────────────────────────────────────
+
+export const ATTESTATION_KEYS = [
+  'no-network',
+  'read-only',
+  'no-env-access',
+  'no-subprocess',
+  'idempotent',
+  'local-only',
+] as const
+
+export const AttestationKey = z.enum(ATTESTATION_KEYS)
+export type AttestationKeyType = z.infer<typeof AttestationKey>
+
 // ─── Handler — discriminated union ───────────────────────────────────────────
 
 const BaseHandlerSchema = z.object({
@@ -167,6 +181,8 @@ export const SecuritySchema = z.object({
   signed: z.boolean().default(false),
   signed_by: z.string().nullable().default(null),
   signature: z.string().nullable().default(null),
+  calls_external_api: z.boolean().default(false),
+  spawns_subprocess: z.boolean().default(false),
 })
 
 export type HookSecurity = z.infer<typeof SecuritySchema>
@@ -211,6 +227,7 @@ export const HookJsonSchema = z.object({
   requires: RequiresSchema,
   security: SecuritySchema.optional(),
   provenance: ProvenanceSchema,
+  attestations: z.array(AttestationKey).default([]),
 })
 
 export type HookJson = z.infer<typeof HookJsonSchema>
@@ -236,6 +253,9 @@ export const HookIndexEntrySchema = z.object({
   source: z.string().url().optional(),
   submitted_by: z.string().optional(),
   updated_at: z.string(),
+  attestations: z.array(AttestationKey).default([]),
+  rating_count: z.number().int().nonnegative().default(0),
+  rating_avg: z.number().min(0).max(5).default(0),
 })
 
 export type HookIndexEntry = z.infer<typeof HookIndexEntrySchema>
