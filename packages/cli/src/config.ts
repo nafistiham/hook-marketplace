@@ -11,7 +11,7 @@ const ConfigSchema = z.object({
       message: 'HOOKPM_REGISTRY_URL must use https',
     })
     .default(
-      'https://raw.githubusercontent.com/nafistiham/hook-marketplace/main/registry',
+      'https://api.nafistiham.com/registry',
     ),
 
   apiUrl: z
