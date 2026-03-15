@@ -1,7 +1,9 @@
 #!/bin/bash
 # create-checkpoint — auto-stash uncommitted changes at end of Claude session
-# Source: https://github.com/carlrannaberg/claudekit (MIT)
-# Adapted for hookpm registry by nafistiham
+#
+# Adapted from claudekit (https://github.com/carlrannaberg/claudekit)
+# Copyright (c) 2024 claudekit contributors
+# MIT License — https://github.com/carlrannaberg/claudekit/blob/main/LICENSE
 
 MAX_CHECKPOINTS=10
 
