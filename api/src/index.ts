@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import { HookJsonSchema, HookIndexSchema } from '@hookpm/schema'
 import type { HookIndexEntry } from '@hookpm/schema'
 import { createRemoteJWKSet, jwtVerify, errors as joseErrors } from 'jose'
+import { runStaticAnalysis } from './static-analysis.js'
 
 // ─── Env bindings ─────────────────────────────────────────────────────────────
 
@@ -357,6 +358,31 @@ app.post('/registry/hooks', async (c) => {
     return errorResponse(422, 'VALIDATION_ERROR', `hook.json validation failed: ${summary}`)
   }
 
+  // 3b. Static analysis — detect network and subprocess usage
+  const { calls_external_api, spawns_subprocess } = runStaticAnalysis(parsed.data)
+
+  // 3c. Attestation consistency check
+  type AttestationConflict = { attestation: string; reason: string }
+  const conflicts: AttestationConflict[] = []
+  const attestations = parsed.data.attestations ?? []
+
+  if (attestations.includes('no-network') && calls_external_api) {
+    conflicts.push({
+      attestation: 'no-network',
+      reason: 'Handler makes external HTTP/API calls (detected via static analysis)',
+    })
+  }
+  if (attestations.includes('no-subprocess') && spawns_subprocess) {
+    conflicts.push({
+      attestation: 'no-subprocess',
+      reason: 'Handler spawns subprocesses (detected via static analysis)',
+    })
+  }
+
+  if (conflicts.length > 0) {
+    return Response.json({ ok: false, error: 'ATTESTATION_CONFLICT', conflicts }, { status: 400 })
+  }
+
   // Force reviewed=false on publish — only admin review endpoint can set this
   const baseSecurityDefaults = {
     sandbox_level: 'none' as const,
@@ -373,6 +399,9 @@ app.post('/registry/hooks', async (c) => {
       ...parsed.data.security,
       reviewed: false,
       review_date: null,
+      sandbox_level: 'static-analysis' as const,
+      calls_external_api,
+      spawns_subprocess,
     },
   }
 
