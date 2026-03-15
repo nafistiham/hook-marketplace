@@ -148,26 +148,17 @@ hookpm remove bash-danger-guard
 Anyone can publish a hook directly — no PR required.
 
 ```sh
-hookpm login          # authenticate with GitHub (once)
-hookpm publish        # run from your hook directory
+hookpm login      # authenticate with GitHub (once)
+hookpm publish    # run from your hook directory
 ```
 
-Your hook directory needs a valid `hook.json` and an implementation file. See the [schema](./packages/schema/src/schema.ts) for the full spec.
-
-### Submitting via pull request
-
-Prefer to have your hook reviewed before publishing? Open a PR instead:
-
-1. Fork this repo
-2. Create `registry/hooks/<your-hook-name>/hook.json` following the [schema](./packages/schema/src/schema.ts)
-3. Add your implementation file
-4. Open a pull request — CI validates the schema automatically
+Your hook directory needs a `hook.json` manifest and an implementation file. The manifest is validated against the [schema](./packages/schema/src/schema.ts) on publish — invalid hooks are rejected automatically.
 
 ---
 
 ## The Registry
 
-The registry is backed by Cloudflare R2 and served via a Cloudflare Workers API at `api.nafistiham.com`. All `hookpm install`, `search`, and `info` commands read from the live API. Downloads are tracked and hook rankings are available at `GET /registry/rankings`.
+The registry is backed by Cloudflare R2 and served via a Cloudflare Workers API at `api.nafistiham.com`. All install, search, and info commands read from the live API. Downloads are tracked and rankings are available at `GET /registry/rankings`.
 
 ---
 
@@ -179,7 +170,7 @@ hook-marketplace/
 │   ├── cli/        # hookpm CLI — published to npm as hookpm
 │   └── schema/     # hook.json schema (Zod) — shared validation
 ├── registry/
-│   ├── hooks/      # one directory per hook (46 and growing)
+│   ├── hooks/      # canonical hook source (46 and growing)
 │   └── index.json  # generated registry index (do not edit manually)
 ├── api/            # Cloudflare Workers API (publish, auth, rankings, reports)
 └── docs/           # design docs and strategy
@@ -189,11 +180,9 @@ hook-marketplace/
 
 ## Contributing
 
-- **New hook:** open a PR adding your hook to `registry/hooks/`
+- **Publish a hook:** `hookpm login` then `hookpm publish` — no PR needed
 - **Bug in the CLI:** open an issue or PR against `packages/cli/`
-- **Design discussion:** check `docs/design/` for current architecture docs
-
-All hooks go through automated schema validation. Security-sensitive hooks get an additional manual review before merge.
+- **Design discussion:** check `docs/design/` for architecture docs
 
 ---
 
