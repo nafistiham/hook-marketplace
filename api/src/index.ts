@@ -303,13 +303,23 @@ app.get('/registry/hooks/:name/:filename', async (c) => {
 // ─── Publish (POST /registry/hooks) ──────────────────────────────────────────
 
 app.post('/registry/hooks', async (c) => {
-  const rateLimited = await checkRateLimit(c.env, c.req.raw)
-  if (rateLimited) return rateLimited
+  // 1. Admin shortcut — skip rate limit and auth entirely
+  const isAdmin = !!(c.env.ADMIN_TOKEN &&
+    c.req.raw.headers.get('X-Admin-Token') === c.env.ADMIN_TOKEN)
 
-  // 1. Auth
-  const userOrErr = await resolveUser(c.req.raw, c.env)
-  if (userOrErr instanceof Response) return userOrErr
-  const user = userOrErr
+  if (!isAdmin) {
+    const rateLimited = await checkRateLimit(c.env, c.req.raw)
+    if (rateLimited) return rateLimited
+  }
+
+  let user: ClerkUser
+  if (isAdmin) {
+    user = { id: 'admin', username: 'hookpm' }
+  } else {
+    const userOrErr = await resolveUser(c.req.raw, c.env)
+    if (userOrErr instanceof Response) return userOrErr
+    user = userOrErr
+  }
 
   // 2. Parse multipart
   let form: FormData
@@ -349,9 +359,7 @@ app.post('/registry/hooks', async (c) => {
 
   const hook = parsed.data
 
-  // 4. Author check — admin token bypasses for bulk registry seeding
-  const isAdmin = c.env.ADMIN_TOKEN &&
-    c.req.raw.headers.get('X-Admin-Token') === c.env.ADMIN_TOKEN
+  // 4. Author check
   if (!isAdmin && hook.author !== user.username) {
     return errorResponse(
       403,

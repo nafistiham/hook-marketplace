@@ -27,12 +27,13 @@ function loadToken(): string {
     console.error('Not logged in. Run: node dist/index.js login')
     process.exit(1)
   }
-  const raw = JSON.parse(fs.readFileSync(AUTH_PATH, 'utf8')) as { token: string }
-  if (!raw.token) {
+  const raw = JSON.parse(fs.readFileSync(AUTH_PATH, 'utf8')) as { token?: string; clerk_token?: string }
+  const token = raw.token ?? raw.clerk_token
+  if (!token) {
     console.error('Auth file missing token. Run: node dist/index.js login')
     process.exit(1)
   }
-  return raw.token
+  return token
 }
 
 // ─── Upload one hook ──────────────────────────────────────────────────────────
@@ -107,6 +108,8 @@ async function main() {
     const result = await uploadHook(name, token)
     if (result === 'error') errors++
     else ok++
+    // Small delay to avoid any transient throttling
+    await new Promise((r) => setTimeout(r, 200))
   }
 
   console.log(`\n${ok} synced, ${errors} error(s)`)
