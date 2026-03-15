@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-03-15T03:03:38.767Z",
+  "generated_at": "2026-03-15T03:16:34.861Z",
   "hooks": [
     {
       "name": "bash-danger-guard",
@@ -27,7 +27,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.761Z"
+      "updated_at": "2026-03-15T03:16:34.854Z"
     },
     {
       "name": "conflict-marker-guard",
@@ -54,7 +54,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.762Z"
+      "updated_at": "2026-03-15T03:16:34.856Z"
     },
     {
       "name": "console-log-guard",
@@ -82,7 +82,35 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.762Z"
+      "updated_at": "2026-03-15T03:16:34.856Z"
+    },
+    {
+      "name": "cors-wildcard-guard",
+      "description": "Warns about CORS wildcard patterns (Access-Control-Allow-Origin: *) in TS, JS, Python, Go, Java, and Ruby files. Reports exact line numbers. Does not block — wildcard CORS may be intentional for public APIs.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "cors",
+        "api",
+        "web"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:16:34.856Z"
     },
     {
       "name": "create-checkpoint",
@@ -113,7 +141,7 @@
       ],
       "source": "https://github.com/carlrannaberg/claudekit",
       "submitted_by": "nafistiham",
-      "updated_at": "2026-03-15T03:03:38.762Z"
+      "updated_at": "2026-03-15T03:16:34.856Z"
     },
     {
       "name": "debug-artifact-guard",
@@ -140,7 +168,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.763Z"
+      "updated_at": "2026-03-15T03:16:34.856Z"
     },
     {
       "name": "dependency-audit",
@@ -168,7 +196,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.763Z"
+      "updated_at": "2026-03-15T03:16:34.856Z"
     },
     {
       "name": "dockerfile-lint",
@@ -197,7 +225,35 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.763Z"
+      "updated_at": "2026-03-15T03:16:34.857Z"
+    },
+    {
+      "name": "dockerfile-secrets-guard",
+      "description": "Blocks secrets baked into Dockerfiles via ENV instructions with secret-looking names (*_KEY, *_SECRET, *_TOKEN, *_PASSWORD, DATABASE_URL). Warns on ARG instructions with the same naming patterns.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "docker",
+        "security",
+        "secrets",
+        "devops"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:16:34.857Z"
     },
     {
       "name": "env-leak-guard",
@@ -225,7 +281,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.763Z"
+      "updated_at": "2026-03-15T03:16:34.857Z"
     },
     {
       "name": "eslint-on-edit",
@@ -254,7 +310,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.763Z"
+      "updated_at": "2026-03-15T03:16:34.857Z"
     },
     {
       "name": "file-size-guard",
@@ -281,7 +337,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.763Z"
+      "updated_at": "2026-03-15T03:16:34.857Z"
     },
     {
       "name": "format-on-write",
@@ -311,7 +367,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.764Z"
+      "updated_at": "2026-03-15T03:16:34.857Z"
     },
     {
       "name": "git-commit-lint",
@@ -339,7 +395,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.764Z"
+      "updated_at": "2026-03-15T03:16:34.857Z"
     },
     {
       "name": "hardcoded-url-guard",
@@ -366,7 +422,34 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.764Z"
+      "updated_at": "2026-03-15T03:16:34.857Z"
+    },
+    {
+      "name": "insecure-random-guard",
+      "description": "Warns when insecure RNG functions (Math.random, random.randint, etc.) are used in security-sensitive contexts — variables named token, key, secret, password, nonce, salt, or session.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "cryptography",
+        "randomness"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:16:34.858Z"
     },
     {
       "name": "json-syntax-guard",
@@ -393,7 +476,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.764Z"
+      "updated_at": "2026-03-15T03:16:34.858Z"
     },
     {
       "name": "kubernetes-resource-guard",
@@ -420,7 +503,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.764Z"
+      "updated_at": "2026-03-15T03:16:34.858Z"
     },
     {
       "name": "large-file-upload-guard",
@@ -448,7 +531,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.764Z"
+      "updated_at": "2026-03-15T03:16:34.858Z"
     },
     {
       "name": "license-header-guard",
@@ -475,7 +558,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.764Z"
+      "updated_at": "2026-03-15T03:16:34.858Z"
     },
     {
       "name": "long-line-guard",
@@ -502,7 +585,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.765Z"
+      "updated_at": "2026-03-15T03:16:34.858Z"
     },
     {
       "name": "no-direct-push-guard",
@@ -530,7 +613,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.765Z"
+      "updated_at": "2026-03-15T03:16:34.858Z"
     },
     {
       "name": "no-eval-guard",
@@ -558,7 +641,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.765Z"
+      "updated_at": "2026-03-15T03:16:34.858Z"
     },
     {
       "name": "no-sleep-guard",
@@ -585,7 +668,34 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.765Z"
+      "updated_at": "2026-03-15T03:16:34.859Z"
+    },
+    {
+      "name": "open-redirect-guard",
+      "description": "Warns about potential open redirect vulnerabilities where redirect targets are derived from user-controlled request parameters. Reports exact line numbers. Does not block — needs human judgment.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "web",
+        "owasp"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:16:34.859Z"
     },
     {
       "name": "package-version-pin-guard",
@@ -612,7 +722,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.765Z"
+      "updated_at": "2026-03-15T03:16:34.859Z"
     },
     {
       "name": "port-scan-guard",
@@ -640,7 +750,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.765Z"
+      "updated_at": "2026-03-15T03:16:34.859Z"
     },
     {
       "name": "print-statement-guard",
@@ -667,7 +777,34 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.766Z"
+      "updated_at": "2026-03-15T03:16:34.859Z"
+    },
+    {
+      "name": "prototype-pollution-guard",
+      "description": "Blocks prototype pollution patterns in JS/TS files. Detects __proto__ access, constructor.prototype manipulation, and Object.assign with untrusted targets. Reports exact line numbers.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "javascript",
+        "owasp"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:16:34.859Z"
     },
     {
       "name": "python-security-guard",
@@ -696,7 +833,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.766Z"
+      "updated_at": "2026-03-15T03:16:34.859Z"
     },
     {
       "name": "secret-scan-guard",
@@ -725,7 +862,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.766Z"
+      "updated_at": "2026-03-15T03:16:34.859Z"
     },
     {
       "name": "semgrep-guard",
@@ -754,7 +891,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.766Z"
+      "updated_at": "2026-03-15T03:16:34.859Z"
     },
     {
       "name": "sensitive-file-guard",
@@ -782,7 +919,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.766Z"
+      "updated_at": "2026-03-15T03:16:34.860Z"
     },
     {
       "name": "session-summary",
@@ -809,7 +946,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.766Z"
+      "updated_at": "2026-03-15T03:16:34.860Z"
     },
     {
       "name": "shellcheck-guard",
@@ -838,7 +975,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.766Z"
+      "updated_at": "2026-03-15T03:16:34.860Z"
     },
     {
       "name": "sql-injection-guard",
@@ -866,7 +1003,35 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.767Z"
+      "updated_at": "2026-03-15T03:16:34.860Z"
+    },
+    {
+      "name": "sql-query-builder-guard",
+      "description": "Blocks raw SQL string concatenation and f-string query building. Detects SELECT/WHERE clauses built via + operator or .format(). Skips test files and ORM schema files.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "sql",
+        "database",
+        "owasp"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:16:34.860Z"
     },
     {
       "name": "terraform-security-guard",
@@ -894,7 +1059,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.767Z"
+      "updated_at": "2026-03-15T03:16:34.860Z"
     },
     {
       "name": "test-on-edit",
@@ -922,7 +1087,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.767Z"
+      "updated_at": "2026-03-15T03:16:34.860Z"
     },
     {
       "name": "todo-tracker",
@@ -949,7 +1114,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.767Z"
+      "updated_at": "2026-03-15T03:16:34.860Z"
     },
     {
       "name": "token-usage-logger",
@@ -977,7 +1142,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.767Z"
+      "updated_at": "2026-03-15T03:16:34.860Z"
     },
     {
       "name": "typescript-noany-guard",
@@ -1004,7 +1169,61 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.767Z"
+      "updated_at": "2026-03-15T03:16:34.860Z"
+    },
+    {
+      "name": "unused-import-guard",
+      "description": "Warns about unused imports in Python files using a heuristic name-presence check. Reports up to 5 unused imports. Does not block. Skips test files and __init__.py.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "python",
+        "code-quality",
+        "cleanup"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:16:34.861Z"
+    },
+    {
+      "name": "weak-crypto-guard",
+      "description": "Blocks use of weak cryptographic algorithms (MD5, SHA-1, DES, RC4) in source files. Reports the algorithm and exact line numbers. Allows nosec annotations and checksum-context uses.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "cryptography",
+        "owasp"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-15T03:16:34.861Z"
     },
     {
       "name": "xml-syntax-guard",
@@ -1032,7 +1251,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.767Z"
+      "updated_at": "2026-03-15T03:16:34.861Z"
     },
     {
       "name": "yaml-lint",
@@ -1059,7 +1278,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:03:38.767Z"
+      "updated_at": "2026-03-15T03:16:34.861Z"
     }
   ]
 }
