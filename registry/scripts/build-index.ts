@@ -7,6 +7,7 @@ import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { HookJsonSchema, SecuritySchema } from '../../packages/schema/src/schema.js'
 import type { HookIndexEntry } from '../../packages/schema/src/schema.js'
+import { scanHookDir } from './static-analysis-node.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const registryDir = path.resolve(__dirname, '..')
@@ -61,8 +62,16 @@ for (const hookName of hookDirs) {
 
   const manifest = result.data
 
-  // Security field: use from manifest if present, else apply safe defaults
-  const security = SecuritySchema.parse(manifest.security ?? {})
+  // Full source file scan (Node.js can read from disk, unlike the CF Worker)
+  const hookDir = path.join(hooksDir, hookName)
+  const { calls_external_api, spawns_subprocess } = scanHookDir(hookDir)
+
+  // Security field: merge manifest security with scanned platform flags
+  const security = SecuritySchema.parse({
+    ...(manifest.security ?? {}),
+    calls_external_api,
+    spawns_subprocess,
+  })
 
   const entry: HookIndexEntry = {
     name: manifest.name,
@@ -72,6 +81,9 @@ for (const hookName of hookDirs) {
     tags: manifest.tags,
     capabilities: manifest.capabilities,
     security,
+    attestations: manifest.attestations ?? [],
+    rating_count: 0,
+    rating_avg: 0,
     latest: manifest.version,
     versions: [manifest.version],
     ...(manifest.provenance?.source ? { source: manifest.provenance.source } : {}),

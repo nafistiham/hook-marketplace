@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-03-15T03:16:34.861Z",
+  "generated_at": "2026-03-15T08:46:58.781Z",
   "hooks": [
     {
       "name": "bash-danger-guard",
@@ -21,13 +21,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": true,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.854Z"
+      "updated_at": "2026-03-15T08:46:58.742Z"
     },
     {
       "name": "conflict-marker-guard",
@@ -48,13 +53,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.856Z"
+      "updated_at": "2026-03-15T08:46:58.744Z"
     },
     {
       "name": "console-log-guard",
@@ -76,13 +86,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.856Z"
+      "updated_at": "2026-03-15T08:46:58.745Z"
     },
     {
       "name": "cors-wildcard-guard",
@@ -104,13 +119,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.856Z"
+      "updated_at": "2026-03-15T08:46:58.746Z"
     },
     {
       "name": "create-checkpoint",
@@ -133,15 +153,20 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
       "source": "https://github.com/carlrannaberg/claudekit",
       "submitted_by": "nafistiham",
-      "updated_at": "2026-03-15T03:16:34.856Z"
+      "updated_at": "2026-03-15T08:46:58.747Z"
     },
     {
       "name": "debug-artifact-guard",
@@ -162,13 +187,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.856Z"
+      "updated_at": "2026-03-15T08:46:58.749Z"
     },
     {
       "name": "dependency-audit",
@@ -190,13 +220,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": true
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.856Z"
+      "updated_at": "2026-03-15T08:46:58.749Z"
     },
     {
       "name": "dockerfile-lint",
@@ -219,13 +254,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.857Z"
+      "updated_at": "2026-03-15T08:46:58.751Z"
     },
     {
       "name": "dockerfile-secrets-guard",
@@ -247,13 +287,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.857Z"
+      "updated_at": "2026-03-15T08:46:58.752Z"
     },
     {
       "name": "env-leak-guard",
@@ -275,13 +320,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.857Z"
+      "updated_at": "2026-03-15T08:46:58.753Z"
     },
     {
       "name": "eslint-on-edit",
@@ -304,13 +354,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": true
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.857Z"
+      "updated_at": "2026-03-15T08:46:58.754Z"
     },
     {
       "name": "file-size-guard",
@@ -331,13 +386,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.857Z"
+      "updated_at": "2026-03-15T08:46:58.754Z"
     },
     {
       "name": "format-on-write",
@@ -361,13 +421,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": true
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.857Z"
+      "updated_at": "2026-03-15T08:46:58.755Z"
     },
     {
       "name": "git-commit-lint",
@@ -389,13 +454,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.857Z"
+      "updated_at": "2026-03-15T08:46:58.756Z"
     },
     {
       "name": "hardcoded-url-guard",
@@ -416,13 +486,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.857Z"
+      "updated_at": "2026-03-15T08:46:58.757Z"
     },
     {
       "name": "insecure-random-guard",
@@ -443,13 +518,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.858Z"
+      "updated_at": "2026-03-15T08:46:58.757Z"
     },
     {
       "name": "json-syntax-guard",
@@ -470,13 +550,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.858Z"
+      "updated_at": "2026-03-15T08:46:58.758Z"
     },
     {
       "name": "kubernetes-resource-guard",
@@ -497,13 +582,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.858Z"
+      "updated_at": "2026-03-15T08:46:58.759Z"
     },
     {
       "name": "large-file-upload-guard",
@@ -525,13 +615,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.858Z"
+      "updated_at": "2026-03-15T08:46:58.759Z"
     },
     {
       "name": "license-header-guard",
@@ -552,13 +647,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.858Z"
+      "updated_at": "2026-03-15T08:46:58.760Z"
     },
     {
       "name": "long-line-guard",
@@ -579,13 +679,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.858Z"
+      "updated_at": "2026-03-15T08:46:58.761Z"
     },
     {
       "name": "no-direct-push-guard",
@@ -607,13 +712,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.858Z"
+      "updated_at": "2026-03-15T08:46:58.762Z"
     },
     {
       "name": "no-eval-guard",
@@ -635,13 +745,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": true
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.858Z"
+      "updated_at": "2026-03-15T08:46:58.763Z"
     },
     {
       "name": "no-sleep-guard",
@@ -662,13 +777,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.859Z"
+      "updated_at": "2026-03-15T08:46:58.763Z"
     },
     {
       "name": "open-redirect-guard",
@@ -689,13 +809,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.859Z"
+      "updated_at": "2026-03-15T08:46:58.765Z"
     },
     {
       "name": "package-version-pin-guard",
@@ -716,13 +841,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.859Z"
+      "updated_at": "2026-03-15T08:46:58.766Z"
     },
     {
       "name": "port-scan-guard",
@@ -744,13 +874,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.859Z"
+      "updated_at": "2026-03-15T08:46:58.767Z"
     },
     {
       "name": "print-statement-guard",
@@ -771,13 +906,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.859Z"
+      "updated_at": "2026-03-15T08:46:58.767Z"
     },
     {
       "name": "prototype-pollution-guard",
@@ -798,13 +938,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.859Z"
+      "updated_at": "2026-03-15T08:46:58.768Z"
     },
     {
       "name": "python-security-guard",
@@ -827,13 +972,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": true
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.859Z"
+      "updated_at": "2026-03-15T08:46:58.769Z"
     },
     {
       "name": "secret-scan-guard",
@@ -856,13 +1006,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": true
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.859Z"
+      "updated_at": "2026-03-15T08:46:58.770Z"
     },
     {
       "name": "semgrep-guard",
@@ -885,13 +1040,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": true
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.859Z"
+      "updated_at": "2026-03-15T08:46:58.770Z"
     },
     {
       "name": "sensitive-file-guard",
@@ -913,13 +1073,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.860Z"
+      "updated_at": "2026-03-15T08:46:58.771Z"
     },
     {
       "name": "session-summary",
@@ -940,13 +1105,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.860Z"
+      "updated_at": "2026-03-15T08:46:58.772Z"
     },
     {
       "name": "shellcheck-guard",
@@ -969,13 +1139,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": true
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.860Z"
+      "updated_at": "2026-03-15T08:46:58.773Z"
     },
     {
       "name": "sql-injection-guard",
@@ -997,13 +1172,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.860Z"
+      "updated_at": "2026-03-15T08:46:58.774Z"
     },
     {
       "name": "sql-query-builder-guard",
@@ -1025,13 +1205,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.860Z"
+      "updated_at": "2026-03-15T08:46:58.775Z"
     },
     {
       "name": "terraform-security-guard",
@@ -1053,13 +1238,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": true
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.860Z"
+      "updated_at": "2026-03-15T08:46:58.775Z"
     },
     {
       "name": "test-on-edit",
@@ -1081,13 +1271,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": true
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.860Z"
+      "updated_at": "2026-03-15T08:46:58.776Z"
     },
     {
       "name": "todo-tracker",
@@ -1108,13 +1303,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.860Z"
+      "updated_at": "2026-03-15T08:46:58.777Z"
     },
     {
       "name": "token-usage-logger",
@@ -1136,13 +1336,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.860Z"
+      "updated_at": "2026-03-15T08:46:58.778Z"
     },
     {
       "name": "typescript-noany-guard",
@@ -1163,13 +1368,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.860Z"
+      "updated_at": "2026-03-15T08:46:58.779Z"
     },
     {
       "name": "unused-import-guard",
@@ -1190,13 +1400,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.861Z"
+      "updated_at": "2026-03-15T08:46:58.779Z"
     },
     {
       "name": "weak-crypto-guard",
@@ -1217,13 +1432,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.861Z"
+      "updated_at": "2026-03-15T08:46:58.780Z"
     },
     {
       "name": "xml-syntax-guard",
@@ -1245,13 +1465,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.861Z"
+      "updated_at": "2026-03-15T08:46:58.781Z"
     },
     {
       "name": "yaml-lint",
@@ -1272,13 +1497,18 @@
         "review_date": null,
         "signed": false,
         "signed_by": null,
-        "signature": null
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
       },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
       "latest": "1.0.0",
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T03:16:34.861Z"
+      "updated_at": "2026-03-15T08:46:58.781Z"
     }
   ]
 }
