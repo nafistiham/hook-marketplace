@@ -357,7 +357,11 @@ app.post('/registry/hooks', async (c) => {
     return errorResponse(422, 'VALIDATION_ERROR', `hook.json validation failed: ${summary}`)
   }
 
-  const hook = parsed.data
+  // Force reviewed=false on publish — only admin review endpoint can set this
+  const hook = {
+    ...parsed.data,
+    security: { ...parsed.data.security, reviewed: false, review_date: null },
+  }
 
   // 4. Author check
   if (!isAdmin && hook.author !== user.username) {
@@ -438,6 +442,59 @@ app.post('/registry/hooks', async (c) => {
   })
 
   return c.json({ name: hook.name, version: hook.version }, 201)
+})
+
+// ─── Review a hook (admin only) ───────────────────────────────────────────────
+
+app.post('/registry/hooks/:name/review', async (c) => {
+  const adminToken = c.env.ADMIN_TOKEN
+  if (!adminToken || c.req.raw.headers.get('X-Admin-Token') !== adminToken) {
+    return errorResponse(403, 'FORBIDDEN', 'Admin token required')
+  }
+
+  const name = c.req.param('name')
+  const manifestKey = `hooks/${name}/hook.json`
+  const obj = await c.env.HOOKPM_BUCKET.get(manifestKey)
+  if (!obj) return errorResponse(404, 'NOT_FOUND', `Hook "${name}" not found`)
+
+  let manifest: Record<string, unknown>
+  try {
+    manifest = JSON.parse(await obj.text()) as Record<string, unknown>
+  } catch {
+    return errorResponse(500, 'INTERNAL_ERROR', 'Failed to parse hook manifest')
+  }
+
+  const reviewDate = new Date().toISOString()
+  const updated = {
+    ...manifest,
+    security: {
+      ...(manifest['security'] as Record<string, unknown> ?? {}),
+      reviewed: true,
+      review_date: reviewDate,
+    },
+  }
+
+  await c.env.HOOKPM_BUCKET.put(manifestKey, JSON.stringify(updated), {
+    httpMetadata: { contentType: 'application/json' },
+  })
+
+  // Also update index.json entry
+  const indexObj = await c.env.HOOKPM_BUCKET.get('index.json')
+  if (indexObj) {
+    try {
+      const raw = JSON.parse(await indexObj.text()) as { schema_version: string; generated_at: string; hooks: HookIndexEntry[] }
+      const hooks = raw.hooks.map((h) =>
+        h.name === name
+          ? { ...h, security: { ...h.security, reviewed: true, review_date: reviewDate } }
+          : h
+      )
+      await c.env.HOOKPM_BUCKET.put('index.json', JSON.stringify({ ...raw, hooks }), {
+        httpMetadata: { contentType: 'application/json' },
+      })
+    } catch { /* index update failure is non-fatal */ }
+  }
+
+  return c.json({ name, reviewed: true, review_date: reviewDate })
 })
 
 // ─── Report a hook ────────────────────────────────────────────────────────────

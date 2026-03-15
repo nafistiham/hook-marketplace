@@ -79,7 +79,11 @@ export function hookDetail(hook: HookJsonRegistry): void {
   if (hook.tags.length) line('tags', hook.tags.join(', '))
   if (hook.requires?.os?.length) line('os', hook.requires.os.join(', '))
   if (hook.provenance?.source) line('source', hook.provenance.source)
-  line('security', hook.security.sandbox_level + (hook.security.reviewed ? ' (reviewed)' : ''))
+  const reviewedLabel = hook.security.reviewed
+    ? `✓ reviewed${hook.security.review_date ? ` on ${hook.security.review_date.slice(0, 10)}` : ''}`
+    : '⚠ not yet reviewed by hookpm team'
+  line('security', hook.security.sandbox_level)
+  line('reviewed', reviewedLabel)
   process.stdout.write('\n')
 }
 

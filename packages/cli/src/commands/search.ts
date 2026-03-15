@@ -28,7 +28,8 @@ export async function runSearch(query?: string): Promise<void> {
     name: h.name,
     description: h.description,
     event: h.event,
+    status: h.security?.reviewed ? '✓ reviewed' : '⚠ unreviewed',
   }))
 
-  table(rows, { columns: ['name', 'description', 'event'] })
+  table(rows, { columns: ['name', 'description', 'event', 'status'] })
 }

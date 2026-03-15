@@ -1,0 +1,121 @@
+{
+  "schema_version": "1",
+  "generated_at": "2026-03-13T23:35:04.255Z",
+  "hooks": [
+    {
+      "name": "bash-danger-guard",
+      "description": "Guards against dangerous bash commands by intercepting Bash tool calls and checking for rm -rf, chmod 777, curl | sh, and other high-risk patterns.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "bash",
+        "shell"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-13T23:35:04.252Z"
+    },
+    {
+      "name": "create-checkpoint",
+      "description": "Auto-saves uncommitted changes as a named git stash checkpoint at the end of each Claude session. Keeps the last 10 checkpoints. Never lose work after a Claude session.",
+      "author": "nafistiham",
+      "event": "Stop",
+      "tags": [
+        "git",
+        "safety",
+        "backup",
+        "checkpoint",
+        "session"
+      ],
+      "capabilities": [
+        "side-effects-only"
+      ],
+      "security": {
+        "sandbox_level": "none",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "source": "https://github.com/carlrannaberg/claudekit",
+      "submitted_by": "nafistiham",
+      "updated_at": "2026-03-13T23:35:04.254Z"
+    },
+    {
+      "name": "format-on-write",
+      "description": "Automatically formats files after Claude Code writes them. Detects the formatter based on file extension (prettier for JS/TS/JSON, black for Python, gofmt for Go).",
+      "author": "hookpm",
+      "event": "PostToolUse",
+      "tags": [
+        "formatting",
+        "developer-experience",
+        "python",
+        "javascript",
+        "typescript",
+        "go"
+      ],
+      "capabilities": [
+        "side-effects-only"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-13T23:35:04.254Z"
+    },
+    {
+      "name": "session-summary",
+      "description": "Appends a concise session summary to a daily log file when a Claude Code session ends. Captures the session transcript path, duration, and any incomplete todos.",
+      "author": "hookpm",
+      "event": "Stop",
+      "tags": [
+        "productivity",
+        "logging",
+        "session"
+      ],
+      "capabilities": [
+        "side-effects-only"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null
+      },
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "2026-03-13T23:35:04.255Z"
+    }
+  ]
+}

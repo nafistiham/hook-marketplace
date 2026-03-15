@@ -21,7 +21,13 @@ export async function runInstall(name: string, options: InstallOptions): Promise
 
   const hook = hookResult.data
 
-  // Step 2: Check for dangerous capabilities
+  // Step 2: Warn if hook has not been reviewed
+  if (!hook.security?.reviewed) {
+    process.stderr.write(`⚠ "${name}" has not been reviewed by the hookpm team yet.\n`)
+    process.stderr.write(`  It may still be safe — but proceed with caution.\n`)
+  }
+
+  // Step 3: Check for dangerous capabilities
   const capCheck = checkCapabilities(hook.capabilities)
   if (capCheck.dangerous) {
     const caps = capCheck.capabilities?.join(', ') ?? 'unknown'
@@ -35,7 +41,7 @@ export async function runInstall(name: string, options: InstallOptions): Promise
     }
   }
 
-  // Step 3: Download archive
+  // Step 4: Download archive
   startSpinner(`Downloading ${name}@${hook.version}…`)
   const dlResult = await downloadArchive(name, hook.version)
   if (!dlResult.ok) {
@@ -44,7 +50,7 @@ export async function runInstall(name: string, options: InstallOptions): Promise
     return
   }
 
-  // Step 4: Merge into settings.json
+  // Step 5: Merge into settings.json
   startSpinner(`Installing ${name}…`)
   const paths = { settingsPath: config.settingsPath, lockfilePath: config.lockfilePath }
   await mergeHookIntoSettings(hook, paths, {
