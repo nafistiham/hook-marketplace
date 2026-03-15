@@ -202,6 +202,38 @@ describe('runSearch()', () => {
     await runSearch()
     expect(process.exitCode).toBe(1)
   })
+
+  it('shows health column instead of status', async () => {
+    vi.mocked(fetchIndex).mockResolvedValue({ ok: true, data: VALID_INDEX })
+    const { allOutput } = captureOutput()
+    await runSearch()
+    expect(allOutput()).toContain('health')
+    expect(allOutput()).not.toContain('status')
+  })
+
+  it('shows rating count without stars when below threshold', async () => {
+    const indexWithRating: HookIndex = {
+      ...VALID_INDEX,
+      hooks: [{ ...INDEX_ENTRY, rating_count: 3, rating_avg: 4.5 }],
+    }
+    vi.mocked(fetchIndex).mockResolvedValue({ ok: true, data: indexWithRating })
+    const { allOutput } = captureOutput()
+    await runSearch()
+    expect(allOutput()).toContain('(3)')
+    expect(allOutput()).not.toContain('★')
+  })
+
+  it('shows star rating when at or above threshold', async () => {
+    const indexWithRating: HookIndex = {
+      ...VALID_INDEX,
+      hooks: [{ ...INDEX_ENTRY, rating_count: 5, rating_avg: 4.2 }],
+    }
+    vi.mocked(fetchIndex).mockResolvedValue({ ok: true, data: indexWithRating })
+    const { allOutput } = captureOutput()
+    await runSearch()
+    expect(allOutput()).toContain('★')
+    expect(allOutput()).toContain('4.2')
+  })
 })
 
 // ─── runInfo ──────────────────────────────────────────────────────────────────
@@ -223,6 +255,38 @@ describe('runInfo()', () => {
     captureOutput()
     await runInfo('nonexistent')
     expect(process.exitCode).toBe(1)
+  })
+
+  it('shows no external API calls when calls_external_api is false', async () => {
+    vi.mocked(fetchHook).mockResolvedValue({ ok: true, data: HOOK })
+    const { allOutput } = captureOutput()
+    await runInfo('bash-danger-guard')
+    expect(allOutput()).toContain('no external API calls')
+  })
+
+  it('shows external API warning when calls_external_api is true', async () => {
+    const hookWithApi = { ...HOOK, security: { ...HOOK.security, calls_external_api: true } }
+    vi.mocked(fetchHook).mockResolvedValue({ ok: true, data: hookWithApi })
+    const { allOutput } = captureOutput()
+    await runInfo('bash-danger-guard')
+    expect(allOutput()).toMatch(/external API calls/i)
+    expect(allOutput()).toMatch(/may incur cost/i)
+  })
+
+  it('shows attestations with author-declared label when present', async () => {
+    const hookWithAttest = { ...HOOK, attestations: ['no-network', 'read-only'] as ('no-network' | 'read-only')[] }
+    vi.mocked(fetchHook).mockResolvedValue({ ok: true, data: hookWithAttest })
+    const { allOutput } = captureOutput()
+    await runInfo('bash-danger-guard')
+    expect(allOutput()).toContain('no-network')
+    expect(allOutput()).toMatch(/author-declared/i)
+  })
+
+  it('does not show attestations section when attestations is empty', async () => {
+    vi.mocked(fetchHook).mockResolvedValue({ ok: true, data: HOOK })
+    const { allOutput } = captureOutput()
+    await runInfo('bash-danger-guard')
+    expect(allOutput()).not.toMatch(/author-declared/i)
   })
 })
 
@@ -299,6 +363,36 @@ describe('runInstall()', () => {
     captureOutput()
     await runInstall('bash-danger-guard', {})
     expect(process.exitCode).toBe(1)
+  })
+
+  it('prints external API warning when hook calls external APIs', async () => {
+    const hookWithApi = { ...HOOK, security: { ...HOOK.security, calls_external_api: true } }
+    vi.mocked(fetchHook).mockResolvedValue({ ok: true, data: hookWithApi })
+    vi.mocked(checkCapabilities).mockReturnValue({ dangerous: false })
+    vi.mocked(downloadArchive).mockResolvedValue({
+      ok: true,
+      installedPath: '/tmp/hookpm/hooks/bash-danger-guard@1.0.0',
+      integrity: 'sha256-abc123',
+    })
+    vi.mocked(mergeHookIntoSettings).mockResolvedValue({ added: true, settingsIndex: 0, event: 'PreToolUse' })
+    const { allErrors } = captureOutput()
+    await runInstall('bash-danger-guard', {})
+    expect(allErrors()).toMatch(/external API calls/i)
+    expect(allErrors()).toMatch(/may incur cost/i)
+  })
+
+  it('does not print external API warning when calls_external_api is false', async () => {
+    vi.mocked(fetchHook).mockResolvedValue({ ok: true, data: HOOK }) // calls_external_api: false
+    vi.mocked(checkCapabilities).mockReturnValue({ dangerous: false })
+    vi.mocked(downloadArchive).mockResolvedValue({
+      ok: true,
+      installedPath: '/tmp/hookpm/hooks/bash-danger-guard@1.0.0',
+      integrity: 'sha256-abc123',
+    })
+    vi.mocked(mergeHookIntoSettings).mockResolvedValue({ added: true, settingsIndex: 0, event: 'PreToolUse' })
+    const { allErrors } = captureOutput()
+    await runInstall('bash-danger-guard', {})
+    expect(allErrors()).not.toMatch(/external API calls/i)
   })
 
   it('aborts with exitCode 2 when user declines dangerous capability prompt', async () => {

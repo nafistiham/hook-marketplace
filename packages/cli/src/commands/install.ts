@@ -27,6 +27,11 @@ export async function runInstall(name: string, options: InstallOptions): Promise
     process.stderr.write(`  It may still be safe — but proceed with caution.\n`)
   }
 
+  // Warn if hook makes external API calls
+  if (hook.security?.calls_external_api) {
+    process.stderr.write(`⚠ "${name}" makes external API calls — this may incur cost or latency.\n`)
+  }
+
   // Step 3: Check for dangerous capabilities
   const capCheck = checkCapabilities(hook.capabilities)
   if (capCheck.dangerous) {
