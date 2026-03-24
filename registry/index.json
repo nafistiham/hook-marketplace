@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-03-15T08:46:58.781Z",
+  "generated_at": "2026-03-24T12:19:22.682Z",
   "hooks": [
     {
       "name": "bash-danger-guard",
@@ -32,7 +32,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.742Z"
+      "updated_at": "2026-03-24T12:19:22.660Z"
     },
     {
       "name": "conflict-marker-guard",
@@ -64,7 +64,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.744Z"
+      "updated_at": "2026-03-24T12:19:22.662Z"
     },
     {
       "name": "console-log-guard",
@@ -97,7 +97,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.745Z"
+      "updated_at": "2026-03-24T12:19:22.662Z"
     },
     {
       "name": "cors-wildcard-guard",
@@ -130,7 +130,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.746Z"
+      "updated_at": "2026-03-24T12:19:22.663Z"
     },
     {
       "name": "create-checkpoint",
@@ -166,7 +166,7 @@
       ],
       "source": "https://github.com/carlrannaberg/claudekit",
       "submitted_by": "nafistiham",
-      "updated_at": "2026-03-15T08:46:58.747Z"
+      "updated_at": "2026-03-24T12:19:22.663Z"
     },
     {
       "name": "debug-artifact-guard",
@@ -198,7 +198,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.749Z"
+      "updated_at": "2026-03-24T12:19:22.664Z"
     },
     {
       "name": "dependency-audit",
@@ -231,7 +231,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.749Z"
+      "updated_at": "2026-03-24T12:19:22.664Z"
     },
     {
       "name": "dockerfile-lint",
@@ -265,7 +265,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.751Z"
+      "updated_at": "2026-03-24T12:19:22.665Z"
     },
     {
       "name": "dockerfile-secrets-guard",
@@ -298,7 +298,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.752Z"
+      "updated_at": "2026-03-24T12:19:22.665Z"
     },
     {
       "name": "env-leak-guard",
@@ -331,7 +331,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.753Z"
+      "updated_at": "2026-03-24T12:19:22.666Z"
     },
     {
       "name": "eslint-on-edit",
@@ -365,7 +365,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.754Z"
+      "updated_at": "2026-03-24T12:19:22.666Z"
     },
     {
       "name": "file-size-guard",
@@ -397,7 +397,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.754Z"
+      "updated_at": "2026-03-24T12:19:22.667Z"
     },
     {
       "name": "format-on-write",
@@ -432,7 +432,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.755Z"
+      "updated_at": "2026-03-24T12:19:22.667Z"
     },
     {
       "name": "git-commit-lint",
@@ -465,7 +465,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.756Z"
+      "updated_at": "2026-03-24T12:19:22.668Z"
     },
     {
       "name": "hardcoded-url-guard",
@@ -497,7 +497,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.757Z"
+      "updated_at": "2026-03-24T12:19:22.668Z"
     },
     {
       "name": "insecure-random-guard",
@@ -529,7 +529,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.757Z"
+      "updated_at": "2026-03-24T12:19:22.669Z"
     },
     {
       "name": "json-syntax-guard",
@@ -561,7 +561,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.758Z"
+      "updated_at": "2026-03-24T12:19:22.669Z"
     },
     {
       "name": "kubernetes-resource-guard",
@@ -593,7 +593,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.759Z"
+      "updated_at": "2026-03-24T12:19:22.670Z"
     },
     {
       "name": "large-file-upload-guard",
@@ -626,7 +626,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.759Z"
+      "updated_at": "2026-03-24T12:19:22.670Z"
     },
     {
       "name": "license-header-guard",
@@ -658,7 +658,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.760Z"
+      "updated_at": "2026-03-24T12:19:22.671Z"
     },
     {
       "name": "long-line-guard",
@@ -690,7 +690,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.761Z"
+      "updated_at": "2026-03-24T12:19:22.671Z"
     },
     {
       "name": "no-direct-push-guard",
@@ -723,7 +723,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.762Z"
+      "updated_at": "2026-03-24T12:19:22.671Z"
     },
     {
       "name": "no-eval-guard",
@@ -756,7 +756,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.763Z"
+      "updated_at": "2026-03-24T12:19:22.672Z"
     },
     {
       "name": "no-sleep-guard",
@@ -788,7 +788,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.763Z"
+      "updated_at": "2026-03-24T12:19:22.672Z"
     },
     {
       "name": "open-redirect-guard",
@@ -820,7 +820,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.765Z"
+      "updated_at": "2026-03-24T12:19:22.673Z"
     },
     {
       "name": "package-version-pin-guard",
@@ -852,7 +852,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.766Z"
+      "updated_at": "2026-03-24T12:19:22.673Z"
     },
     {
       "name": "port-scan-guard",
@@ -885,7 +885,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.767Z"
+      "updated_at": "2026-03-24T12:19:22.674Z"
     },
     {
       "name": "print-statement-guard",
@@ -917,7 +917,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.767Z"
+      "updated_at": "2026-03-24T12:19:22.674Z"
     },
     {
       "name": "prototype-pollution-guard",
@@ -949,7 +949,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.768Z"
+      "updated_at": "2026-03-24T12:19:22.675Z"
     },
     {
       "name": "python-security-guard",
@@ -983,7 +983,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.769Z"
+      "updated_at": "2026-03-24T12:19:22.675Z"
     },
     {
       "name": "secret-scan-guard",
@@ -1017,7 +1017,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.770Z"
+      "updated_at": "2026-03-24T12:19:22.676Z"
     },
     {
       "name": "semgrep-guard",
@@ -1051,7 +1051,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.770Z"
+      "updated_at": "2026-03-24T12:19:22.676Z"
     },
     {
       "name": "sensitive-file-guard",
@@ -1084,7 +1084,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.771Z"
+      "updated_at": "2026-03-24T12:19:22.677Z"
     },
     {
       "name": "session-summary",
@@ -1116,7 +1116,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.772Z"
+      "updated_at": "2026-03-24T12:19:22.677Z"
     },
     {
       "name": "shellcheck-guard",
@@ -1150,7 +1150,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.773Z"
+      "updated_at": "2026-03-24T12:19:22.677Z"
     },
     {
       "name": "sql-injection-guard",
@@ -1183,7 +1183,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.774Z"
+      "updated_at": "2026-03-24T12:19:22.678Z"
     },
     {
       "name": "sql-query-builder-guard",
@@ -1216,7 +1216,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.775Z"
+      "updated_at": "2026-03-24T12:19:22.678Z"
     },
     {
       "name": "terraform-security-guard",
@@ -1249,7 +1249,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.775Z"
+      "updated_at": "2026-03-24T12:19:22.679Z"
     },
     {
       "name": "test-on-edit",
@@ -1282,7 +1282,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.776Z"
+      "updated_at": "2026-03-24T12:19:22.679Z"
     },
     {
       "name": "todo-tracker",
@@ -1314,7 +1314,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.777Z"
+      "updated_at": "2026-03-24T12:19:22.679Z"
     },
     {
       "name": "token-usage-logger",
@@ -1347,7 +1347,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.778Z"
+      "updated_at": "2026-03-24T12:19:22.680Z"
     },
     {
       "name": "typescript-noany-guard",
@@ -1379,7 +1379,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.779Z"
+      "updated_at": "2026-03-24T12:19:22.680Z"
     },
     {
       "name": "unused-import-guard",
@@ -1411,7 +1411,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.779Z"
+      "updated_at": "2026-03-24T12:19:22.681Z"
     },
     {
       "name": "weak-crypto-guard",
@@ -1443,7 +1443,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.780Z"
+      "updated_at": "2026-03-24T12:19:22.681Z"
     },
     {
       "name": "xml-syntax-guard",
@@ -1476,7 +1476,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.781Z"
+      "updated_at": "2026-03-24T12:19:22.682Z"
     },
     {
       "name": "yaml-lint",
@@ -1508,7 +1508,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-15T08:46:58.781Z"
+      "updated_at": "2026-03-24T12:19:22.682Z"
     }
   ]
 }

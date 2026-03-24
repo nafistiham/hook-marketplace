@@ -85,7 +85,9 @@ for (const hookName of hookDirs) {
     for (const file of files) {
       fs.copyFileSync(path.join(hookDir, file), path.join(stagingDir, file))
     }
-    execFileSync('tar', ['-czf', archivePath, '-C', tmpDir, `${name}-${version}`])
+    execFileSync('tar', ['-czf', archivePath, '-C', tmpDir, `${name}-${version}`], {
+      env: { ...process.env, COPYFILE_DISABLE: '1' },
+    })
     process.stdout.write(`✓ hooks/${hookName}/${archiveName}\n`)
     built++
   } catch (cause) {
