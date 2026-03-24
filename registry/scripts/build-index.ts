@@ -4,6 +4,7 @@
 // CI runs this on every PR that touches registry/hooks/
 import * as fs from 'node:fs'
 import * as path from 'node:path'
+import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { HookJsonSchema, SecuritySchema } from '../../packages/schema/src/schema.js'
 import type { HookIndexEntry } from '../../packages/schema/src/schema.js'
@@ -13,6 +14,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const registryDir = path.resolve(__dirname, '..')
 const hooksDir = path.join(registryDir, 'hooks')
 const indexPath = path.join(registryDir, 'index.json')
+
+function gitLastModified(dirPath: string): string {
+  try {
+    const out = execFileSync('git', ['log', '-1', '--format=%cI', '--', dirPath], {
+      encoding: 'utf8',
+    }).trim()
+    return out || new Date(0).toISOString()
+  } catch {
+    return new Date(0).toISOString()
+  }
+}
 
 const hookDirs = fs
   .readdirSync(hooksDir, { withFileTypes: true })
@@ -90,7 +102,7 @@ for (const hookName of hookDirs) {
     ...(manifest.provenance?.submitted_by
       ? { submitted_by: manifest.provenance.submitted_by }
       : {}),
-    updated_at: new Date().toISOString(),
+    updated_at: gitLastModified(path.join(hooksDir, hookName)),
   }
 
   hooks.push(entry)
@@ -103,7 +115,7 @@ if (errorCount > 0) {
 
 const index = {
   schema_version: '1',
-  generated_at: new Date().toISOString(),
+  generated_at: gitLastModified(hooksDir),
   hooks,
 }
 
