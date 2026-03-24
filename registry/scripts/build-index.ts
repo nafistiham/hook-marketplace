@@ -17,10 +17,11 @@ const indexPath = path.join(registryDir, 'index.json')
 
 function gitLastModified(dirPath: string): string {
   try {
-    const out = execFileSync('git', ['log', '-1', '--format=%cI', '--', dirPath], {
+    const out = execFileSync('git', ['log', '-1', '--format=%ct', '--', dirPath], {
       encoding: 'utf8',
     }).trim()
-    return out || new Date(0).toISOString()
+    if (!out) return new Date(0).toISOString()
+    return new Date(parseInt(out, 10) * 1000).toISOString()
   } catch {
     return new Date(0).toISOString()
   }
