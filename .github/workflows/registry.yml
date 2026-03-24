@@ -35,10 +35,10 @@ jobs:
       - name: Rebuild index.json
         run: pnpm run build-index
 
-      - name: Check generated files are up to date
+      - name: Check index.json is up to date
         run: |
-          if ! git diff --quiet registry/; then
-            echo "registry/ has uncommitted changes — run 'pnpm run build-archives && pnpm run build-index' and commit the results"
-            git diff --stat registry/
+          if ! git diff --quiet registry/index.json; then
+            echo "registry/index.json is out of date — run 'pnpm run build-index' and commit the result"
+            git diff registry/index.json
             exit 1
           fi
