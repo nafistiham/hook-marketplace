@@ -1,7 +1,40 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-03-24T12:19:27.000Z",
+  "generated_at": "2026-03-24T18:41:01.000Z",
   "hooks": [
+    {
+      "name": "auto-stage",
+      "description": "Automatically runs 'git add' on every file Claude writes or edits, keeping the git staging index in sync without manual intervention.",
+      "author": "hookpm",
+      "event": "PostToolUse",
+      "tags": [
+        "git",
+        "workflow",
+        "developer-experience",
+        "automation"
+      ],
+      "capabilities": [
+        "side-effects-only"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": true
+      },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "1970-01-01T00:00:00.000Z"
+    },
     {
       "name": "bash-danger-guard",
       "description": "Guards against dangerous bash commands by intercepting Bash tool calls and checking for rm -rf, chmod 777, curl | sh, and other high-risk patterns.",
@@ -32,7 +65,40 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
+    },
+    {
+      "name": "code-complexity-guard",
+      "description": "Warns when a single Claude edit touches more than a configurable number of lines (default: 200). Large edits often signal hallucination or unintended scope creep.",
+      "author": "hookpm",
+      "event": "PostToolUse",
+      "tags": [
+        "code-quality",
+        "developer-experience",
+        "safety",
+        "complexity"
+      ],
+      "capabilities": [
+        "side-effects-only"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
+      },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "1970-01-01T00:00:00.000Z"
     },
     {
       "name": "conflict-marker-guard",
@@ -64,7 +130,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "console-log-guard",
@@ -97,7 +163,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "cors-wildcard-guard",
@@ -130,7 +196,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "create-checkpoint",
@@ -166,7 +232,41 @@
       ],
       "source": "https://github.com/carlrannaberg/claudekit",
       "submitted_by": "nafistiham",
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
+    },
+    {
+      "name": "critical-path-guard",
+      "description": "Blocks writes to critical files (auth, payments, middleware, migrations) unless explicitly allowed via environment variable. Prevents accidental modification of high-risk code paths.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "safety",
+        "code-quality",
+        "auth",
+        "payments"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
+      },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "1970-01-01T00:00:00.000Z"
     },
     {
       "name": "debug-artifact-guard",
@@ -198,7 +298,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "dependency-audit",
@@ -231,7 +331,41 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
+    },
+    {
+      "name": "dependency-install-gate",
+      "description": "Blocks npm install, pip install, yarn add, and pnpm add commands unless the package is on an explicit allow-list or the gate is bypassed. Prevents supply-chain attacks and typosquatting.",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "security",
+        "supply-chain",
+        "npm",
+        "pip",
+        "dependencies"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
+      },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "1970-01-01T00:00:00.000Z"
     },
     {
       "name": "dockerfile-lint",
@@ -265,7 +399,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "dockerfile-secrets-guard",
@@ -298,7 +432,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "env-leak-guard",
@@ -331,7 +465,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "eslint-on-edit",
@@ -365,7 +499,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "file-size-guard",
@@ -397,7 +531,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "format-on-write",
@@ -432,7 +566,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "git-commit-lint",
@@ -465,7 +599,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "hardcoded-url-guard",
@@ -497,7 +631,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "insecure-random-guard",
@@ -529,7 +663,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "json-syntax-guard",
@@ -561,7 +695,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "kubernetes-resource-guard",
@@ -593,7 +727,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "large-file-upload-guard",
@@ -626,7 +760,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "license-header-guard",
@@ -658,7 +792,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "long-line-guard",
@@ -690,7 +824,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "no-direct-push-guard",
@@ -723,7 +857,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "no-eval-guard",
@@ -756,7 +890,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "no-sleep-guard",
@@ -788,7 +922,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "open-redirect-guard",
@@ -820,7 +954,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "package-version-pin-guard",
@@ -852,7 +986,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "port-scan-guard",
@@ -885,7 +1019,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "print-statement-guard",
@@ -917,7 +1051,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "prototype-pollution-guard",
@@ -949,7 +1083,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "python-security-guard",
@@ -983,7 +1117,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "secret-scan-guard",
@@ -1017,7 +1151,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "semgrep-guard",
@@ -1051,7 +1185,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "sensitive-file-guard",
@@ -1084,7 +1218,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "session-summary",
@@ -1116,7 +1250,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "shellcheck-guard",
@@ -1150,7 +1284,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "sql-injection-guard",
@@ -1183,7 +1317,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "sql-query-builder-guard",
@@ -1216,7 +1350,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "terraform-security-guard",
@@ -1249,7 +1383,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "test-on-edit",
@@ -1282,7 +1416,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "todo-tracker",
@@ -1314,7 +1448,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "token-usage-logger",
@@ -1347,7 +1481,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "typescript-noany-guard",
@@ -1379,7 +1513,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "unused-import-guard",
@@ -1411,7 +1545,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "weak-crypto-guard",
@@ -1443,7 +1577,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "xml-syntax-guard",
@@ -1476,7 +1610,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
       "name": "yaml-lint",
@@ -1508,7 +1642,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "2026-03-24T12:19:27.000Z"
+      "updated_at": "2026-03-24T18:41:01.000Z"
     }
   ]
 }

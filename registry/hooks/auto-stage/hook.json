@@ -1,0 +1,36 @@
+{
+  "name": "auto-stage",
+  "version": "1.0.0",
+  "description": "Automatically runs 'git add' on every file Claude writes or edits, keeping the git staging index in sync without manual intervention.",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PostToolUse",
+  "matcher": {
+    "tool_name": "^(Write|Edit|NotebookEdit)$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "python3 stage.py",
+    "async": true
+  },
+  "capabilities": ["side-effects-only"],
+  "tags": ["git", "workflow", "developer-experience", "automation"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": [], "write": [] },
+    "env_vars": ["PATH"],
+    "spawns_processes": true
+  },
+  "requires": {
+    "os": ["darwin", "linux"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}

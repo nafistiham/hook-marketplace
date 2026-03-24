@@ -1,0 +1,36 @@
+{
+  "name": "critical-path-guard",
+  "version": "1.0.0",
+  "description": "Blocks writes to critical files (auth, payments, middleware, migrations) unless explicitly allowed via environment variable. Prevents accidental modification of high-risk code paths.",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PreToolUse",
+  "matcher": {
+    "tool_name": "^(Write|Edit|NotebookEdit)$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "python3 guard.py",
+    "async": false
+  },
+  "capabilities": ["block"],
+  "tags": ["security", "safety", "code-quality", "auth", "payments"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": [], "write": [] },
+    "env_vars": ["CRITICAL_PATH_ALLOW", "CRITICAL_PATH_PATTERNS"],
+    "spawns_processes": false
+  },
+  "requires": {
+    "os": ["darwin", "linux", "windows"],
+    "shell": ["bash", "zsh", "sh"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}
