@@ -412,7 +412,6 @@ app.post('/registry/hooks', async (c) => {
     ...parsed.data,
     security: {
       ...baseSecurityDefaults,
-      ...parsed.data.security,
       reviewed: false,
       review_date: null,
       sandbox_level: 'static-analysis' as const,
