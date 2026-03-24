@@ -18,10 +18,15 @@ type RateLimiter = {
   limit(opts: { key: string }): Promise<{ success: boolean }>
 }
 
+type AnalyticsEngine = {
+  writeDataPoint(event: { blobs?: string[]; doubles?: number[]; indexes?: string[] }): void
+}
+
 type Env = {
   HOOKPM_BUCKET: R2Bucket
   AUTH_KV?: KVNamespace
   RATE_LIMITER?: RateLimiter
+  ANALYTICS?: AnalyticsEngine
   CLERK_JWKS_URL?: string
   CLERK_ISSUER?: string
   CLERK_OAUTH_URL?: string
@@ -259,20 +264,26 @@ app.get('/registry/hooks/:name/hook.json', async (c) => {
 // ─── Download tracking (fire-and-forget) ─────────────────────────────────────
 
 function trackDownload(env: Env, hookName: string, version: string): void {
-  if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY) return
-  const url = `${env.SUPABASE_URL}/rest/v1/downloads`
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      apikey: env.SUPABASE_SERVICE_KEY,
-      Authorization: `Bearer ${env.SUPABASE_SERVICE_KEY}`,
-      Prefer: 'return=minimal',
-    },
-    body: JSON.stringify([{ hook_name: hookName, version }]),
-  }).catch(() => {
-    // Silently ignore — download tracking must not affect response latency or status
-  })
+  // Primary: Cloudflare Analytics Engine (always available, never pauses)
+  if (env.ANALYTICS) {
+    env.ANALYTICS.writeDataPoint({ blobs: [hookName, version], doubles: [1], indexes: [hookName] })
+  }
+  // Secondary: Supabase (legacy fallback)
+  if (env.SUPABASE_URL && env.SUPABASE_SERVICE_KEY) {
+    const url = `${env.SUPABASE_URL}/rest/v1/downloads`
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: env.SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${env.SUPABASE_SERVICE_KEY}`,
+        Prefer: 'return=minimal',
+      },
+      body: JSON.stringify([{ hook_name: hookName, version }]),
+    }).catch(() => {
+      // Silently ignore — download tracking must not affect response latency or status
+    })
+  }
 }
 
 // ─── Archive download ─────────────────────────────────────────────────────────
@@ -786,4 +797,15 @@ app.get('/authors/:username/hooks', async (c) => {
   return c.json({ username, hooks: authorHooks })
 })
 
-export default app
+export default {
+  fetch: app.fetch.bind(app),
+  async scheduled(_event: unknown, env: Env): Promise<void> {
+    if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY) return
+    await fetch(`${env.SUPABASE_URL}/rest/v1/ratings?limit=1`, {
+      headers: {
+        apikey: env.SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${env.SUPABASE_SERVICE_KEY}`,
+      },
+    }).catch(() => {})
+  },
+}

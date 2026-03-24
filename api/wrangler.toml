@@ -19,6 +19,13 @@ preview_id = "REPLACE_WITH_KV_NAMESPACE_PREVIEW_ID"
 #   SUPABASE_URL          — Supabase project URL (https://<project>.supabase.co)
 #   SUPABASE_SERVICE_KEY  — Supabase service role key (read/write access)
 
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "hookpm_downloads"
+
+[triggers]
+crons = ["0 0 */5 * *"]
+
 [env.production]
 name = "hookpm-api"
 
