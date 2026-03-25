@@ -14,10 +14,16 @@ id = "REPLACE_WITH_KV_NAMESPACE_ID"
 preview_id = "REPLACE_WITH_KV_NAMESPACE_PREVIEW_ID"
 
 # Secrets (set via `wrangler secret put`):
-#   CLERK_PUBLIC_KEY      — Clerk JWKS public key for JWT verification
+#   CLERK_JWKS_URL        — Clerk JWKS endpoint, e.g. https://clerk.hookpm.dev/.well-known/jwks.json
+#   CLERK_ISSUER          — Clerk issuer URL, e.g. https://clerk.hookpm.dev
 #   CLERK_OAUTH_URL       — Clerk OAuth authorize URL
+#   CLERK_CLIENT_ID       — Clerk OAuth application client ID
+#   CLERK_CLIENT_SECRET   — Clerk OAuth application client secret
 #   SUPABASE_URL          — Supabase project URL (https://<project>.supabase.co)
 #   SUPABASE_SERVICE_KEY  — Supabase service role key (read/write access)
+#
+# NOTE: __TEST_CLERK_USER is a TypeScript-only test injection field.
+# It cannot be set via wrangler config and is never active in production.
 
 [[analytics_engine_datasets]]
 binding = "ANALYTICS"
