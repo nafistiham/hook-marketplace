@@ -1,0 +1,37 @@
+{
+  "name": "branch-name-guard",
+  "version": "1.0.0",
+  "description": "Blocks 'git checkout -b' and 'git switch -c' when the new branch name doesn't follow conventional patterns (feature/, bug/, fix/, hotfix/, docs/, chore/, test/, security/).",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PreToolUse",
+  "matcher": {
+    "tool_name": "^Bash$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "node hook.js",
+    "async": false
+  },
+  "capabilities": ["block"],
+  "tags": ["git", "branches", "workflow", "code-quality"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": [], "write": [] },
+    "env_vars": ["BRANCH_NAME_PATTERN"],
+    "spawns_processes": false
+  },
+  "requires": {
+    "os": ["darwin", "linux", "windows"],
+    "shell": ["bash", "zsh", "sh"],
+    "runtime": { "node": ">=18" }
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}

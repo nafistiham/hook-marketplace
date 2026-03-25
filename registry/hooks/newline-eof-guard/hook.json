@@ -1,0 +1,36 @@
+{
+  "name": "newline-eof-guard",
+  "version": "1.0.0",
+  "description": "Ensures every text file Claude writes ends with a newline character. Automatically appends a trailing newline if one is missing — fixes POSIX compliance and prevents noisy git diffs.",
+  "author": "hookpm",
+  "license": "MIT",
+  "event": "PostToolUse",
+  "matcher": {
+    "tool_name": "^Write$"
+  },
+  "handler": {
+    "type": "command",
+    "command": "bash guard.sh",
+    "async": true
+  },
+  "capabilities": ["side-effects-only"],
+  "tags": ["formatting", "developer-experience", "posix", "git"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": { "read": ["*"], "write": ["*"] },
+    "env_vars": [],
+    "spawns_processes": false
+  },
+  "requires": {
+    "os": ["darwin", "linux"],
+    "shell": ["bash"]
+  },
+  "security": {
+    "sandbox_level": "static-analysis",
+    "reviewed": false,
+    "review_date": null,
+    "signed": false,
+    "signed_by": null,
+    "signature": null
+  }
+}

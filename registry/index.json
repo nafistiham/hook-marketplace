@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-03-24T18:41:01.000Z",
+  "generated_at": "2026-03-24T19:10:26.000Z",
   "hooks": [
     {
       "name": "auto-stage",
@@ -33,7 +33,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "1970-01-01T00:00:00.000Z"
+      "updated_at": "2026-03-24T19:10:26.000Z"
     },
     {
       "name": "bash-danger-guard",
@@ -68,6 +68,39 @@
       "updated_at": "2026-03-24T18:41:01.000Z"
     },
     {
+      "name": "branch-name-guard",
+      "description": "Blocks 'git checkout -b' and 'git switch -c' when the new branch name doesn't follow conventional patterns (feature/, bug/, fix/, hotfix/, docs/, chore/, test/, security/).",
+      "author": "hookpm",
+      "event": "PreToolUse",
+      "tags": [
+        "git",
+        "branches",
+        "workflow",
+        "code-quality"
+      ],
+      "capabilities": [
+        "block"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": true
+      },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "1970-01-01T00:00:00.000Z"
+    },
+    {
       "name": "code-complexity-guard",
       "description": "Warns when a single Claude edit touches more than a configurable number of lines (default: 200). Large edits often signal hallucination or unintended scope creep.",
       "author": "hookpm",
@@ -98,7 +131,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "1970-01-01T00:00:00.000Z"
+      "updated_at": "2026-03-24T19:10:26.000Z"
     },
     {
       "name": "conflict-marker-guard",
@@ -266,7 +299,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "1970-01-01T00:00:00.000Z"
+      "updated_at": "2026-03-24T19:10:26.000Z"
     },
     {
       "name": "debug-artifact-guard",
@@ -365,7 +398,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "1970-01-01T00:00:00.000Z"
+      "updated_at": "2026-03-24T19:10:26.000Z"
     },
     {
       "name": "dockerfile-lint",
@@ -825,6 +858,39 @@
         "1.0.0"
       ],
       "updated_at": "2026-03-24T18:41:01.000Z"
+    },
+    {
+      "name": "newline-eof-guard",
+      "description": "Ensures every text file Claude writes ends with a newline character. Automatically appends a trailing newline if one is missing — fixes POSIX compliance and prevents noisy git diffs.",
+      "author": "hookpm",
+      "event": "PostToolUse",
+      "tags": [
+        "formatting",
+        "developer-experience",
+        "posix",
+        "git"
+      ],
+      "capabilities": [
+        "side-effects-only"
+      ],
+      "security": {
+        "sandbox_level": "static-analysis",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
+      },
+      "attestations": [],
+      "rating_count": 0,
+      "rating_avg": 0,
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "1970-01-01T00:00:00.000Z"
     },
     {
       "name": "no-direct-push-guard",
