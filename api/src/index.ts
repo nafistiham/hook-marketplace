@@ -761,6 +761,45 @@ app.get('/authors/rankings', async (c) => {
   return c.json({ rankings })
 })
 
+// ─── Admin: delete hook (incident response) ──────────────────────────────────
+
+app.delete('/registry/hooks/:name', async (c) => {
+  const adminToken = c.env.ADMIN_TOKEN
+  if (!adminToken || c.req.raw.headers.get('X-Admin-Token') !== adminToken) {
+    return errorResponse(403, 'FORBIDDEN', 'Admin token required')
+  }
+
+  const name = c.req.param('name')
+
+  // Check hook exists in index
+  const hooks = await getIndex(c)
+  if (hooks === null || !hooks.find((h) => h.name === name)) {
+    return errorResponse(404, 'NOT_FOUND', `Hook "${name}" not found`)
+  }
+
+  // Delete all R2 objects under hooks/<name>/
+  const listed = await c.env.HOOKPM_BUCKET.list({ prefix: `hooks/${name}/` })
+  for (const obj of listed.objects) {
+    await c.env.HOOKPM_BUCKET.delete(obj.key)
+  }
+
+  // Remove from index.json
+  const indexObj = await c.env.HOOKPM_BUCKET.get('index.json')
+  if (indexObj) {
+    try {
+      const raw = JSON.parse(await indexObj.text()) as { schema_version: string; generated_at: string; hooks: HookIndexEntry[] }
+      const updatedHooks = raw.hooks.filter((h) => h.name !== name)
+      await c.env.HOOKPM_BUCKET.put(
+        'index.json',
+        JSON.stringify({ ...raw, hooks: updatedHooks }),
+        { httpMetadata: { contentType: 'application/json' } },
+      )
+    } catch { /* non-fatal — index will be stale until next publish */ }
+  }
+
+  return c.json({ deleted: true, name })
+})
+
 // ─── Authors ──────────────────────────────────────────────────────────────────
 
 async function getIndex(c: { env: Env }): Promise<HookIndexEntry[] | null> {
