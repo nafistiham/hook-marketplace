@@ -412,4 +412,47 @@ describe('runInstall()', () => {
     expect(process.exitCode).toBe(2)
     expect(vi.mocked(downloadArchive)).not.toHaveBeenCalled()
   })
+
+  // ─── --dry-run ───────────────────────────────────────────────────────────────
+
+  it('dry-run: shows what would be installed without downloading or merging', async () => {
+    vi.mocked(fetchHook).mockResolvedValue({ ok: true, data: HOOK })
+    vi.mocked(checkCapabilities).mockReturnValue({ dangerous: false })
+    const { allOutput } = captureOutput()
+    await runInstall('bash-danger-guard', { dryRun: true })
+    expect(allOutput()).toMatch(/dry.?run/i)
+    expect(allOutput()).toContain('bash-danger-guard')
+    expect(vi.mocked(downloadArchive)).not.toHaveBeenCalled()
+    expect(vi.mocked(mergeHookIntoSettings)).not.toHaveBeenCalled()
+    expect(process.exitCode).not.toBe(1)
+  })
+
+  it('dry-run: shows the settings.json entry that would be added', async () => {
+    vi.mocked(fetchHook).mockResolvedValue({ ok: true, data: HOOK })
+    vi.mocked(checkCapabilities).mockReturnValue({ dangerous: false })
+    const { allOutput } = captureOutput()
+    await runInstall('bash-danger-guard', { dryRun: true })
+    // Should show the hook command that would be written to settings.json
+    expect(allOutput()).toContain('python3 guard.py')
+    expect(allOutput()).toContain('PreToolUse')
+  })
+
+  it('dry-run: still shows external API warning', async () => {
+    const hookWithApi = { ...HOOK, security: { ...HOOK.security, calls_external_api: true } }
+    vi.mocked(fetchHook).mockResolvedValue({ ok: true, data: hookWithApi })
+    vi.mocked(checkCapabilities).mockReturnValue({ dangerous: false })
+    const { allErrors } = captureOutput()
+    await runInstall('bash-danger-guard', { dryRun: true })
+    expect(allErrors()).toMatch(/external API calls/i)
+  })
+
+  it('dry-run: sets exitCode 1 when fetchHook fails', async () => {
+    vi.mocked(fetchHook).mockResolvedValue({
+      ok: false,
+      error: new RegistryError('not found', 'NOT_FOUND'),
+    })
+    captureOutput()
+    await runInstall('nonexistent', { dryRun: true })
+    expect(process.exitCode).toBe(1)
+  })
 })

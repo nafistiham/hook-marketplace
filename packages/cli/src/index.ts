@@ -21,7 +21,8 @@ cli
   .command('install <name>', 'Install a hook from the registry')
   .option('--version <version>', 'Install a specific version')
   .option('--prepend', 'Prepend hook (runs before others in same event)')
-  .action(async (name: string, options: { version?: string; prepend?: boolean }) => {
+  .option('--dry-run', 'Preview what would be added to settings.json without installing')
+  .action(async (name: string, options: { version?: string; prepend?: boolean; dryRun?: boolean }) => {
     await runInstall(name, options)
   })
 

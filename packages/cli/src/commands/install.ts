@@ -7,6 +7,7 @@ import { success, error, confirm, startSpinner } from './output.js'
 export interface InstallOptions {
   version?: string
   prepend?: boolean
+  dryRun?: boolean
 }
 
 export async function runInstall(name: string, options: InstallOptions): Promise<void> {
@@ -44,6 +45,25 @@ export async function runInstall(name: string, options: InstallOptions): Promise
       process.exitCode = 2
       return
     }
+  }
+
+  // Dry-run: show what would happen without downloading or merging
+  if (options.dryRun) {
+    const event = hook.event
+    const cmd = hook.handler.command
+    process.stdout.write(`\n[dry-run] Would install ${name}@${hook.version}\n`)
+    process.stdout.write(`  Event:   ${event}\n`)
+    process.stdout.write(`  Command: ${cmd}\n`)
+    process.stdout.write(`\n  settings.json entry that would be added:\n`)
+    process.stdout.write(`  {\n`)
+    process.stdout.write(`    "hooks": {\n`)
+    process.stdout.write(`      "${event}": [\n`)
+    process.stdout.write(`        { "matcher": { "tool_name": "${hook.matcher?.tool_name ?? '.*'}" }, "hooks": ["${cmd}"] }\n`)
+    process.stdout.write(`      ]\n`)
+    process.stdout.write(`    }\n`)
+    process.stdout.write(`  }\n\n`)
+    process.stdout.write(`  Run without --dry-run to apply.\n`)
+    return
   }
 
   // Step 4: Download archive
