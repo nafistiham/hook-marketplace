@@ -187,6 +187,38 @@ export const SecuritySchema = z.object({
 
 export type HookSecurity = z.infer<typeof SecuritySchema>
 
+// ─── SPDX license identifiers ────────────────────────────────────────────────
+
+// Curated list of common SPDX identifiers accepted for hook submissions.
+// Full SPDX list: https://spdx.org/licenses/
+export const SPDX_LICENSES = new Set([
+  'MIT',
+  'Apache-2.0',
+  'GPL-2.0-only',
+  'GPL-2.0-or-later',
+  'GPL-3.0-only',
+  'GPL-3.0-or-later',
+  'LGPL-2.0-only',
+  'LGPL-2.1-only',
+  'LGPL-2.1-or-later',
+  'LGPL-3.0-only',
+  'LGPL-3.0-or-later',
+  'BSD-2-Clause',
+  'BSD-3-Clause',
+  'ISC',
+  'MPL-2.0',
+  'AGPL-3.0-only',
+  'AGPL-3.0-or-later',
+  'CDDL-1.0',
+  'EPL-1.0',
+  'EPL-2.0',
+  'CC0-1.0',
+  'Unlicense',
+  'WTFPL',
+  'BlueOak-1.0.0',
+  '0BSD',
+])
+
 // ─── Identity ────────────────────────────────────────────────────────────────
 
 const IdentitySchema = z.object({
@@ -201,7 +233,13 @@ const IdentitySchema = z.object({
     .regex(/^\d+\.\d+\.\d+$/, 'version must be semver (MAJOR.MINOR.PATCH)'),
   description: z.string().min(1).max(280),
   author: z.string().min(1).max(64),
-  license: z.string().min(1),
+  license: z
+    .string()
+    .min(1)
+    .refine(
+      (val) => SPDX_LICENSES.has(val),
+      (val) => ({ message: `"${val}" is not a recognised SPDX license identifier. See https://spdx.org/licenses/` }),
+    ),
   homepage: z.string().url().optional(),
 })
 

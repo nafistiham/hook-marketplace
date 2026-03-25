@@ -674,3 +674,47 @@ describe('HookIndexEntrySchema — attestations and ratings', () => {
     expect(result.rating_avg).toBe(4.2)
   })
 })
+
+// ─── HookJsonSchema — SPDX license validation ────────────────────────────────
+
+describe('HookJsonSchema — SPDX license validation', () => {
+  it('accepts MIT', () => {
+    expect(() => HookJsonSchema.parse({ ...MINIMAL_HOOK, license: 'MIT' })).not.toThrow()
+  })
+
+  it('accepts Apache-2.0', () => {
+    expect(() => HookJsonSchema.parse({ ...MINIMAL_HOOK, license: 'Apache-2.0' })).not.toThrow()
+  })
+
+  it('accepts GPL-3.0-only', () => {
+    expect(() => HookJsonSchema.parse({ ...MINIMAL_HOOK, license: 'GPL-3.0-only' })).not.toThrow()
+  })
+
+  it('accepts BSD-2-Clause', () => {
+    expect(() => HookJsonSchema.parse({ ...MINIMAL_HOOK, license: 'BSD-2-Clause' })).not.toThrow()
+  })
+
+  it('accepts ISC', () => {
+    expect(() => HookJsonSchema.parse({ ...MINIMAL_HOOK, license: 'ISC' })).not.toThrow()
+  })
+
+  it('accepts Unlicense', () => {
+    expect(() => HookJsonSchema.parse({ ...MINIMAL_HOOK, license: 'Unlicense' })).not.toThrow()
+  })
+
+  it('accepts CC0-1.0', () => {
+    expect(() => HookJsonSchema.parse({ ...MINIMAL_HOOK, license: 'CC0-1.0' })).not.toThrow()
+  })
+
+  it('rejects non-SPDX string "free"', () => {
+    expect(() => HookJsonSchema.parse({ ...MINIMAL_HOOK, license: 'free' })).toThrow()
+  })
+
+  it('rejects non-SPDX string "Custom"', () => {
+    expect(() => HookJsonSchema.parse({ ...MINIMAL_HOOK, license: 'Custom' })).toThrow()
+  })
+
+  it('rejects non-SPDX string "Proprietary"', () => {
+    expect(() => HookJsonSchema.parse({ ...MINIMAL_HOOK, license: 'Proprietary' })).toThrow()
+  })
+})
