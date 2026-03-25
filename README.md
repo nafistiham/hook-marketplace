@@ -25,7 +25,7 @@ hookpm install bash-danger-guard      # catches rm -rf and curl | sh
   - [verify](#verify)
   - [publish](#publish)
   - [login / logout](#login--logout)
-- [The Registry — 50 Hooks](#the-registry--50-hooks)
+- [The Registry — 52 Hooks](#the-registry--52-hooks)
   - [Security](#security)
   - [Code Quality](#code-quality)
   - [Git & Workflow](#git--workflow)
@@ -144,7 +144,7 @@ hookpm search --tag security
 hookpm search --event PreToolUse
 ```
 
-Searches the registry index. Without arguments, lists all 50 hooks with their health tier, event type, and one-line description.
+Searches the registry index. Without arguments, lists all 52 hooks with their health tier, event type, and one-line description.
 
 | Flag | Description |
 |------|-------------|
@@ -205,7 +205,7 @@ hookpm logout    # removes your local auth token
 
 ---
 
-## The Registry — 50 Hooks
+## The Registry — 52 Hooks
 
 All hooks are open-source, MIT-licensed, and statically analysed before inclusion.
 
@@ -259,8 +259,8 @@ All hooks are open-source, MIT-licensed, and statically analysed before inclusio
 | Hook | Event | Description |
 |------|-------|-------------|
 | [`git-commit-lint`](registry/hooks/git-commit-lint) | PreToolUse | Enforces [Conventional Commits](https://www.conventionalcommits.org/) format on `git commit` |
-| [`no-direct-push-guard`](registry/hooks/no-direct-push-guard) | PreToolUse | Prevents force-pushes and direct pushes to protected branches |
 | [`conflict-marker-guard`](registry/hooks/conflict-marker-guard) | PreToolUse | Blocks writes containing `<<<<<<<`, `=======`, or `>>>>>>>` merge conflict markers |
+| [`branch-name-guard`](registry/hooks/branch-name-guard) | PreToolUse | Blocks `git checkout -b` / `git switch -c` with non-conventional branch names |
 | [`auto-stage`](registry/hooks/auto-stage) | PostToolUse | Runs `git add` on every file Claude edits, keeping the staging index in sync |
 | [`create-checkpoint`](registry/hooks/create-checkpoint) | PostToolUse | Creates a `git stash` checkpoint after each significant edit for easy rollback |
 
@@ -275,6 +275,7 @@ All hooks are open-source, MIT-licensed, and statically analysed before inclusio
 | [`json-syntax-guard`](registry/hooks/json-syntax-guard) | PostToolUse | Validates JSON syntax immediately after a file is written |
 | [`yaml-lint`](registry/hooks/yaml-lint) | PostToolUse | Runs `yamllint` on YAML files after every write |
 | [`xml-syntax-guard`](registry/hooks/xml-syntax-guard) | PostToolUse | Validates XML/SVG syntax with `xmllint` after each write |
+| [`newline-eof-guard`](registry/hooks/newline-eof-guard) | PostToolUse | Ensures every written file ends with a newline — no POSIX compliance failures |
 
 ---
 
