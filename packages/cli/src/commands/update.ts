@@ -1,6 +1,7 @@
 import { fetchHook, downloadArchive } from '../registry/client.js'
-import { mergeHookIntoSettings } from '../settings/merge.js'
+import { mergeHookIntoSettings, removeHookFromSettings } from '../settings/merge.js'
 import { readLockfile } from '../settings/index.js'
+import { checkCapabilities } from '../security/index.js'
 import { config } from '../config.js'
 import { success, error, info, startSpinner } from './output.js'
 
@@ -11,12 +12,6 @@ export interface UpdateOptions {
 export async function runUpdate(name: string | undefined, options: UpdateOptions): Promise<void> {
   const paths = { settingsPath: config.settingsPath, lockfilePath: config.lockfilePath }
   const lockfile = readLockfile(config.lockfilePath)
-  const installed = Object.entries(lockfile.hooks)
-
-  if (installed.length === 0) {
-    info('No hooks installed.')
-    return
-  }
 
   // Determine which hooks to update
   const targets: string[] = []
@@ -29,7 +24,13 @@ export async function runUpdate(name: string | undefined, options: UpdateOptions
     }
     targets.push(name)
   } else if (options.all) {
-    targets.push(...installed.map(([n]) => n))
+    const installed = Object.keys(lockfile.hooks)
+    if (installed.length === 0) {
+      error('No hooks installed.')
+      process.exitCode = 1
+      return
+    }
+    targets.push(...installed)
   } else {
     error('Specify a hook name or use --all to update everything.')
     process.exitCode = 1
@@ -49,32 +50,42 @@ export async function runUpdate(name: string | undefined, options: UpdateOptions
     const hookResult = await fetchHook(hookName)
     if (!hookResult.ok) {
       error(`Could not fetch ${hookName}: ${hookResult.error.message}`)
+      process.exitCode = 1
       continue
     }
 
     const latest = hookResult.data
 
     if (latest.version === lockEntry.version) {
-      info(`${hookName} is already up to date (${lockEntry.version})`)
+      info(`${hookName} is already at latest (${lockEntry.version})`)
       skipped++
       continue
     }
 
-    info(`${hookName}: ${lockEntry.version} → ${latest.version}`)
+    // Check capabilities before downloading
+    const capCheck = checkCapabilities(latest.capabilities)
+    if (capCheck.dangerous) {
+      process.stderr.write(`⚠ Hook "${hookName}" has dangerous capabilities — skipping update.\n`)
+      process.exitCode = 1
+      continue
+    }
 
     // Download new version
     startSpinner(`Downloading ${hookName}@${latest.version}…`)
     const dlResult = await downloadArchive(hookName, latest.version)
     if (!dlResult.ok) {
       error(`Download failed for ${hookName}: ${dlResult.error.message}`)
+      process.exitCode = 1
       continue
     }
 
-    // Merge (upgrade path — replaces at same settings_index)
+    // Remove old entry then re-add new version
     startSpinner(`Installing ${hookName}@${latest.version}…`)
+    await removeHookFromSettings(hookName, paths)
     await mergeHookIntoSettings(latest, paths, {
       installedPath: dlResult.installedPath,
       integrity: dlResult.integrity,
+      prepend: lockEntry.settings_index === 0,
     })
 
     success(`Updated ${hookName} to ${latest.version}`)
@@ -82,6 +93,6 @@ export async function runUpdate(name: string | undefined, options: UpdateOptions
   }
 
   if (targets.length > 1) {
-    info(`\n${updated} updated, ${skipped} already up to date.`)
+    process.stdout.write(`${updated} updated, ${skipped} already up to date.\n`)
   }
 }

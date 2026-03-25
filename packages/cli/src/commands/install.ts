@@ -50,7 +50,7 @@ export async function runInstall(name: string, options: InstallOptions): Promise
   // Dry-run: show what would happen without downloading or merging
   if (options.dryRun) {
     const event = hook.event
-    const cmd = hook.handler.command
+    const cmd = hook.handler.type === 'command' ? hook.handler.command : '[non-command handler]'
     process.stdout.write(`\n[dry-run] Would install ${name}@${hook.version}\n`)
     process.stdout.write(`  Event:   ${event}\n`)
     process.stdout.write(`  Command: ${cmd}\n`)
