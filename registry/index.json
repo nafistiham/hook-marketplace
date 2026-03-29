@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-03-24T19:10:26.000Z",
+  "generated_at": "2026-03-25T12:42:47.000Z",
   "hooks": [
     {
       "name": "auto-stage",
@@ -98,7 +98,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "1970-01-01T00:00:00.000Z"
+      "updated_at": "2026-03-25T12:42:47.000Z"
     },
     {
       "name": "code-complexity-guard",
@@ -466,6 +466,42 @@
         "1.0.0"
       ],
       "updated_at": "2026-03-24T18:41:01.000Z"
+    },
+    {
+      "name": "edit-journal",
+      "description": "Appends a timestamped entry to .claude/edit-journal.md for every file edit Claude makes — file path, lines changed, before/after preview.",
+      "author": "nafistiham",
+      "event": "PostToolUse",
+      "tags": [
+        "logging",
+        "productivity",
+        "debugging",
+        "session"
+      ],
+      "capabilities": [
+        "side-effects-only"
+      ],
+      "security": {
+        "sandbox_level": "none",
+        "reviewed": false,
+        "review_date": null,
+        "signed": false,
+        "signed_by": null,
+        "signature": null,
+        "calls_external_api": false,
+        "spawns_subprocess": false
+      },
+      "attestations": [
+        "no-network",
+        "no-subprocess"
+      ],
+      "rating_count": 0,
+      "rating_avg": 0,
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "updated_at": "1970-01-01T00:00:00.000Z"
     },
     {
       "name": "env-leak-guard",
@@ -890,7 +926,7 @@
       "versions": [
         "1.0.0"
       ],
-      "updated_at": "1970-01-01T00:00:00.000Z"
+      "updated_at": "2026-03-25T12:42:47.000Z"
     },
     {
       "name": "no-direct-push-guard",

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://hookpm.dev/schema/hook.json",
+  "name": "edit-journal",
+  "version": "1.0.0",
+  "description": "Appends a timestamped entry to .claude/edit-journal.md for every file edit Claude makes — file path, lines changed, before/after preview.",
+  "author": "nafistiham",
+  "license": "MIT",
+  "event": "PostToolUse",
+  "matcher": {
+    "tool_name": "Edit|Write"
+  },
+  "handler": {
+    "type": "command",
+    "command": "python3 $HOOK_DIR/journal.py",
+    "async": true
+  },
+  "capabilities": ["side-effects-only"],
+  "permissions": {
+    "network": { "allowed": false, "domains": [] },
+    "filesystem": {
+      "read": [],
+      "write": [".claude/edit-journal.md", "~/.claude/edit-journal.md"]
+    },
+    "env_vars": [],
+    "spawns_processes": false
+  },
+  "tags": ["logging", "productivity", "debugging", "session"],
+  "attestations": ["no-network", "no-subprocess"]
+}
