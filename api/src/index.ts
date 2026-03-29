@@ -137,7 +137,7 @@ app.get('/auth/login', async (c) => {
   const params = new URLSearchParams({
     response_type: 'code',
     client_id: clientId,
-    redirect_uri: 'https://api.nafistiham.com/auth/callback',
+    redirect_uri: 'https://hookpm-api.hookpm.workers.dev/auth/callback',
     scope: 'profile email',
     state,
   })
@@ -189,7 +189,7 @@ app.get('/auth/callback', async (c) => {
       code,
       client_id: clientId,
       client_secret: clientSecret,
-      redirect_uri: 'https://api.nafistiham.com/auth/callback',
+      redirect_uri: 'https://hookpm-api.hookpm.workers.dev/auth/callback',
     }),
   })
 
