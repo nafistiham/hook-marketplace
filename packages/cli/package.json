@@ -1,6 +1,6 @@
 {
   "name": "hookpm",
-  "version": "0.1.8",
+  "version": "1.0.0",
   "description": "CLI package manager for Claude Code hooks — install, remove, search, and publish hooks from the hookpm registry",
   "keywords": [
     "claude",
